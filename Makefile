@@ -6,7 +6,7 @@
 #    By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 18:06:10 by fvonsovs          #+#    #+#              #
-#    Updated: 2024/02/11 19:42:12 by fvonsovs         ###   ########.fr        #
+#    Updated: 2024/02/20 19:25:13 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 NAME		=	miniRT
-SRCS		=	minirt.c 
+SRCS		=	minirt.c controls.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f

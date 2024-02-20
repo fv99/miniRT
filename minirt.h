@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/02/11 19:39:32 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/02/20 19:25:33 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ typedef struct s_win
 }	t_win;
 
 // minirt.c
-void	print_controls(t_win *win);
-int		handle_destroy_notify(t_win *win);
-int		render_background(t_win *win, int color, int start_x, int end_x);
+int		render_background(t_win *win);
+
+// controls.c
 int		handle_keypress(int keysym, t_win *win);
+int		handle_destroy_notify(t_win *win);
+int		print_controls(t_win *win);
 
 
 #endif
