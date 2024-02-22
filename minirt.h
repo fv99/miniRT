@@ -23,16 +23,55 @@
 # define WINDOW_WIDTH 1280
 # define WINDOW_HEIGHT 1024
 
-# ifndef M_PI
-#  define M_PI 3.14159265358979323846
-# endif
+# define M_PI 3.14159265358979323846
 
-// main data holding struct
+typedef struct s_float_3
+{
+	float			x;
+	float			y;
+	float			z;
+}	t_float_3;
+
+// ambient lighting, lum = brightness, col = color in hex format
+typedef struct s_amb
+{
+	float			lum;
+	int				col;
+}	t_amb;
+
+// camera, pos = position, vec = 3d normalized vector
+typedef struct s_cam
+{
+	t_float_3		*pos;
+	t_float_3		*vec;
+	int				fov;
+}	t_cam;
+
+// light point, lum = brightness, col = color in hex format
+typedef struct s_light
+{
+	t_float_3		*pos;
+	float			lum;
+	int				col;
+}	t_light;
+
+// map holding struct
+typedef struct s_map
+{
+	t_amb			*amb;
+	t_cam			*cam;
+	t_light			*light;
+
+	// objects will go here, have to figure out data structure
+
+}	t_map;
+
+// main window holding struct
 typedef struct s_win
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
+	void			*mlx;
+	void			*win;
+	void			*img;
 }	t_win;
 
 // minirt.c
