@@ -20,6 +20,45 @@ t_map   parser(char **filename)
 
 }
 
+int test_map(t_map *map)
+{
+    if (!map)
+        return(ft_printf("Invalid map: NULL pointer\n"));
+    if (!map->amb)
+        return(ft_printf("Invalid map: Ambient lighting not set\n"));
+    if (!map->cam)
+        return(ft_printf("Invalid map: Camera not set\n"));
+    if (!map->cam->pos)
+        return(ft_printf("Invalid map: Camera position not set\n"));
+    if (!map->cam->vec)
+        return(ft_printf("Invalid map: Camera vector not set\n"));
+    if (!map->light)
+        return(ft_printf("Invalid map: Light point not set\n"));
+    if (!map->light->pos)
+        return(ft_printf("Invalid map: Light point position not set\n"));
+    return (1);
+}
+
+int test_parser(t_map *map)
+{
+    if (!test_map(map))
+        return(1);
+    printf("\nAmbient lighting:\n");
+    printf("  Lum: %.2f\n", map->amb->lum);
+    printf("  Col: %06X\n", map->amb->col);
+    
+    printf("\nCamera:\n");
+    printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam->pos->x, map->cam->pos->y, map->cam->pos->z);
+    printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam->vec->x, map->cam->vec->y, map->cam->vec->z);
+    printf("  FOV: %d\n", map->cam->fov);
+
+    printf("\nLight point:\n");
+    printf("  Position: (%.2f, %.2f, %.2f)\n", map->light->pos->x, map->light->pos->y, map->light->pos->z);
+    printf("  Lum: %.2f\n", map->light->lum);
+    printf("  Col: %06X\n", map->light->col);
+    return (0);
+}
+
 // bitwise shift rgb value into hex
 int rgb_to_hex(int r, int g, int b)
 {   
