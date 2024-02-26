@@ -15,6 +15,7 @@
 
 # include "./libft/libft.h"
 # include "./minilibx-linux/mlx.h"
+# include <fcntl.h>
 # include <stdio.h>
 # include <X11/X.h>
 # include <X11/keysym.h>
@@ -81,6 +82,17 @@ int		render_background(t_win *win);
 int		handle_keypress(int keysym, t_win *win);
 int		handle_destroy_notify(t_win *win);
 int		print_controls(t_win *win);
+
+// parser_utils.c
+int 	open_file(char *filename);
+int 	rgb_to_hex(int r, int g, int b);
+int 	test_map(t_map *map);
+int 	test_parser(t_map *map);
+
+// parser.c
+t_map   parser(char *filename);
+
+
 
 
 #endif
