@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 19:43:16 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:15:14 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,4 @@ int error_throw(char *msg)
     ft_printf("\n\tERROR: %s\n", msg);
     exit(-1);
 }
+

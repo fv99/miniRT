@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/02/20 19:25:33 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:13:00 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_win
 }	t_win;
 
 // minirt.c
-int		render_background(t_win *win);
+int		render(t_win *win);
 
 // controls.c
 int		handle_keypress(int keysym, t_win *win);
@@ -85,12 +85,31 @@ int		print_controls(t_win *win);
 
 // parser_utils.c
 int 	open_file(char *filename);
+int		is_rt_file(char *filename);
 int 	rgb_to_hex(int r, int g, int b);
+int 	error_throw(char *msg);
+
+// parser_utils_2
+void	free_array(char **arr);
+void	print_array(char **arr);
+int		array_length(char **arr);
+
+// utils_tests.c
 int 	test_map(t_map *map);
 int 	test_parser(t_map *map);
 
 // parser.c
 t_map   parser(char *filename);
+char 	*sanitize(char *line);
+t_map   parse_line(t_map *map, char *line);
+int 	parse_ambient(t_map *map, char *line);
+
+// number_utils.c
+float	str_to_float(char *str);
+int		str_to_int_color(char *str);
+int		is_float(char *str);
+int		is_ulong(char *str);
+
 
 
 

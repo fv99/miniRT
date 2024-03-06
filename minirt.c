@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 19:19:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/06 20:35:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 2)
 	{
-		parser(argv);
+		parser(argv[1]);
 		win.mlx = mlx_init();
 		win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");
 		mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
