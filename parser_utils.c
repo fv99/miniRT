@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.c                                           :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/02/20 19:49:58 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:43:16 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,20 @@ int open_file(char *filename)
 
     fd = open(filename, O_RDONLY);
     if (fd < 0)
-    {
-        ft_printf("ERROR: Cannot open file %s\n", filename);
-        exit(-1);
-    }
+        error_throw("Cannot open file");
+    if (!is_rt_file(filename))
+        error_throw("Not an .rt file");
     return(fd);
+}
+
+int	is_rt_file(char *filename)
+{
+	int	len;
+
+	len = ft_strlen(filename) - 3;
+	if (len > 3)
+		return (ft_strncmp(filename + len, ".rt", 3) == 0);
+	return (0);
 }
 
 // bitwise shift rgb value into hex
@@ -32,41 +41,8 @@ int rgb_to_hex(int r, int g, int b)
     return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 }
 
-int test_map(t_map *map)
+int error_throw(char *msg)
 {
-    if (!map)
-        return(ft_printf("Invalid map: NULL pointer\n"));
-    if (!map->amb)
-        return(ft_printf("Invalid map: Ambient lighting not set\n"));
-    if (!map->cam)
-        return(ft_printf("Invalid map: Camera not set\n"));
-    if (!map->cam->pos)
-        return(ft_printf("Invalid map: Camera position not set\n"));
-    if (!map->cam->vec)
-        return(ft_printf("Invalid map: Camera vector not set\n"));
-    if (!map->light)
-        return(ft_printf("Invalid map: Light point not set\n"));
-    if (!map->light->pos)
-        return(ft_printf("Invalid map: Light point position not set\n"));
-    return (1);
-}
-
-int test_parser(t_map *map)
-{
-    if (!test_map(map))
-        return(1);
-    printf("\nAmbient lighting:\n");
-    printf("  Lum: %.2f\n", map->amb->lum);
-    printf("  Col: %06X\n", map->amb->col);
-    
-    printf("\nCamera:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam->pos->x, map->cam->pos->y, map->cam->pos->z);
-    printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam->vec->x, map->cam->vec->y, map->cam->vec->z);
-    printf("  FOV: %d\n", map->cam->fov);
-
-    printf("\nLight point:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->light->pos->x, map->light->pos->y, map->light->pos->z);
-    printf("  Lum: %.2f\n", map->light->lum);
-    printf("  Col: %06X\n", map->light->col);
-    return (0);
+    ft_printf("\n\tERROR: %s\n", msg);
+    exit(-1);
 }
