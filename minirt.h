@@ -33,6 +33,13 @@ typedef struct s_float_3
 	float			z;
 }	t_float_3;
 
+typedef struct s_int_3
+{
+	int				x;
+	int				y;
+	int				z;
+}	t_int_3;
+
 // ambient lighting, lum = brightness, col = color in hex format
 typedef struct s_amb
 {
@@ -98,11 +105,19 @@ int		array_length(char **arr);
 int 	test_map(t_map *map);
 int 	test_parser(t_map *map);
 
+// utils.c
+t_map   *malloc_map();
+
+
 // parser.c
-t_map   parser(char *filename);
+t_map   *parser(char *filename);
 char 	*sanitize(char *line);
-t_map   parse_line(t_map *map, char *line);
+int   	parse_line(t_map *map, char *line);
 int 	parse_ambient(t_map *map, char *line);
+int 	parse_color(char *str, int *col);
+int		parse_float(char *str, float *num);
+int		parse_ulong(char *str, size_t *num);
+
 
 // number_utils.c
 float	str_to_float(char *str);

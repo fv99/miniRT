@@ -12,19 +12,21 @@
 
 #include "minirt.h"
 
-t_map   parser(char *filename)
+// free map later!
+t_map   *parser(char *filename)
 {
     t_map   *map;
     int     fd;
     char    *line;
 
+    map = malloc_map();
     fd = open_file(filename);
 
     line = get_next_line(fd);
     while (line != NULL)
     {
         line = sanitize(line);
-        map = parse_line(&map, &line);
+        parse_line(map, line);
         free(line);
         line = get_next_line(fd);
     }
@@ -49,7 +51,7 @@ char *sanitize(char *line)
     return (line);
 }
 
-t_map   parse_line(t_map *map, char *line)
+int   parse_line(t_map *map, char *line)
 {
     if (ft_strncmp(line, "R", 1) == 0)
         return (parse_ambient(map, line));
@@ -72,11 +74,32 @@ int parse_ambient(t_map *map, char *line)
     ft_bzero(&amb, sizeof(t_amb));
     while (params && params[++i])
     {
-        // parse here
-
+        if (i == 1 && parse_float(params[i], &amb.lum))
+            return (error_throw("Cannot parse float"));
+        if (i == 2 && parse_color(params[i], &amb.col))
+            return (error_throw("Cannot parse color"));
     }
-    map->amb = amb;
+    map->amb = &amb;
     free_array(params);
+    return (0);
+}
+
+int parse_color(char *str, int *col)
+{
+    char    **colors;
+    int     rgb[3];
+    int     i;
+    int     x;
+
+    i = 0;
+    x = 0;
+    colors = ft_split(str, ',');
+    if (array_length(colors) < 1)
+        return (0);
+    while (colors && colors[++i])
+            rgb[x++] = ft_atoi(colors[i]);
+    *col = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
+    free_array(colors);
     return (0);
 }
 
@@ -95,4 +118,3 @@ int	parse_ulong(char *str, size_t *num)
 	*num = (size_t)ft_atoi(str);
 	return (0);
 }
-
