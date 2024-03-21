@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 21:13:00 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:34:22 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int 	test_parser(t_map *map);
 
 // utils.c
 t_map   *malloc_map();
-
+void    free_map(t_map *map);
 
 // parser.c
 t_map   *parser(char *filename);

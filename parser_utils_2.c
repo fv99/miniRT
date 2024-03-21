@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 20:31:29 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 20:31:35 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:46:42 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_array(char **arr)
 		ft_putendl_fd(arr[i++], 1);
 }
 
-int	array_length(char **arr)
+int		array_length(char **arr)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 19:38:37 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:18:39 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,23 @@ int test_map(t_map *map)
         return(ft_printf("Invalid map: Light point not set\n"));
     if (!map->light->pos)
         return(ft_printf("Invalid map: Light point position not set\n"));
-    return (1);
+    return (ft_printf("\tMap OK! \n"));
 }
 
 int test_parser(t_map *map)
 {
-    if (!test_map(map))
-        return(1);
     printf("\nAmbient lighting:\n");
     printf("  Lum: %.2f\n", map->amb->lum);
-    printf("  Col: %06X\n", map->amb->col);
+    printf("  Col: 0x%06X\n", map->amb->col);
     
-    printf("\nCamera:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam->pos->x, map->cam->pos->y, map->cam->pos->z);
-    printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam->vec->x, map->cam->vec->y, map->cam->vec->z);
-    printf("  FOV: %d\n", map->cam->fov);
+    // printf("\nCamera:\n");
+    // printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam->pos->x, map->cam->pos->y, map->cam->pos->z);
+    // printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam->vec->x, map->cam->vec->y, map->cam->vec->z);
+    // printf("  FOV: %d\n", map->cam->fov);
 
-    printf("\nLight point:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->light->pos->x, map->light->pos->y, map->light->pos->z);
-    printf("  Lum: %.2f\n", map->light->lum);
-    printf("  Col: %06X\n", map->light->col);
+    // printf("\nLight point:\n");
+    // printf("  Position: (%.2f, %.2f, %.2f)\n", map->light->pos->x, map->light->pos->y, map->light->pos->z);
+    // printf("  Lum: %.2f\n", map->light->lum);
+    // printf("  Col: %06X\n", map->light->col);
     return (0);
 }

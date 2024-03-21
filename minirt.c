@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 20:35:19 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:46:28 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	main(int argc, char **argv)
 	map = parser(argv[1]); // free this later
 	test_map(map);
 	test_parser(map);
+	free_map(map);
 
 	// win.mlx = mlx_init();
 	// win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");

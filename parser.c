@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 09:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 21:15:07 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:46:04 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *sanitize(char *line)
 
 int   parse_line(t_map *map, char *line)
 {
-    if (ft_strncmp(line, "R", 1) == 0)
+    if (ft_strncmp(line, "A", 1) == 0)
         return (parse_ambient(map, line));
     
     return (0);
@@ -63,26 +63,32 @@ int parse_ambient(t_map *map, char *line)
 {
     int     i;
     char    **params;
-    t_amb   amb;
 
     i = 0;
     params = ft_split(line, ' ');
-    if (map->amb)
-        error_throw("Too many ambients in map");
     if (array_length(params) != 3)
-        error_throw("Invalid no. of ambient params");
-    ft_bzero(&amb, sizeof(t_amb));
+        error_throw("Invalid number of ambient params");
+    map->amb = (t_amb *)malloc(sizeof(t_amb));
+    if (map->amb == NULL)
+        error_throw("Cannot malloc ambient lighting");
+    ft_bzero(map->amb, sizeof(t_amb));
     while (params && params[++i])
     {
-        if (i == 1 && parse_float(params[i], &amb.lum))
+        if (i == 1 && parse_float(params[i], &map->amb->lum))
+        {
+            free(map->amb);
             return (error_throw("Cannot parse float"));
-        if (i == 2 && parse_color(params[i], &amb.col))
+        }
+        if (i == 2 && parse_color(params[i], &map->amb->col))
+        {
+            free(map->amb);
             return (error_throw("Cannot parse color"));
+        }
     }
-    map->amb = &amb;
     free_array(params);
     return (0);
 }
+
 
 int parse_color(char *str, int *col)
 {
@@ -96,12 +102,17 @@ int parse_color(char *str, int *col)
     colors = ft_split(str, ',');
     if (array_length(colors) < 1)
         return (0);
-    while (colors && colors[++i])
-            rgb[x++] = ft_atoi(colors[i]);
+    while (colors && colors[i])
+    {
+        rgb[x] = ft_atoi(colors[i]);
+        x++;
+        i++;
+    }
     *col = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
     free_array(colors);
     return (0);
 }
+
 
 int	parse_float(char *str, float *num)
 {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:22:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/02/20 19:49:58 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:18:03 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,26 @@ t_map   *malloc_map()
 {
     t_map *map;
     
-    map = malloc(sizeof(t_map));
+    map = (t_map *)malloc(sizeof(t_map));
     if (map == NULL)
         error_throw("Cannot malloc map");
-    map->amb = NULL;
+
+    map->amb->col = 0x000000;
+    map->amb->lum = 0;
     map->cam = NULL;
     map->light = NULL;
 
     return map;
+}
+
+void    free_map(t_map *map)
+{
+    if (map == NULL)
+        return;
+    if (map->amb != NULL)
+    {
+        free(map->amb);
+        map->amb = NULL;
+    }
+    free(map);
 }
