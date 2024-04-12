@@ -55,7 +55,8 @@ int   parse_line(t_map *map, char *line)
 {
     if (ft_strncmp(line, "A", 1) == 0)
         return (parse_ambient(map, line));
-    
+    if (ft_strncmp(line, "C", 1) == 0)
+        return (parse_coords(map, line));
     return (0);
 }
 
@@ -89,30 +90,61 @@ int parse_ambient(t_map *map, char *line)
     return (0);
 }
 
-
-int parse_color(char *str, int *col)
+int parse_coords(t_map *map, char *line)
 {
-    char    **colors;
-    int     rgb[3];
+    int     i;
+    char    **params;
+
+    i = 0;
+    params = ft_split(line, ' ');
+    if (array_length(params) != 3)
+        error_throw("Invalid number of camera params");
+    map->cam = (t_cam *)malloc(sizeof(t_cam));
+    if (map->cam == NULL)
+        error_throw("Cannot malloc camera");
+    ft_bzero(map->cam, sizeof(t_cam));
+    while (params && params[++i])
+    {
+        if (i == 1 && parse_xyz(params[i], &map->cam->pos))
+        {
+            free(map->cam);
+            return (error_throw("Cannot parse cam position"));
+        }
+        if (i == 2 && parse_color(params[i], &map->cam->col))
+        {
+            free(map->cam);
+            return (error_throw("Cannot parse cam vector"));
+        }
+    }
+    free_array(params);
+    return (0);
+}
+
+
+int parse_xyz(char *str, t_float_3 *coord)
+{
+    char    **coords;
+    float     xyz[3];
     int     i;
     int     x;
 
     i = 0;
     x = 0;
-    colors = ft_split(str, ',');
-    if (array_length(colors) < 1)
+    coords = ft_split(str, ',');
+    if (array_length(coords) < 1)
         return (0);
-    while (colors && colors[i])
+    while (coords && coords[i])
     {
-        rgb[x] = ft_atoi(colors[i]);
+        xyz[x] = ft_atoi(coords[i]);
         x++;
         i++;
     }
-    *col = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
-    free_array(colors);
+    coord->x = xyz[0];
+    coord->y = xyz[1];
+    coord->z = xyz[2];
+    free_array(coords);
     return (0);
 }
-
 
 int	parse_float(char *str, float *num)
 {

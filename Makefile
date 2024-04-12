@@ -35,7 +35,7 @@ all: $(NAME)
 $(NAME): ${OBJS}
 	@echo "$(YELLOW)Compiling libraries...$(RESET)"
 	make -C ./libft
-	make -C ./minilibx-linux
+	# make -C ./minilibx-linux
 	@echo "$(YELLOW)Linking objects...$(RESET)"
 	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT} ${MINILIBX} -L/usr/lib -lm -lXext -lX11
 	@echo "$(GREEN)Compilation successful.$(RESET)"

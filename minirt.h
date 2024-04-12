@@ -14,7 +14,7 @@
 # define MINIRT_H
 
 # include "./libft/libft.h"
-# include "./minilibx-linux/mlx.h"
+// # include "./minilibx-linux/mlx.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <X11/X.h>
@@ -117,6 +117,9 @@ int 	parse_ambient(t_map *map, char *line);
 int 	parse_color(char *str, int *col);
 int		parse_float(char *str, float *num);
 int		parse_ulong(char *str, size_t *num);
+int		parse_coords(t_map *map, char *line);
+int 	parse_xyz(char *str, t_float_3 *coord);
+
 
 
 // number_utils.c
