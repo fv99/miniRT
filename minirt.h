@@ -52,7 +52,7 @@ typedef struct s_cam
 {
 	t_float_3		*pos;
 	t_float_3		*vec;
-	int				fov;
+	size_t			fov;
 }	t_cam;
 
 // light point, lum = brightness, col = color in hex format
@@ -120,16 +120,10 @@ int		parse_ulong(char *str, size_t *num);
 int		parse_coords(t_map *map, char *line);
 int 	parse_xyz(char *str, t_float_3 *coord);
 
-
-
 // number_utils.c
 float	str_to_float(char *str);
 int		str_to_int_color(char *str);
 int		is_float(char *str);
 int		is_ulong(char *str);
-
-
-
-
 
 #endif

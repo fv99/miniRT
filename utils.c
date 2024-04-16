@@ -22,7 +22,6 @@ t_map   *malloc_map()
 
     map->amb->col = 0x000000;
     map->amb->lum = 0;
-    map->cam = NULL;
     map->light = NULL;
 
     return map;
@@ -36,6 +35,11 @@ void    free_map(t_map *map)
     {
         free(map->amb);
         map->amb = NULL;
+    }
+    if (map->cam != NULL)
+    {
+        free(map->cam->pos);
+        free(map->cam->vec);
     }
     free(map);
 }
