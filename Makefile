@@ -12,7 +12,7 @@
 
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 NAME		=	miniRT
 SRCS		=	minirt.c controls.c parser_utils.c parser_utils_2.c parser.c utils_tests.c utils.c number_utils.c
 OBJS		=	${SRCS:.c=.o}
