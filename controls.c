@@ -20,7 +20,7 @@ int	handle_destroy_notify(t_win *win)
 
 int	handle_keypress(int keysym, t_win *win)
 {
-	if (keysym == XK_Escape)
+	if (keysym == 13)
 		handle_destroy_notify(win);
 	return (0);
 }

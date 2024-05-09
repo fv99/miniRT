@@ -27,25 +27,25 @@ int	render(t_win *win)
 
 int	main(int argc, char **argv)
 {
-	// t_win win;
+	t_win win;
 	t_map *map;
 
 	if (argc != 2)
 		exit(ft_printf("Usage: %s <[FILE].rt>\n", argv[0]));
 
-	map = parser(argv[1]); // free this later
-	test_map(map);
-	test_parser(map);
-	free_map(map);
+	// map = parser(argv[1]); // free this later
+	// test_map(map);
+	// test_parser(map);
+	// free_map(map);
 
-	// win.mlx = mlx_init();
-	// win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");
-	// mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
-	// mlx_hook(win.win, 17, 1L << 17, handle_destroy_notify, &win);
-	// mlx_loop_hook(win.mlx, render, &win);
-	// mlx_loop(win.mlx);
-	// mlx_destroy_display(win.mlx);
-	// free(win.mlx);
+	win.mlx = mlx_init();
+	win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");
+	mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
+	mlx_hook(win.win, 17, 1L << 17, handle_destroy_notify, &win);
+	mlx_loop_hook(win.mlx, render, &win);
+	mlx_loop(win.mlx);
+	mlx_destroy_window(win.mlx, win.win);
+	free(win.mlx);
 
 	exit(0);
 }

@@ -12,14 +12,29 @@
 
 
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -fsanitize=address -g
 NAME		=	miniRT
 SRCS		=	minirt.c controls.c parser_utils.c parser_utils_2.c parser.c utils_tests.c utils.c number_utils.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f
 LIBFT		=	./libft/libft.a
-MINILIBX	=	./minilibx-linux/libmlx.a
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+	CFLAGS		+=	-fsanitize=address -g
+	LDFLAGS		+=	-fsanitize=address -g
+	MINILIBX	=	./minilibx-linux/libmlx.a
+	# Linux specific flags
+	LIBS		=	-lm -lXext -lX11
+endif
+ifeq ($(UNAME_S),Darwin)
+	CFLAGS		+=	-fsanitize=address -g -I/usr/local/opt/readline/include
+	LDFLAGS		+=	-lSystem -fsanitize=address -g -L/usr/local/opt/readline/lib
+	MINILIBX	=	./minilibx-mac-osx/libmlx.a
+	# macOS specific flags
+	LIBS		=	-framework OpenGL -framework AppKit
+endif
 
 # Colors
 GREEN		=	$(shell printf "\033[0;32m")
@@ -35,18 +50,23 @@ all: $(NAME)
 $(NAME): ${OBJS}
 	@echo "$(YELLOW)Compiling libraries...$(RESET)"
 	make -C ./libft
-	# make -C ./minilibx-linux
+ifeq ($(UNAME_S),Linux)
+	make -C ./minilibx-linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	make -C ./minilibx-mac-osx
+endif
 	@echo "$(YELLOW)Linking objects...$(RESET)"
-	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT} ${MINILIBX} -L/usr/lib -lm -lXext -lX11
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS} ${LIBFT} ${MINILIBX} ${LIBS}
 	@echo "$(GREEN)Compilation successful.$(RESET)"
 
 clean: 
 	@echo "$(YELLOW)Removing object files...$(RESET)"
-	@${RM} ${OBJS} ${BONUS_OBJS}
+	@${RM} ${OBJS}
 
 fclean: clean
 	@echo "$(YELLOW)Removing executable...$(RESET)"
-	@${RM} ${NAME} ${BONUS_NAME}
+	@${RM} ${NAME}
 
 re: fclean all
 

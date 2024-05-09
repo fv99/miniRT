@@ -14,17 +14,22 @@
 # define MINIRT_H
 
 # include "./libft/libft.h"
-// # include "./minilibx-linux/mlx.h"
 # include <fcntl.h>
 # include <stdio.h>
+#ifdef __linux__
+# include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+#elif __APPLE__
+# include "./minilibx-mac-osx/mlx.h"
+# include <ApplicationServices/ApplicationServices.h>
+#endif
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
 # define WINDOW_HEIGHT 1024
 
-# define M_PI 3.14159265358979323846
+// # define M_PI 3.14159265358979323846
 
 typedef struct s_float_3
 {
