@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/21 13:34:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:40:08 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ typedef struct s_amb
 // camera, pos = position, vec = 3d normalized vector
 typedef struct s_cam
 {
-	t_float_3		*pos;
-	t_float_3		*vec;
+	t_float_3		pos;
+	t_float_3		vec;
 	size_t			fov;
 }	t_cam;
 
 // light point, lum = brightness, col = color in hex format
 typedef struct s_light
 {
-	t_float_3		*pos;
+	t_float_3		pos;
 	float			lum;
 	int				col;
 }	t_light;
@@ -71,9 +71,9 @@ typedef struct s_light
 // map holding struct
 typedef struct s_map
 {
-	t_amb			*amb;
-	t_cam			*cam;
-	t_light			*light;
+	t_amb			amb;
+	t_cam			cam;
+	t_light			light;
 
 	// objects will go here, have to figure out data structure
 
@@ -112,7 +112,7 @@ int 	test_parser(t_map *map);
 
 // utils.c
 t_map   *malloc_map();
-void    free_map(t_map *map);
+// void    free_map(t_map *map);
 
 // parser.c
 t_map   *parser(char *filename);
@@ -122,7 +122,7 @@ int 	parse_ambient(t_map *map, char *line);
 int 	parse_color(char *str, int *col);
 int		parse_float(char *str, float *num);
 int		parse_ulong(char *str, size_t *num);
-int		parse_coords(t_map *map, char *line);
+int		parse_camera(t_map *map, char *line);
 int 	parse_xyz(char *str, t_float_3 *coord);
 
 // number_utils.c
