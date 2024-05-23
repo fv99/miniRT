@@ -14,7 +14,8 @@
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 NAME		=	miniRT
-SRCS		=	minirt.c controls.c parser_utils.c parser_utils_2.c parser.c utils_tests.c utils.c number_utils.c
+SRCS		=	minirt.c controls.c parser.c parser_scene.c \
+				utils_tests.c utils_scene.c utils_number.c utils_parser.c utils_array.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f
@@ -49,7 +50,7 @@ $(NAME): ${OBJS}
 	@echo "$(YELLOW)Compiling libraries...$(RESET)"
 	make -C ./libft
 ifeq ($(UNAME_S),Linux)
-	make -C ./minilibx-linux
+#	make -C ./minilibx-linux
 endif
 ifeq ($(UNAME_S),Darwin)
 	make -C ./minilibx-mac-osx

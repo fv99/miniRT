@@ -95,13 +95,33 @@ int		handle_keypress(int keysym, t_win *win);
 int		handle_destroy_notify(t_win *win);
 int		print_controls(t_win *win);
 
-// parser_utils.c
+// parser.c
+t_map   *parser(char *filename);
+char 	*sanitize(char *line);
+int   	parse_line(t_map *map, char *line);
+int		parse_float(char *str, float *num);
+int		parse_ulong(char *str, size_t *num);
+
+// parser_scene.c
+int 	parse_ambient(t_map *map, char *line);
+int		parse_camera(t_map *map, char *line);
+int 	parse_light(t_map *map, char *line);
+int 	parse_color(char *str, int *col);
+int 	parse_xyz_float(char *str, t_float_3 *coord);
+
+// utils_number.c
+float	str_to_float(char *str);
+int		str_to_int_color(char *str);
+int		is_float(char *str);
+int		is_ulong(char *str);
+
+// utils_parser.c
 int 	open_file(char *filename);
 int		is_rt_file(char *filename);
 int 	rgb_to_hex(int r, int g, int b);
 int 	error_throw(char *msg);
 
-// parser_utils_2
+// utils_array.c
 void	free_array(char **arr);
 void	print_array(char **arr);
 int		array_length(char **arr);
@@ -112,24 +132,5 @@ int 	test_parser(t_map *map);
 
 // utils.c
 t_map   *malloc_map();
-// void    free_map(t_map *map);
-
-// parser.c
-t_map   *parser(char *filename);
-char 	*sanitize(char *line);
-int   	parse_line(t_map *map, char *line);
-int 	parse_ambient(t_map *map, char *line);
-int 	parse_color(char *str, int *col);
-int		parse_float(char *str, float *num);
-int		parse_ulong(char *str, size_t *num);
-int		parse_camera(t_map *map, char *line);
-int 	parse_light(t_map *map, char *line);
-int 	parse_xyz(char *str, t_float_3 *coord);
-
-// number_utils.c
-float	str_to_float(char *str);
-int		str_to_int_color(char *str);
-int		is_float(char *str);
-int		is_ulong(char *str);
 
 #endif

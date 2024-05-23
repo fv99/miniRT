@@ -12,7 +12,6 @@
 
 #include "minirt.h"
 
-
 t_map *malloc_map()
 {
     t_map *map = (t_map *)malloc(sizeof(t_map));
