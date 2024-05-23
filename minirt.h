@@ -123,6 +123,7 @@ int 	parse_color(char *str, int *col);
 int		parse_float(char *str, float *num);
 int		parse_ulong(char *str, size_t *num);
 int		parse_camera(t_map *map, char *line);
+int 	parse_light(t_map *map, char *line);
 int 	parse_xyz(char *str, t_float_3 *coord);
 
 // number_utils.c

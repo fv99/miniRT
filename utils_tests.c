@@ -42,10 +42,10 @@ int test_parser(t_map *map)
     printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam.vec.x, map->cam.vec.y, map->cam.vec.z);
     printf("  FOV: %zu\n", map->cam.fov);
 
-    // printf("\nLight point:\n");
-    // printf("  Position: (%.2f, %.2f, %.2f)\n", map->light.pos.x, map->light.pos.y, map->light.pos.z);
-    // printf("  Lum: %.2f\n", map->light.lum);
-    // printf("  Col: 0x%06X\n", map->light.col);
+    printf("\nLight point:\n");
+    printf("  Position: (%.2f, %.2f, %.2f)\n", map->light.pos.x, map->light.pos.y, map->light.pos.z);
+    printf("  Lum: %.2f\n", map->light.lum);
+    printf("  Col: 0x%06X\n", map->light.col);
 
     return 0;
 }

@@ -25,14 +25,12 @@ ifeq ($(UNAME_S),Linux)
 	CFLAGS		+=	-fsanitize=address -g
 	LDFLAGS		+=	-fsanitize=address -g
 	MINILIBX	=	./minilibx-linux/libmlx.a
-	# Linux specific flags
 	LIBS		=	-lm -lXext -lX11
 endif
 ifeq ($(UNAME_S),Darwin)
 	CFLAGS		+=	-fsanitize=address -g -I/usr/local/opt/readline/include
 	LDFLAGS		+=	-lSystem -fsanitize=address -g -L/usr/local/opt/readline/lib
 	MINILIBX	=	./minilibx-mac-osx/libmlx.a
-	# macOS specific flags
 	LIBS		=	-framework OpenGL -framework AppKit
 endif
 

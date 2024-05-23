@@ -31,7 +31,7 @@ t_map *parser(char *filename)
         line = get_next_line(fd);
     }
     close(fd);
-    return map;
+    return (map);
 }
 
 char *sanitize(char *line)
@@ -49,7 +49,7 @@ char *sanitize(char *line)
 
     line = ft_strtrim(str, " ");
     free(str);
-    return line;
+    return (line);
 }
 
 int parse_line(t_map *map, char *line)
@@ -58,7 +58,9 @@ int parse_line(t_map *map, char *line)
         return parse_ambient(map, line);
     if (ft_strncmp(line, "C", 1) == 0)
         return parse_camera(map, line);
-    return 0;
+    if (ft_strncmp(line, "L", 1) == 0)
+        return parse_light(map, line);
+    return (0);
 }
 
 int parse_ambient(t_map *map, char *line)
@@ -79,7 +81,7 @@ int parse_ambient(t_map *map, char *line)
             return error_throw("Cannot parse color");
     }
     free_array(params);
-    return 0;
+    return (0);
 }
 
 int parse_camera(t_map *map, char *line)
@@ -103,7 +105,31 @@ int parse_camera(t_map *map, char *line)
     }
 
     free_array(params);
-    return 0;
+    return (0);
+}
+
+int parse_light(t_map *map, char *line)
+{
+    int i;
+    char **params;
+
+    i = 0;
+    params = ft_split(line, ' ');
+    if (array_length(params) != 4)
+        return error_throw("Invalid number of camera params");
+
+    while (params && params[++i])
+    {
+        if (i == 1 && parse_xyz(params[i], &map->light.pos))
+            return error_throw("Cannot parse light position");
+        if (i == 2 && parse_float(params[i], &map->light.lum))
+            return error_throw("Cannot parse light lum");
+        if (i == 3 && parse_color(params[i], &map->light.col))
+            return error_throw("Cannot parse light color");
+    }
+
+    free_array(params);
+    return (0);
 }
 
 int parse_color(char *str, int *col)
@@ -126,29 +152,24 @@ int parse_color(char *str, int *col)
     }
     *col = rgb_to_hex(rgb[0], rgb[1], rgb[2]);
     free_array(colors);
-    return 0;
+    return (0);
 }
 
 int parse_xyz(char *str, t_float_3 *coord)
 {
-    // int i;
     char **coords;
 
-    // i = -1;
     coords = ft_split(str, ',');
     if (array_length(coords) != 3)
     {
         free_array(coords);
         return error_throw("Invalid number of coordinates");
     }
-
     coord->x = str_to_float(coords[0]);
     coord->y = str_to_float(coords[1]);
     coord->z = str_to_float(coords[2]);
-
     free_array(coords);
-    
-    return 0;
+    return (0);
 }
 
 int parse_float(char *str, float *num)
@@ -156,7 +177,7 @@ int parse_float(char *str, float *num)
     if (!is_float(str))
         return 1;
     *num = str_to_float(str);
-    return 0;
+    return (0);
 }
 
 int parse_ulong(char *str, size_t *num)
@@ -164,5 +185,5 @@ int parse_ulong(char *str, size_t *num)
     if (!is_ulong(str))
         return 1;
     *num = (size_t)ft_atoi(str);
-    return 0;
+    return (0);
 }
