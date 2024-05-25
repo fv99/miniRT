@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/05/21 18:40:08 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:37:37 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,101 @@
 # include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+
+enum e_keycodes
+{
+	KEY_A = 97,
+	KEY_B = 98,
+	KEY_C = 99,
+	KEY_D = 100,
+	KEY_E = 101,
+	KEY_F = 102,
+	KEY_G = 103,
+	KEY_H = 104,
+	KEY_I = 105,
+	KEY_J = 106,
+	KEY_K = 107,
+	KEY_L = 108,
+	KEY_M = 109,
+	KEY_N = 110,
+	KEY_O = 111,
+	KEY_P = 112,
+	KEY_Q = 113,
+	KEY_R = 114,
+	KEY_S = 115,
+	KEY_T = 116,
+	KEY_U = 117,
+	KEY_V = 118,
+	KEY_W = 119,
+	KEY_X = 120,
+	KEY_Y = 121,
+	KEY_Z = 122,
+	KEY_ESC = 65307,
+	KEY_SPACE = 32,
+	KEY_SLASH = 47,
+	KEY_L_SHIFT = 65505,
+	KEY_R_SHIFT = 65506,
+	KEY_R_CTRL = 65508,
+	KEY_UP = 65362,
+	KEY_DOWN = 65364,
+	KEY_LEFT = 65361,
+	KEY_RIGHT = 65363,
+	KEY_DOT = 46,
+	KEY_S_QUOTE = 39,
+	KEY_SEMI_COLON = 59,
+	KEY_COMMAND = 65507,
+	KEY_BACKSPACE = 65288,
+};
+
 #elif __APPLE__
 # include "./minilibx-mac-osx/mlx.h"
 # include <ApplicationServices/ApplicationServices.h>
+
+enum e_keycodes
+{
+	KEY_A = 0,
+	KEY_B = 11,
+	KEY_C = 8,
+	KEY_D = 2,
+	KEY_E = 14,
+	KEY_F = 3,
+	KEY_G = 5,
+	KEY_H = 4,
+	KEY_I = 34,
+	KEY_J = 38,
+	KEY_K = 40,
+	KEY_L = 37,
+	KEY_M = 46,
+	KEY_N = 45,
+	KEY_O = 31,
+	KEY_P = 35,
+	KEY_Q = 12,
+	KEY_R = 15,
+	KEY_S = 1,
+	KEY_T = 17,
+	KEY_U = 32,
+	KEY_V = 9,
+	KEY_W = 13,
+	KEY_X = 7,
+	KEY_Y = 16,
+	KEY_Z = 6,
+	KEY_ESC = 53,
+	KEY_SPACE = 49,
+	KEY_SLASH = 44,
+	KEY_L_SHIFT = 257,
+	KEY_R_SHIFT = 258,
+	KEY_R_CTRL = 269,
+	KEY_UP = 126,
+	KEY_DOWN = 125,
+	KEY_LEFT = 123,
+	KEY_RIGHT = 124,
+	KEY_DOT = 47,
+	KEY_S_QUOTE = 39,
+	KEY_SEMI_COLON = 41,
+	KEY_COMMAND = 259,
+	KEY_BACKSPACE = 51,
+};
+
 #endif
 
 // god's chosen aspect ratio

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 19:24:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/02/20 19:25:50 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:36:40 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	handle_destroy_notify(t_win *win)
 
 int	handle_keypress(int keysym, t_win *win)
 {
-	if (keysym == 13)
+	if (keysym == KEY_ESC)
 		handle_destroy_notify(win);
 	return (0);
 }
