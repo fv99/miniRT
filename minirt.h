@@ -138,6 +138,7 @@ typedef struct s_int_3
 	int				z;
 }	t_int_3;
 
+// mandatory parts of scene below (only 1 per file)
 // ambient lighting, lum = brightness, col = color in hex format
 typedef struct s_amb
 {
@@ -161,15 +162,49 @@ typedef struct s_light
 	int				col;
 }	t_light;
 
-// map holding struct
+// objects in scene (linked list)
+// spheres - pos = sp center coords, dia = diameter, col = color in hex format
+typedef struct s_sp
+{
+	t_float_3		pos;
+	float			dia;
+	int				col;
+	struct s_sp		*next;
+}	t_sp;
+
+// planes - pos = xyz coords of a point in plane
+// vec = 3d normalized vector in range -1, 1, col = color in hex format
+typedef struct s_pl
+{
+	t_float_3		pos;
+	t_float_3		vec;
+	int				col;
+	struct s_pl		*next;
+}	t_pl;
+
+// cylinders - pos = xyz coords of center
+// vec = 3d normalized vector of axis in range -1, 1
+// dia = diameter, col = color in hex format
+typedef struct s_cy
+{
+	t_float_3		pos;
+	t_float_3		vec;
+	float			dia;
+	float			height;
+	int				col;
+	struct s_cy		*next;
+}	t_cy;
+
+// main map holding struct
 typedef struct s_map
 {
 	t_amb			amb;
 	t_cam			cam;
 	t_light			light;
 
-	// objects will go here, have to figure out data structure
-
+	t_sp			*spheres;
+	t_pl			*planes;
+	t_cy			*cylinders;
 }	t_map;
 
 // main window holding struct
@@ -201,6 +236,9 @@ int		parse_camera(t_map *map, char *line);
 int 	parse_light(t_map *map, char *line);
 int 	parse_color(char *str, int *col);
 int 	parse_xyz_float(char *str, t_float_3 *coord);
+
+// parser_objects.c
+int		parse_sphere(t_map *map, char *line);
 
 // utils_number.c
 float	str_to_float(char *str);

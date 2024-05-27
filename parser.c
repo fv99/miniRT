@@ -62,6 +62,8 @@ int parse_line(t_map *map, char *line)
         return parse_camera(map, line);
     if (ft_strncmp(line, "L", 1) == 0)
         return parse_light(map, line);
+    if (ft_strncmp(line, "sp", 2) == 0)
+        return parse_sphere(map, line);
     return (0);
 }
 
