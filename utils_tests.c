@@ -12,23 +12,31 @@
 
 #include "minirt.h"
 
-int test_map(t_map *map)
+int test_map(int fd)
 {
-    if (!map)
-        return(ft_printf("Invalid map: NULL pointer\n"));
-    // if (!map->amb)
-    //     return(ft_printf("Invalid map: Ambient lighting not set\n"));
-    // if (!map->cam)
-    //     return(ft_printf("Invalid map: Camera not set\n"));
-    // if (!map->cam->pos)
-    //     return(ft_printf("Invalid map: Camera position not set\n"));
-    // if (!map->cam->vec)
-    //     return(ft_printf("Invalid map: Camera vector not set\n"));
-    // if (!map->light)
-    //     return(ft_printf("Invalid map: Light point not set\n"));
-    // if (!map->light->pos)
-    //     return(ft_printf("Invalid map: Light point position not set\n"));
-    return (ft_printf("\tMap OK! \n"));
+    char *line;
+    int a;
+    int l;
+    int c; 
+
+    a = 0;
+    l = 0;
+    c = 0;
+    line = get_next_line(fd);
+    while (line != NULL)
+    {
+        if (*line == 'A')
+            a++;
+        else if (*line == 'L')
+            l++;
+        else if (*line == 'C') 
+            c++;
+        free(line);
+        line = get_next_line(fd);
+    }
+    if (a > 1 || l > 1 || c > 1)
+        error_throw("Invalid map - element already defined");
+    return (ft_printf("\nMap OK!\n"));
 }
 
 int test_parser(t_map *map)

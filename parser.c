@@ -21,7 +21,9 @@ t_map *parser(char *filename)
 
     map = malloc_map();
     fd = open_file(filename);
-
+    test_map(fd);
+    close(fd);
+    fd = open_file(filename);
     line = get_next_line(fd);
     while (line != NULL)
     {

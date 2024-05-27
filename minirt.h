@@ -16,6 +16,7 @@
 # include "./libft/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
+
 #ifdef __linux__
 # include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
@@ -219,7 +220,7 @@ void	print_array(char **arr);
 int		array_length(char **arr);
 
 // utils_tests.c
-int 	test_map(t_map *map);
+int 	test_map(int fd);
 int 	test_parser(t_map *map);
 
 // utils.c
