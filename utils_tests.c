@@ -41,6 +41,13 @@ int test_map(int fd)
 
 int test_parser(t_map *map)
 {
+    t_sp *current_sphere;
+    t_pl *current_plane;
+    t_cy *current_cylinder;
+    int plane_index = 0;
+    int sphere_index = 0;
+    int cylinder_index = 0;
+
     printf("\nAmbient lighting:\n");
     printf("  Lum: %.2f\n", map->amb.lum);
     printf("  Col: 0x%06X\n", map->amb.col);
@@ -55,5 +62,46 @@ int test_parser(t_map *map)
     printf("  Lum: %.2f\n", map->light.lum);
     printf("  Col: 0x%06X\n", map->light.col);
 
+    printf("\nSpheres:\n");
+    current_sphere = map->spheres;
+    while (current_sphere != NULL)
+    {
+        printf("\tSphere %d:\n", sphere_index);
+        printf("  Position: (%.2f, %.2f, %.2f)\n", current_sphere->pos.x, current_sphere->pos.y, current_sphere->pos.z);
+        printf("  Diameter: %.2f\n", current_sphere->dia);
+        printf("  Color: 0x%06X\n\n", current_sphere->col);
+        
+        current_sphere = current_sphere->next;
+        sphere_index++;
+    }
+
+    printf("\nPlanes:\n");
+    current_plane = map->planes;
+    while (current_plane != NULL)
+    {
+        printf("\tPlane %d:\n", plane_index);
+        printf("  Position: (%.2f, %.2f, %.2f)\n", current_plane->pos.x, current_plane->pos.y, current_plane->pos.z);
+        printf("  Vector: (%.2f, %.2f, %.2f)\n", current_plane->vec.x, current_plane->vec.y, current_plane->vec.z);
+        printf("  Color: 0x%06X\n\n", current_plane->col);
+
+        current_plane = current_plane->next;
+        plane_index++;
+    }
+
+    printf("\nCylinders:\n");
+    current_cylinder = map->cylinders;
+    while (current_cylinder != NULL)
+    {
+        printf("\tCylinder %d:\n", cylinder_index);
+        printf("  Position: (%.2f, %.2f, %.2f)\n", current_cylinder->pos.x, current_cylinder->pos.y, current_cylinder->pos.z);
+        printf("  Vector: (%.2f, %.2f, %.2f)\n", current_cylinder->vec.x, current_cylinder->vec.y, current_cylinder->vec.z);
+        printf("  Diameter: %.2f\n", current_cylinder->dia);
+        printf("  Height: %.2f\n", current_cylinder->hth);
+        printf("  Color: 0x%06X\n\n", current_cylinder->col);
+
+        current_cylinder = current_cylinder->next;
+        cylinder_index++;
+    }
     return 0;
 }
+

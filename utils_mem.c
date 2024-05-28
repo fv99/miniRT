@@ -18,5 +18,54 @@ t_map *malloc_map()
     if (!map)
         error_throw("Cannot allocate memory for map");
     ft_bzero(map, sizeof(t_map));  // Initialize memory to zero
+    map->spheres = NULL;
+    map->cylinders = NULL;
+    map->planes = NULL;
     return map;
+}
+
+void free_spheres(t_sp *spheres)
+{
+    t_sp *current = spheres;
+    t_sp *next;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
+void free_planes(t_pl *planes)
+{
+    t_pl *current = planes;
+    t_pl *next;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
+void free_cylinders(t_cy *cylinders)
+{
+    t_cy *current = cylinders;
+    t_cy *next;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+}
+
+void free_objects(t_map *map)
+{
+    free_spheres(map->spheres);
+    free_planes(map->planes);
+    free_cylinders(map->cylinders);
 }

@@ -64,6 +64,10 @@ int parse_line(t_map *map, char *line)
         return parse_light(map, line);
     if (ft_strncmp(line, "sp", 2) == 0)
         return parse_sphere(map, line);
+    if (ft_strncmp(line, "pl", 2) == 0)
+        return parse_plane(map, line);
+    if (ft_strncmp(line, "cy", 2) == 0)
+        return parse_cylinder(map, line);
     return (0);
 }
 

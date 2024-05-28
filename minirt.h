@@ -190,7 +190,7 @@ typedef struct s_cy
 	t_float_3		pos;
 	t_float_3		vec;
 	float			dia;
-	float			height;
+	float			hth;
 	int				col;
 	struct s_cy		*next;
 }	t_cy;
@@ -239,6 +239,8 @@ int 	parse_xyz_float(char *str, t_float_3 *coord);
 
 // parser_objects.c
 int		parse_sphere(t_map *map, char *line);
+int		parse_plane(t_map *map, char *line);
+int 	parse_cylinder(t_map *map, char *line);
 
 // utils_number.c
 float	str_to_float(char *str);
@@ -261,7 +263,12 @@ int		array_length(char **arr);
 int 	test_map(int fd);
 int 	test_parser(t_map *map);
 
-// utils.c
+// utils_mem.c
 t_map   *malloc_map();
+void 	free_spheres(t_sp *spheres);
+void 	free_planes(t_pl *planes);
+void 	free_cylinders(t_cy *cylinders);
+void 	free_objects(t_map *map);
+
 
 #endif

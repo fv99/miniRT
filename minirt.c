@@ -29,6 +29,7 @@ int	main(int argc, char **argv)
 
 	map = parser(argv[1]); // free this later
 	test_parser(map);
+	free_objects(map);
 	free(map);
 
 	// win.mlx = mlx_init();
