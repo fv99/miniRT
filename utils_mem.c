@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_mem.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:22:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/05/21 18:35:09 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:50:04 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_map *malloc_map()
     t_map *map = (t_map *)malloc(sizeof(t_map));
     if (!map)
         error_throw("Cannot allocate memory for map");
-    ft_bzero(map, sizeof(t_map));  // Initialize memory to zero
+    ft_bzero(map, sizeof(t_map));
     map->spheres = NULL;
     map->cylinders = NULL;
     map->planes = NULL;

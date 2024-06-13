@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/05/25 12:37:37 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:12:52 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,11 @@ enum e_keycodes
 #endif
 
 // god's chosen aspect ratio
-# define WINDOW_WIDTH 1280
-# define WINDOW_HEIGHT 1024
+# define WINDOW_WIDTH 640
+# define WINDOW_HEIGHT 480
+
+// samples per pixel
+# define SAMPLES_PP 8192
 
 // # define M_PI 3.14159265358979323846
 
@@ -207,12 +210,32 @@ typedef struct s_map
 	t_cy			*cylinders;
 }	t_map;
 
+typedef struct s_ray
+{
+	t_float_3		orig;
+	t_float_3		dir;
+}	t_ray;
+
+typedef struct s_scene
+{
+	float			scale;
+	float			aspect_ratio;
+
+}	t_scene;
+
 // main window holding struct
 typedef struct s_win
 {
 	void			*mlx;
 	void			*win;
 	void			*img;
+	
+	char			*addr;
+	int				bpp;
+	int				line_l;
+	int				endian;
+
+	t_scene			scene;
 }	t_win;
 
 // minirt.c
@@ -270,5 +293,17 @@ void 	free_planes(t_pl *planes);
 void 	free_cylinders(t_cy *cylinders);
 void 	free_objects(t_map *map);
 
+// utils_vec.c
+t_float_3	vec_sub(t_float_3 a, t_float_3 b);
+t_float_3	vec_add(t_float_3 a, t_float_3 b);
+t_float_3	vec_mul(t_float_3 a, float b);
+t_float_3	vec_div(t_float_3 a, float b);
+float		vec_dot(t_float_3 a, t_float_3 b);
+
+// utils_norm.c
+t_float_3	vec_normalize(t_float_3 v);
+
+// render.c
+int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 
 #endif
