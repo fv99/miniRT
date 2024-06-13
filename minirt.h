@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:12:13 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:29:37 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,8 @@ float		vec_dot(t_float_3 a, t_float_3 b);
 t_float_3	vec_normalize(t_float_3 v);
 
 // render.c
+int 		trace_ray(t_ray ray, t_map *map, int *color);
+void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 t_float_3 	vec_normalize(t_float_3 v);
