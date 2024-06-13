@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/12 16:10:58 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:14:20 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	render(t_win *win)
-{
-	print_controls(win);
+// int	render(t_win *win)
+// {
+// 	print_controls(win);
 
-	return (0);
-}
+// 	return (0);
+// }
 
 int	main(int argc, char **argv)
 {
@@ -29,8 +29,8 @@ int	main(int argc, char **argv)
 
 	map = parser(argv[1]); // free this later
 	test_parser(map);
-	free_objects(map);
-	free(map);
+
+	win.map = map;
 
 	win.mlx = mlx_init();
 	win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");
@@ -39,6 +39,10 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(win.mlx, render, &win);
 	mlx_loop(win.mlx);
 	mlx_destroy_window(win.mlx, win.win);
+
+	free_objects(map);
+	free(win.map);
+	free(map);
 	free(win.mlx);
 
 	exit(0);

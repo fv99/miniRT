@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+         #
+#    By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 18:06:10 by fvonsovs          #+#    #+#              #
-#    Updated: 2024/06/13 15:39:39 by fvonsovs         ###   ########.fr        #
+#    Updated: 2024/06/13 20:11:05 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 NAME		=	miniRT
-SRCS		=	minirt.c controls.c parser.c parser_scene.c parser_objects.c \
+SRCS		=	minirt.c controls.c parser.c parser_scene.c parser_objects.c render.c \
 				utils_tests.c utils_mem.c utils_number.c utils_parser.c utils_array.c \
 				utils_vec.c
 OBJS		=	${SRCS:.c=.o}

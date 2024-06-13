@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 16:12:52 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:12:13 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "./libft/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
+# include <math.h>
 
 #ifdef __linux__
 # include "./minilibx-linux/mlx.h"
@@ -125,7 +126,7 @@ enum e_keycodes
 // samples per pixel
 # define SAMPLES_PP 8192
 
-// # define M_PI 3.14159265358979323846
+# define M_PI 3.14159265358979323846
 
 typedef struct s_float_3
 {
@@ -220,10 +221,9 @@ typedef struct s_scene
 {
 	float			scale;
 	float			aspect_ratio;
-
 }	t_scene;
 
-// main window holding struct
+// main holding struct
 typedef struct s_win
 {
 	void			*mlx;
@@ -235,11 +235,9 @@ typedef struct s_win
 	int				line_l;
 	int				endian;
 
+	t_map			*map;
 	t_scene			scene;
 }	t_win;
-
-// minirt.c
-int		render(t_win *win);
 
 // controls.c
 int		handle_keypress(int keysym, t_win *win);
@@ -304,6 +302,9 @@ float		vec_dot(t_float_3 a, t_float_3 b);
 t_float_3	vec_normalize(t_float_3 v);
 
 // render.c
+int			render(t_win *win);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
+t_float_3 	vec_normalize(t_float_3 v);
+
 
 #endif
