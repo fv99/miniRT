@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:40:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:56:37 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,24 @@ int trace_ray(t_ray ray, t_map *map, int *color)
     t_sp *sphere = map->spheres;
     float t;
     int hit = 0;
+    t_float_3 hit_point, normal, light_dir;
+    float intensity;
+    t_float_3 light_pos = map->light.pos;
 
     while (sphere)
     {
         if (sphere_intersect(ray, sphere, &t))
         {
             hit = 1;
-            *color = sphere->col;
+            hit_point = vec_add(ray.orig, vec_scale(ray.dir, t));
+            normal = vec_normalize(vec_sub(hit_point, sphere->pos));
+            light_dir = vec_normalize(vec_sub(light_pos, hit_point));
+            intensity = fmax(0, vec_dot(normal, light_dir));
+            t_float_3 sphere_color = {((sphere->col >> 16) & 0xFF) / 255.0f,		// change this later
+                                      ((sphere->col >> 8) & 0xFF) / 255.0f,
+                                      (sphere->col & 0xFF) / 255.0f};
+            t_float_3 shaded_color = vec_scale(sphere_color, intensity);
+            *color = create_color(shaded_color.x, shaded_color.y, shaded_color.z);
             break;
         }
         sphere = sphere->next;
@@ -93,10 +104,4 @@ int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 	t1 = (-b - sqrtf(disc)) / (2.0f * a);
 	*t = (t0 < t1) ? t0 : t1;
 	return (1);
-}
-
-t_float_3 vec_normalize(t_float_3 v)
-{
-    float length = sqrtf(vec_dot(v, v));
-    return vec_div(v, length);
 }

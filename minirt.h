@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:29:37 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/06/13 20:53:31 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ enum e_keycodes
 #endif
 
 // god's chosen aspect ratio
-# define WINDOW_WIDTH 640
-# define WINDOW_HEIGHT 480
+# define WINDOW_WIDTH 1280
+# define WINDOW_HEIGHT 1024
 
 // samples per pixel
 # define SAMPLES_PP 8192
@@ -298,15 +298,16 @@ t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
 float		vec_dot(t_float_3 a, t_float_3 b);
 
-// utils_norm.c
+// utils_vec2.c
 t_float_3	vec_normalize(t_float_3 v);
+t_float_3   vec_scale(t_float_3 vec, float scale);
+int create_color(float r, float g, float b);
+
 
 // render.c
 int 		trace_ray(t_ray ray, t_map *map, int *color);
 void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
-t_float_3 	vec_normalize(t_float_3 v);
-
 
 #endif
