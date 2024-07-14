@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:56:37 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/07/14 16:43:09 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	render_ray(t_win *win, int x, int y)
 
 	hit = trace_ray(ray, win->map, &color);
 
-	mlx_pixel_put(win->mlx, win->win, x, y, hit ? color : win->map->amb.col);
+    pixel_to_img(win, x, y, hit ? color : win->map->amb.col);
 }
 
 int render(t_win *win)
@@ -80,6 +80,8 @@ int render(t_win *win)
 		}
 		y++;
 	}
+
+	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
     return 0;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:53:31 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/07/14 17:08:05 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+
+# define M_PI 3.14159265358979323846
 
 enum e_keycodes
 {
@@ -71,6 +73,7 @@ enum e_keycodes
 #elif __APPLE__
 # include "./minilibx-mac-osx/mlx.h"
 # include <ApplicationServices/ApplicationServices.h>
+
 
 enum e_keycodes
 {
@@ -125,8 +128,6 @@ enum e_keycodes
 
 // samples per pixel
 # define SAMPLES_PP 8192
-
-# define M_PI 3.14159265358979323846
 
 typedef struct s_float_3
 {
@@ -281,6 +282,7 @@ void	print_array(char **arr);
 int		array_length(char **arr);
 
 // utils_tests.c
+void 	draw_gradient(t_win *win);
 int 	test_map(int fd);
 int 	test_parser(t_map *map);
 
@@ -301,8 +303,10 @@ float		vec_dot(t_float_3 a, t_float_3 b);
 // utils_vec2.c
 t_float_3	vec_normalize(t_float_3 v);
 t_float_3   vec_scale(t_float_3 vec, float scale);
-int create_color(float r, float g, float b);
 
+// utils_win.c
+int 	create_color(float r, float g, float b);
+void	pixel_to_img(t_win *win, int x, int y, int color);
 
 // render.c
 int 		trace_ray(t_ray ray, t_map *map, int *color);

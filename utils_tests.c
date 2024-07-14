@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tests.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/05/21 18:41:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/07/14 17:23:31 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void    draw_gradient(t_win *win)
+{
+    int x, y;
+
+    for (y = 0; y < WINDOW_HEIGHT; y++)
+    {
+        for (x = 0; x < WINDOW_WIDTH; x++)
+        {
+            int color = (x * 256 / WINDOW_WIDTH) << 16 | (y * 256 / WINDOW_HEIGHT) << 8 | 128;
+            pixel_to_img(win, x, y, color);
+        }
+    }
+}
 
 int test_map(int fd)
 {

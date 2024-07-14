@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_vec2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:48:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 20:43:59 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/07/14 17:58:41 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,3 @@ t_float_3   vec_scale(t_float_3 vec, float scale)
     return (t_float_3){vec.x * scale, vec.y * scale, vec.z * scale};
 }
 
-int create_color(float r, float g, float b)
-{
-    return ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255);
-}
