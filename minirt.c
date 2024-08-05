@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/07/14 17:58:02 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:43:34 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ int main(int argc, char **argv)
     win.img = mlx_new_image(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     win.addr = mlx_get_data_addr(win.img, &win.bpp, &win.line_l, &win.endian);
 
-    printf("bpp: %d, line_l: %d, endian: %d\n", win.bpp, win.line_l, win.endian); // Debugging info
+    // printf("bpp: %d, line_l: %d, endian: %d\n", win.bpp, win.line_l, win.endian); // debug
+	// draw_gradient(&win); // debug
+	// mlx_put_image_to_window(win.mlx, win.win, win.img, 0, 0);
 
-	draw_gradient(&win);
-	mlx_put_image_to_window(win.mlx, win.win, win.img, 0, 0);
-
-    // mlx_loop_hook(win.mlx, render, &win);
+    mlx_loop_hook(win.mlx, render, &win);
+    mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
     mlx_loop(win.mlx);
-	
     mlx_destroy_image(win.mlx, win.img);
     mlx_destroy_window(win.mlx, win.win);
 
@@ -44,6 +43,5 @@ int main(int argc, char **argv)
     // free(win.map);
     // free(map);
     // free(win.mlx);
-
-    exit(0);
+    return(0);
 }

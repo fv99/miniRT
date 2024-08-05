@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/07/14 17:23:31 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:37:54 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int test_parser(t_map *map)
     printf("\nAmbient lighting:\n");
     printf("  Lum: %.2f\n", map->amb.lum);
     printf("  Col: 0x%06X\n", map->amb.col);
+    printf("  Amb: 0x%06X\n", map->amb.amb);
     
     printf("\nCamera:\n");
     printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam.pos.x, map->cam.pos.y, map->cam.pos.z);

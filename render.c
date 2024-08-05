@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/07/14 16:43:09 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:48:07 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,10 @@ void	render_ray(t_win *win, int x, int y)
     ray.dir = vec_normalize(vec_add(win->map->cam.vec, (t_float_3){px, py, -1}));
 
 	hit = trace_ray(ray, win->map, &color);
+	if (!hit)
+		color = win->map->amb.amb;
 
-    pixel_to_img(win, x, y, hit ? color : win->map->amb.col);
-}
-
-int render(t_win *win)
-{
-    int x;
-    int y;
-
-	x = 0;
-	y = 0;
-	win->scene.scale = tan(win->map->cam.fov / 2 * M_PI / 180);
-	win->scene.aspect_ratio = (float)WINDOW_WIDTH / WINDOW_HEIGHT;
-	
-	while (y < WINDOW_HEIGHT)
-	{
-		x = 0;
-		while (x < WINDOW_WIDTH)
-		{
-			render_ray(win, x, y);
-			x++;
-		}
-		y++;
-	}
-
-	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
-    return 0;
+    pixel_to_img(win, x, y, color);
 }
 
 int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
@@ -106,4 +83,28 @@ int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 	t1 = (-b - sqrtf(disc)) / (2.0f * a);
 	*t = (t0 < t1) ? t0 : t1;
 	return (1);
+}
+
+int render(t_win *win)
+{
+    int x;
+    int y;
+
+	x = 0;
+	y = 0;
+	win->scene.scale = tan(win->map->cam.fov / 2 * M_PI / 180);
+	win->scene.aspect_ratio = (float)WINDOW_WIDTH / WINDOW_HEIGHT;
+	
+	while (y < WINDOW_HEIGHT)
+	{
+		x = 0;
+		while (x < WINDOW_WIDTH)
+		{
+			render_ray(win, x, y);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
+    return 0;
 }

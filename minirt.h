@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/07/14 17:08:05 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:35:21 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ enum e_keycodes
 # define WINDOW_HEIGHT 1024
 
 // samples per pixel
-# define SAMPLES_PP 8192
+# define SAMPLES_PP 256
 
 typedef struct s_float_3
 {
@@ -145,10 +145,12 @@ typedef struct s_int_3
 
 // mandatory parts of scene below (only 1 per file)
 // ambient lighting, lum = brightness, col = color in hex format
+// amb = normalized color (lum * col)
 typedef struct s_amb
 {
 	float			lum;
 	int				col;
+	int				amb;
 }	t_amb;
 
 // camera, pos = position, vec = 3d normalized vector
@@ -305,8 +307,10 @@ t_float_3	vec_normalize(t_float_3 v);
 t_float_3   vec_scale(t_float_3 vec, float scale);
 
 // utils_win.c
-int 	create_color(float r, float g, float b);
-void	pixel_to_img(t_win *win, int x, int y, int color);
+int 		create_color(float r, float g, float b);
+t_float_3 	extract_rgb(int col);
+int			ambient_lum(t_map *map);
+void		pixel_to_img(t_win *win, int x, int y, int color);
 
 // render.c
 int 		trace_ray(t_ray ray, t_map *map, int *color);

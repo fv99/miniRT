@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:31:29 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/21 13:46:42 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:44:43 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int parse_ambient(t_map *map, char *line)
         if (i == 2 && parse_color(params[i], &map->amb.col))
             return error_throw("Cannot parse color");
     }
+    map->amb.amb = ambient_lum(map);
     free_array(params);
     return (0);
 }
