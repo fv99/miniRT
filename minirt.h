@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/05 15:35:21 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:38:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ enum e_keycodes
 #endif
 
 // god's chosen aspect ratio
-# define WINDOW_WIDTH 1280
-# define WINDOW_HEIGHT 1024
+# define WINDOW_WIDTH 800
+# define WINDOW_HEIGHT 600
 
 // samples per pixel
 # define SAMPLES_PP 256
@@ -226,6 +226,18 @@ typedef struct s_scene
 	float			aspect_ratio;
 }	t_scene;
 
+typedef struct s_trace
+{
+    t_float_3 	hit_point;
+	t_float_3	normal;
+	t_float_3	light_dir;
+	t_float_3	light_pos;
+
+    float		t;
+    int 		hit;
+    float		intensity;
+}	t_trace;
+
 // main holding struct
 typedef struct s_win
 {
@@ -316,6 +328,11 @@ void		pixel_to_img(t_win *win, int x, int y, int color);
 int 		trace_ray(t_ray ray, t_map *map, int *color);
 void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
+
+// render_intersects.c
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
+
+// render_objects.c
+void		render_sphere(t_ray ray, t_sp *sphere, t_trace *vars, int *color);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/05 15:48:07 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:46:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,31 @@
 
 int trace_ray(t_ray ray, t_map *map, int *color)
 {
+    t_trace vars;
     t_sp *sphere = map->spheres;
-    float t;
-    int hit = 0;
-    t_float_3 hit_point, normal, light_dir;
-    float intensity;
-    t_float_3 light_pos = map->light.pos;
+    float closest_t = INFINITY;
+    t_sp *closest_sphere = NULL;
 
+    vars.light_pos = map->light.pos;
+    vars.hit = 0;
     while (sphere)
     {
-        if (sphere_intersect(ray, sphere, &t))
+        float t;
+        if (sphere_intersect(ray, sphere, &t) && t < closest_t)
         {
-            hit = 1;
-            hit_point = vec_add(ray.orig, vec_scale(ray.dir, t));
-            normal = vec_normalize(vec_sub(hit_point, sphere->pos));
-            light_dir = vec_normalize(vec_sub(light_pos, hit_point));
-            intensity = fmax(0, vec_dot(normal, light_dir));
-            t_float_3 sphere_color = {((sphere->col >> 16) & 0xFF) / 255.0f,		// change this later
-                                      ((sphere->col >> 8) & 0xFF) / 255.0f,
-                                      (sphere->col & 0xFF) / 255.0f};
-            t_float_3 shaded_color = vec_scale(sphere_color, intensity);
-            *color = create_color(shaded_color.x, shaded_color.y, shaded_color.z);
-            break;
+            closest_t = t;
+            closest_sphere = sphere;
         }
         sphere = sphere->next;
     }
-    return (hit);
+    if (closest_sphere)
+    {
+        vars.t = closest_t;
+        render_sphere(ray, closest_sphere, &vars, color);
+    }
+    return vars.hit;
 }
+
 
 void	render_ray(t_win *win, int x, int y)
 {
@@ -60,29 +58,6 @@ void	render_ray(t_win *win, int x, int y)
 		color = win->map->amb.amb;
 
     pixel_to_img(win, x, y, color);
-}
-
-int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
-{
-	t_float_3	oc;
-	float	a;
-	float	b;
-	float	c;
-	float	disc;
-	float	t0;
-	float	t1;
-
-	oc = vec_sub(ray.orig, sphere->pos);
-	a = vec_dot(ray.dir, ray.dir);
-	b = 2.0f * vec_dot(oc, ray.dir);
-	c = vec_dot(oc, oc) - (sphere->dia / 2) * (sphere->dia / 2);
-	disc = b * b - 4 * a * c;
-	if (disc < 0)
-		return (0);
-	t0 = (-b - sqrtf(disc)) / (2.0f * a);
-	t1 = (-b - sqrtf(disc)) / (2.0f * a);
-	*t = (t0 < t1) ? t0 : t1;
-	return (1);
 }
 
 int render(t_win *win)
