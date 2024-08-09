@@ -6,11 +6,23 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/06 15:37:33 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:52:25 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+int		intersect(t_ray ray, t_obj *obj, float *t)
+{
+	if (obj->type == sphere)
+		return (sphere_intersect(ray, obj->object, t));
+	// if (obj->type == plane)
+		// return 
+	// if (obj->type == cylinder)
+		// return
+	else
+		return (0);
+}
 
 int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 {

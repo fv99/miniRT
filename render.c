@@ -6,39 +6,51 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/06 15:46:19 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:55:25 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+t_obj	*closest_obj(t_ray ray, t_obj *object)
+{
+	t_obj	*ret = NULL;
+	float	closest;
+	float	t;
+
+	closest = INFINITY;
+	t = 0;
+
+	while (object)
+	{
+		if (intersect(ray, object, &t) && t < closest)
+		{
+			closest = t;
+			ret = object;
+		}
+		object = object->next;
+	}
+	return (ret);
+}
+
 int trace_ray(t_ray ray, t_map *map, int *color)
 {
     t_trace vars;
-    t_sp *sphere = map->spheres;
-    float closest_t = INFINITY;
-    t_sp *closest_sphere = NULL;
+	t_obj	*closest;
+	float 	closest_t;
 
+	closest_t = INFINITY;
     vars.light_pos = map->light.pos;
     vars.hit = 0;
-    while (sphere)
+	closest = closest_obj(ray, map->objects);
+    if (closest)
     {
-        float t;
-        if (sphere_intersect(ray, sphere, &t) && t < closest_t)
-        {
-            closest_t = t;
-            closest_sphere = sphere;
-        }
-        sphere = sphere->next;
-    }
-    if (closest_sphere)
-    {
-        vars.t = closest_t;
-        render_sphere(ray, closest_sphere, &vars, color);
+		vars.t = closest_t;
+		if (closest->type == sphere)
+            render_sphere(ray, (t_sp *)closest->object, &vars, color);
     }
     return vars.hit;
 }
-
 
 void	render_ray(t_win *win, int x, int y)
 {

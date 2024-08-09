@@ -6,7 +6,7 @@
 #    By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 18:06:10 by fvonsovs          #+#    #+#              #
-#    Updated: 2024/08/09 15:27:25 by fvonsovs         ###   ########.fr        #
+#    Updated: 2024/08/09 16:24:32 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME		=	miniRT
 SRCS		=	minirt.c controls.c parser.c parser_scene.c parser_objects.c \
 				utils_tests.c utils_mem.c utils_number.c utils_parser.c utils_array.c \
 				utils_vec.c utils_vec2.c utils_win.c render_intersects.c \
-				render_objects.c
+				render.c render_objects.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f
@@ -52,7 +52,7 @@ $(NAME): ${OBJS}
 	@echo "$(YELLOW)Compiling libraries...$(RESET)"
 	make -C ./libft
 ifeq ($(UNAME_S),Linux)
-#	make -C ./minilibx-linux
+	make -C ./minilibx-linux
 endif
 ifeq ($(UNAME_S),Darwin)
 	make -C ./minilibx-mac-osx
