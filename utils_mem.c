@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:22:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 15:50:04 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:29:53 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,54 +18,24 @@ t_map *malloc_map()
     if (!map)
         error_throw("Cannot allocate memory for map");
     ft_bzero(map, sizeof(t_map));
-    map->spheres = NULL;
-    map->cylinders = NULL;
-    map->planes = NULL;
+    map->objects = NULL;
     return map;
 }
 
-void free_spheres(t_sp *spheres)
+void free_objects(t_obj *objects)
 {
-    t_sp *current = spheres;
-    t_sp *next;
+    t_obj *temp;
 
-    while (current != NULL)
+    while (objects)
     {
-        next = current->next;
-        free(current);
-        current = next;
+        temp = objects;
+        if (temp->type == sphere)
+            free((t_sp *)temp->object);
+        else if (temp->type == plane)
+            free((t_pl *)temp->object);
+        else if (temp->type == cylinder)
+            free((t_cy *)temp->object);
+        objects = objects->next;
+        free(temp);
     }
-}
-
-void free_planes(t_pl *planes)
-{
-    t_pl *current = planes;
-    t_pl *next;
-
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current);
-        current = next;
-    }
-}
-
-void free_cylinders(t_cy *cylinders)
-{
-    t_cy *current = cylinders;
-    t_cy *next;
-
-    while (current != NULL)
-    {
-        next = current->next;
-        free(current);
-        current = next;
-    }
-}
-
-void free_objects(t_map *map)
-{
-    free_spheres(map->spheres);
-    free_planes(map->planes);
-    free_cylinders(map->cylinders);
 }

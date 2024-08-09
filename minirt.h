@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/06 15:38:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:30:08 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,13 @@ enum e_keycodes
 // samples per pixel
 # define SAMPLES_PP 256
 
+typedef enum e_obj_type
+{
+	sphere,
+	plane,
+	cylinder
+}	t_obj_type;
+
 typedef struct s_float_3
 {
 	float			x;
@@ -202,6 +209,14 @@ typedef struct s_cy
 	struct s_cy		*next;
 }	t_cy;
 
+// main object holding struct
+typedef struct s_obj
+{
+	t_obj_type		type;
+	void			*object;
+	struct s_obj	*next;
+}	t_obj;
+
 // main map holding struct
 typedef struct s_map
 {
@@ -209,9 +224,10 @@ typedef struct s_map
 	t_cam			cam;
 	t_light			light;
 
-	t_sp			*spheres;
-	t_pl			*planes;
-	t_cy			*cylinders;
+	t_obj			*objects;
+	// t_sp			*spheres;
+	// t_pl			*planes;
+	// t_cy			*cylinders;
 }	t_map;
 
 typedef struct s_ray
@@ -289,6 +305,7 @@ int 	open_file(char *filename);
 int		is_rt_file(char *filename);
 int 	rgb_to_hex(int r, int g, int b);
 int 	error_throw(char *msg);
+void 	add_object(t_map *map, t_obj_type type, void *object);
 
 // utils_array.c
 void	free_array(char **arr);
@@ -301,11 +318,8 @@ int 	test_map(int fd);
 int 	test_parser(t_map *map);
 
 // utils_mem.c
-t_map   *malloc_map();
-void 	free_spheres(t_sp *spheres);
-void 	free_planes(t_pl *planes);
-void 	free_cylinders(t_cy *cylinders);
-void 	free_objects(t_map *map);
+t_map	*malloc_map();
+void 	free_objects(t_obj *objects);
 
 // utils_vec.c
 t_float_3	vec_sub(t_float_3 a, t_float_3 b);

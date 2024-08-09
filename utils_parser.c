@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   utils_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/03/06 21:15:14 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:32:34 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,11 @@ int error_throw(char *msg)
     exit(-1);
 }
 
+void add_object(t_map *map, t_obj_type type, void *object)
+{
+    t_obj *new_obj = malloc(sizeof(t_obj));
+    new_obj->type = type;
+    new_obj->object = object;
+    new_obj->next = map->objects;
+    map->objects = new_obj;
+}
