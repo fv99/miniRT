@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/09 16:52:25 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:24:02 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,18 @@ int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 	disc = b * b - 4 * a * c;
 	if (disc < 0)
 		return (0);
+
 	t0 = (-b - sqrtf(disc)) / (2.0f * a);
-	t1 = (-b - sqrtf(disc)) / (2.0f * a);
-	*t = (t0 < t1) ? t0 : t1;
+	t1 = (-b + sqrtf(disc)) / (2.0f * a);
+
+	if (t0 > 0 && t1 > 0)
+		*t = (t0 < t1) ? t0 : t1;
+	else if (t1 > 0)
+		*t = t1;
+	else if (t0 > 0)
+		*t = t0;
+	else
+		return (0); // both t0 and t1 are negative
+
 	return (1);
 }

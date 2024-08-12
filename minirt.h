@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/09 16:53:09 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:25:02 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,7 +339,7 @@ int			ambient_lum(t_map *map);
 void		pixel_to_img(t_win *win, int x, int y, int color);
 
 // render.c
-t_obj		*closest_obj(t_ray ray, t_obj *object);
+t_obj		*closest_obj(t_ray ray, t_obj *object, float *closest_t);
 int 		trace_ray(t_ray ray, t_map *map, int *color);
 void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);

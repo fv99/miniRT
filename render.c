@@ -6,26 +6,25 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/09 16:55:25 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:29:16 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_obj	*closest_obj(t_ray ray, t_obj *object)
+t_obj	*closest_obj(t_ray ray, t_obj *object, float *closest_t)
 {
 	t_obj	*ret = NULL;
-	float	closest;
 	float	t;
 
-	closest = INFINITY;
+	*closest_t = INFINITY;
 	t = 0;
 
 	while (object)
 	{
-		if (intersect(ray, object, &t) && t < closest)
+		if (intersect(ray, object, &t) && t < *closest_t)
 		{
-			closest = t;
+			*closest_t = t;
 			ret = object;
 		}
 		object = object->next;
@@ -39,10 +38,10 @@ int trace_ray(t_ray ray, t_map *map, int *color)
 	t_obj	*closest;
 	float 	closest_t;
 
-	closest_t = INFINITY;
     vars.light_pos = map->light.pos;
     vars.hit = 0;
-	closest = closest_obj(ray, map->objects);
+
+	closest = closest_obj(ray, map->objects, &closest_t);
     if (closest)
     {
 		vars.t = closest_t;
@@ -51,6 +50,7 @@ int trace_ray(t_ray ray, t_map *map, int *color)
     }
     return vars.hit;
 }
+
 
 void	render_ray(t_win *win, int x, int y)
 {
