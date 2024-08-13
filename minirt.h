@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/12 16:25:02 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:29:27 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
-
-# define M_PI 3.14159265358979323846
 
 enum e_keycodes
 {
@@ -73,8 +71,6 @@ enum e_keycodes
 #elif __APPLE__
 # include "./minilibx-mac-osx/mlx.h"
 # include <ApplicationServices/ApplicationServices.h>
-
-
 enum e_keycodes
 {
 	KEY_A = 0,
@@ -128,6 +124,7 @@ enum e_keycodes
 
 // samples per pixel
 # define SAMPLES_PP 256
+# define SHADOW_INTENSITY 1
 
 typedef enum e_obj_type
 {
@@ -225,9 +222,6 @@ typedef struct s_map
 	t_light			light;
 
 	t_obj			*objects;
-	// t_sp			*spheres;
-	// t_pl			*planes;
-	// t_cy			*cylinders;
 }	t_map;
 
 typedef struct s_ray
@@ -331,6 +325,7 @@ float		vec_dot(t_float_3 a, t_float_3 b);
 // utils_vec2.c
 t_float_3	vec_normalize(t_float_3 v);
 t_float_3   vec_scale(t_float_3 vec, float scale);
+float 		vec_length(t_float_3 vec);
 
 // utils_win.c
 int 		create_color(float r, float g, float b);
@@ -342,13 +337,16 @@ void		pixel_to_img(t_win *win, int x, int y, int color);
 t_obj		*closest_obj(t_ray ray, t_obj *object, float *closest_t);
 int 		trace_ray(t_ray ray, t_map *map, int *color);
 void		render_ray(t_win *win, int x, int y);
+int			shadow_ray(t_float_3 hit_point, t_float_3 light_pos, t_map *map);
 int			render(t_win *win);
 
 // render_intersects.c
 int			intersect(t_ray ray, t_obj *obj, float *t);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
+int			plane_intersect(t_ray ray, t_pl *plane, float *t);
 
 // render_objects.c
 void		render_sphere(t_ray ray, t_sp *sphere, t_trace *vars, int *color);
+void		render_plane(t_ray ray, t_pl *plane, t_trace *vars, int *color);
 
 #endif

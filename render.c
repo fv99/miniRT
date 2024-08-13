@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/12 18:29:16 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:34:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_obj	*closest_obj(t_ray ray, t_obj *object, float *closest_t)
 {
-	t_obj	*ret = NULL;
+	t_obj	*ret;
 	float	t;
 
+	ret = NULL;
 	*closest_t = INFINITY;
 	t = 0;
-
 	while (object)
 	{
 		if (intersect(ray, object, &t) && t < *closest_t)
@@ -47,6 +47,13 @@ int trace_ray(t_ray ray, t_map *map, int *color)
 		vars.t = closest_t;
 		if (closest->type == sphere)
             render_sphere(ray, (t_sp *)closest->object, &vars, color);
+		if (closest->type == plane)
+			render_plane(ray, (t_pl *)closest->object, &vars, color);
+
+		// if (shadow_ray(vars.hit_point, vars.light_pos, map))
+		// {
+		// 	*color = *color * SHADOW_INTENSITY;
+		// }
     }
     return vars.hit;
 }
@@ -71,6 +78,24 @@ void	render_ray(t_win *win, int x, int y)
 
     pixel_to_img(win, x, y, color);
 }
+
+// int	shadow_ray(t_float_3 hit_point, t_float_3 light_pos, t_map *map)
+// {
+// 	t_ray shadow_ray;
+// 	t_obj *closest;
+// 	float closest_t;
+
+// 	shadow_ray.orig = hit_point;
+// 	shadow_ray.dir = vec_normalize(vec_sub(light_pos, hit_point));
+//     closest = closest_obj(shadow_ray, map->objects, &closest_t);
+//     if (closest)
+//     {
+//         float light_distance = vec_length(vec_sub(light_pos, hit_point));
+//         if (closest_t < light_distance)
+//             return (1);
+//     }
+//     return (0);
+// }
 
 int render(t_win *win)
 {
