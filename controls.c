@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 19:24:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/05/25 12:36:40 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:49:44 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	handle_destroy_notify(t_win *win)
 {
+	mlx_destroy_image(win->mlx, win->img);
 	mlx_destroy_window(win->mlx, win->win);
 	exit(0);
 }

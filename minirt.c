@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kryxaurus <kryxaurus@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/13 20:05:51 by kryxaurus        ###   ########.fr       */
+/*   Updated: 2024/08/14 16:48:52 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int close_window(t_win *win)
-{
-	mlx_destroy_image(win->mlx, win->img);
-	mlx_destroy_window(win->mlx, win->win);
-	exit(0);
-	return (0);
-}
 
 int main(int argc, char **argv)
 {
@@ -43,7 +35,7 @@ int main(int argc, char **argv)
 
     mlx_loop_hook(win.mlx, render, &win);
     mlx_hook(win.win, 2, 1L << 0, handle_keypress, &win);
-	mlx_hook(win.win, 17, 0, close_window, &win);
+	mlx_hook(win.win, 17, 0, handle_destroy_notify, &win);
     mlx_loop(win.mlx);
 
 
