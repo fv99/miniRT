@@ -6,96 +6,75 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/13 14:34:19 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:56:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_obj	*closest_obj(t_ray ray, t_obj *object, float *closest_t)
+// calculates normal depending on type of object a ray hit
+t_float_3 calculate_normal(t_obj *object, t_float_3 hit_point)
 {
-	t_obj	*ret;
-	float	t;
+    t_float_3 normal;
 
-	ret = NULL;
-	*closest_t = INFINITY;
-	t = 0;
-	while (object)
-	{
-		if (intersect(ray, object, &t) && t < *closest_t)
-		{
-			*closest_t = t;
-			ret = object;
-		}
-		object = object->next;
-	}
-	return (ret);
-}
-
-int trace_ray(t_ray ray, t_map *map, int *color)
-{
-    t_trace vars;
-	t_obj	*closest;
-	float 	closest_t;
-
-    vars.light_pos = map->light.pos;
-    vars.hit = 0;
-
-	closest = closest_obj(ray, map->objects, &closest_t);
-    if (closest)
+    if (object->type == SPHERE) 
     {
-		vars.t = closest_t;
-		if (closest->type == sphere)
-            render_sphere(ray, (t_sp *)closest->object, &vars, color);
-		if (closest->type == plane)
-			render_plane(ray, (t_pl *)closest->object, &vars, color);
-
-		// if (shadow_ray(vars.hit_point, vars.light_pos, map))
-		// {
-		// 	*color = *color * SHADOW_INTENSITY;
-		// }
+        t_sp *sphere = (t_sp *)object->object;
+        normal = vec_normalize(vec_sub(hit_point, sphere->pos));
+    } 
+    else if (object->type == PLANE) 
+    {
+        t_pl *plane = (t_pl *)object->object;
+        normal = vec_normalize(plane->vec);
     }
-    return vars.hit;
+	// add cylinders later
+    return (normal);
 }
 
+// checks if a ray hit an object and returns details about it
+int		hit_object(t_obj *objects, t_ray *ray, t_trace *closest)
+{
+    float t;
+    closest->t = INFINITY;
+	closest->hit_object.type = -1;
+
+    while (objects)
+    {
+        if (intersect(*ray, objects, &t))
+        {
+            if (t < closest->t)
+            {
+                closest->t = t;
+                closest->hit_object = *objects;
+                closest->ray = *ray;
+                closest->hit_point = vec_add(ray->orig, vec_scale(ray->dir, t));
+                closest->normal = calculate_normal(objects, closest->hit_point);
+                printf("Hit an object! Closest t: %f\n", closest->t);
+				return (1);
+            }
+        }
+        objects = objects->next;
+    }
+    return (0);
+}
 
 void	render_ray(t_win *win, int x, int y)
 {
-	t_ray	ray;
-	float	px;
-	float	py;
-	int		color;
-	int		hit;
+	t_ray		ray;
+	t_trace		closest;
+	t_float_3	vec;
+	int			color;
 
-	ray.orig = win->map->cam.pos;
-    px = (2 * (x + 0.5) / (float)WINDOW_WIDTH - 1) * win->scene.scale * win->scene.aspect_ratio;
-    py = (1 - 2 * (y + 0.5) / (float)WINDOW_HEIGHT) * win->scene.scale;
-    ray.dir = vec_normalize(vec_add(win->map->cam.vec, (t_float_3){px, py, -1}));
-
-	hit = trace_ray(ray, win->map, &color);
-	if (!hit)
-		color = win->map->amb.amb;
-
-    pixel_to_img(win, x, y, color);
+	closest.t = INFINITY;
+	closest.hit_object.type = 0;
+	vec = pixels_to_viewport(x, y);
+	ray = throw_ray(win->map, vec);
+	if (hit_object(win->map->objects, &ray, &closest))
+		printf("hit some stuff! /n");
+	else
+		color = 0x000000; // Background color
+	pixel_to_img(win, x, y, color);
 }
-
-// int	shadow_ray(t_float_3 hit_point, t_float_3 light_pos, t_map *map)
-// {
-// 	t_ray shadow_ray;
-// 	t_obj *closest;
-// 	float closest_t;
-
-// 	shadow_ray.orig = hit_point;
-// 	shadow_ray.dir = vec_normalize(vec_sub(light_pos, hit_point));
-//     closest = closest_obj(shadow_ray, map->objects, &closest_t);
-//     if (closest)
-//     {
-//         float light_distance = vec_length(vec_sub(light_pos, hit_point));
-//         if (closest_t < light_distance)
-//             return (1);
-//     }
-//     return (0);
-// }
 
 int render(t_win *win)
 {
@@ -104,9 +83,6 @@ int render(t_win *win)
 
 	x = 0;
 	y = 0;
-	win->scene.scale = tan(win->map->cam.fov / 2 * M_PI / 180);
-	win->scene.aspect_ratio = (float)WINDOW_WIDTH / WINDOW_HEIGHT;
-	
 	while (y < WINDOW_HEIGHT)
 	{
 		x = 0;
@@ -118,5 +94,5 @@ int render(t_win *win)
 		y++;
 	}
 	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
-    return 0;
+    return (0);
 }

@@ -6,7 +6,7 @@
 #    By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 18:06:10 by fvonsovs          #+#    #+#              #
-#    Updated: 2024/08/09 16:24:32 by fvonsovs         ###   ########.fr        #
+#    Updated: 2024/08/15 16:00:31 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME		=	miniRT
 SRCS		=	minirt.c controls.c parser.c parser_scene.c parser_objects.c \
 				utils_tests.c utils_mem.c utils_number.c utils_parser.c utils_array.c \
 				utils_vec.c utils_vec2.c utils_win.c render_intersects.c \
-				render.c render_objects.c
+				render.c render_view.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f

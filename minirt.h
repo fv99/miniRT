@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/13 14:29:27 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:56:25 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,19 +118,27 @@ enum e_keycodes
 
 #endif
 
+// math macros
+# define PI 3.1415926535f
+# define RADIANS(deg) ((deg * PI) / 180.0f)
+# define DEGREES(rad) ((rad * 180.0f) / PI)
+
+// vector macros
+# define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
+
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 600
 
 // samples per pixel
 # define SAMPLES_PP 256
-# define SHADOW_INTENSITY 1
+# define SHADOW_INTENSITY 1.1
 
 typedef enum e_obj_type
 {
-	sphere,
-	plane,
-	cylinder
+	SPHERE,
+	PLANE,
+	CYLINDER,
 }	t_obj_type;
 
 typedef struct s_float_3
@@ -214,38 +222,36 @@ typedef struct s_obj
 	struct s_obj	*next;
 }	t_obj;
 
-// main map holding struct
-typedef struct s_map
-{
-	t_amb			amb;
-	t_cam			cam;
-	t_light			light;
-
-	t_obj			*objects;
-}	t_map;
-
 typedef struct s_ray
 {
 	t_float_3		orig;
 	t_float_3		dir;
 }	t_ray;
 
-typedef struct s_scene
+// main map holding struct
+typedef struct s_map
 {
-	float			scale;
-	float			aspect_ratio;
-}	t_scene;
+	t_amb			amb;
+	t_cam			cam;
+	t_light			light;
+	t_obj			*objects;
+
+	float			aspect_ratio;	
+	t_float_3		vec_up;
+	t_float_3		vec_right;
+	float			height;
+	float			width;
+}	t_map;
 
 typedef struct s_trace
 {
-    t_float_3 	hit_point;
+	t_obj		hit_object;
+	t_ray		ray;
+    t_float_3 	intersection;
 	t_float_3	normal;
-	t_float_3	light_dir;
-	t_float_3	light_pos;
-
+	t_float_3	hit_point;
+	int			color;
     float		t;
-    int 		hit;
-    float		intensity;
 }	t_trace;
 
 // main holding struct
@@ -261,7 +267,6 @@ typedef struct s_win
 	int				endian;
 
 	t_map			*map;
-	t_scene			scene;
 }	t_win;
 
 // controls.c
@@ -326,19 +331,25 @@ float		vec_dot(t_float_3 a, t_float_3 b);
 t_float_3	vec_normalize(t_float_3 v);
 t_float_3   vec_scale(t_float_3 vec, float scale);
 float 		vec_length(t_float_3 vec);
+t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
 
 // utils_win.c
 int 		create_color(float r, float g, float b);
 t_float_3 	extract_rgb(int col);
 int			ambient_lum(t_map *map);
 void		pixel_to_img(t_win *win, int x, int y, int color);
+t_float_3 	clamp_color(t_float_3 color);
 
 // render.c
+t_float_3	calculate_normal(t_obj *object, t_float_3 hit_point);
 t_obj		*closest_obj(t_ray ray, t_obj *object, float *closest_t);
-int 		trace_ray(t_ray ray, t_map *map, int *color);
 void		render_ray(t_win *win, int x, int y);
-int			shadow_ray(t_float_3 hit_point, t_float_3 light_pos, t_map *map);
 int			render(t_win *win);
+
+// render_view.c
+void        camera_init(t_map *map);
+t_float_3	pixels_to_viewport(int x, int y);
+t_ray		throw_ray(t_map *map, t_float_3 vec);
 
 // render_intersects.c
 int			intersect(t_ray ray, t_obj *obj, float *t);
@@ -346,7 +357,8 @@ int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 int			plane_intersect(t_ray ray, t_pl *plane, float *t);
 
 // render_objects.c
-void		render_sphere(t_ray ray, t_sp *sphere, t_trace *vars, int *color);
-void		render_plane(t_ray ray, t_pl *plane, t_trace *vars, int *color);
+void 		render_sphere(t_sp *sphere, t_trace *vars, int *color, float light_lum);
+void 		render_plane(t_pl *plane, t_trace *vars, int *color, float light_lum);
+int 		apply_lighting(int base_color, float diff_intensity, int ambient, float light_lum);
 
 #endif

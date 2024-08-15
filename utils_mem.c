@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:22:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/09 15:29:53 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:33:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@ t_map *malloc_map()
         error_throw("Cannot allocate memory for map");
     ft_bzero(map, sizeof(t_map));
     map->objects = NULL;
+    map->vec_up = (t_float_3){0, 0, 0};
+    map->vec_right = (t_float_3){0, 0, 0};
+    map->aspect_ratio = 0.0f;
+    map->height = 0.0f;
+    map->width = 0.0f;
+
     return map;
 }
+
 
 void free_objects(t_obj *objects)
 {
@@ -29,11 +36,11 @@ void free_objects(t_obj *objects)
     while (objects)
     {
         temp = objects;
-        if (temp->type == sphere)
+        if (temp->type == SPHERE)
             free((t_sp *)temp->object);
-        else if (temp->type == plane)
+        else if (temp->type == PLANE)
             free((t_pl *)temp->object);
-        else if (temp->type == cylinder)
+        else if (temp->type == CYLINDER)
             free((t_cy *)temp->object);
         objects = objects->next;
         free(temp);

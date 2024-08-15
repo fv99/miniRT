@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/14 16:48:52 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:03:01 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 
     map = parser(argv[1]); // free this later
     test_parser(map);
+    camera_init(map);
 
     win.map = map;
     win.mlx = mlx_init();

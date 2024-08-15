@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/09 15:31:51 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:33:06 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int test_parser(t_map *map)
     
     while (current_obj != NULL)
     {
-        if (current_obj->type == sphere)
+        if (current_obj->type == SPHERE)
         {
             t_sp *current_sphere = (t_sp *)current_obj->object;
             printf("\tSphere %d:\n", sphere_index);
@@ -88,7 +88,7 @@ int test_parser(t_map *map)
             printf("  Color: 0x%06X\n\n", current_sphere->col);
             sphere_index++;
         }
-        else if (current_obj->type == plane)
+        else if (current_obj->type == PLANE)
         {
             t_pl *current_plane = (t_pl *)current_obj->object;
             printf("\tPlane %d:\n", plane_index);
@@ -97,7 +97,7 @@ int test_parser(t_map *map)
             printf("  Color: 0x%06X\n\n", current_plane->col);
             plane_index++;
         }
-        else if (current_obj->type == cylinder)
+        else if (current_obj->type == CYLINDER)
         {
             t_cy *current_cylinder = (t_cy *)current_obj->object;
             printf("\tCylinder %d:\n", cylinder_index);

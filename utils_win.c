@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:05:14 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/05 15:43:09 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:46:15 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ void	pixel_to_img(t_win *win, int x, int y, int color)
             *pixel++ = (color >> (win->bpp - 8 - i)) & 0xFF;
         i -= 8;
     }
+}
+
+t_float_3 clamp_color(t_float_3 color)
+{
+    color.x = fmin(fmax(color.x, 0.0f), 255.0f);
+    color.y = fmin(fmax(color.y, 0.0f), 255.0f);
+    color.z = fmin(fmax(color.z, 0.0f), 255.0f);
+    return color;
 }
