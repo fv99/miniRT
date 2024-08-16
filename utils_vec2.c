@@ -6,17 +6,29 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:48:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 14:46:13 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:21:44 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // normalizes a vector
-t_float_3	vec_normalize(t_float_3 v)
+t_float_3 vec_normalize(t_float_3 v)
 {
-    float length = sqrtf(vec_dot(v, v));
-    return vec_div(v, length);
+    float length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+
+    // Check for zero-length vector to prevent division by zero
+    if (length == 0.0f)
+    {
+        printf("Warning: Attempted to normalize a zero-length vector.\n");
+        return (t_float_3){0.0f, 0.0f, 0.0f};  // Return a default or error value
+    }
+
+    v.x /= length;
+    v.y /= length;
+    v.z /= length;
+
+    return v;
 }
 
 // scales a vector by a scalar
@@ -43,3 +55,7 @@ t_float_3 vec_cross(t_float_3 v1, t_float_3 v2)
     return res;
 }
 
+int is_zero_vector(t_float_3 vec)
+{
+    return (vec.x == 0.0f && vec.y == 0.0f && vec.z == 0.0f);
+}

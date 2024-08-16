@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 17:56:25 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:21:43 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,6 +332,7 @@ t_float_3	vec_normalize(t_float_3 v);
 t_float_3   vec_scale(t_float_3 vec, float scale);
 float 		vec_length(t_float_3 vec);
 t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
+int 		is_zero_vector(t_float_3 vec);
 
 // utils_win.c
 int 		create_color(float r, float g, float b);
@@ -342,7 +343,7 @@ t_float_3 	clamp_color(t_float_3 color);
 
 // render.c
 t_float_3	calculate_normal(t_obj *object, t_float_3 hit_point);
-t_obj		*closest_obj(t_ray ray, t_obj *object, float *closest_t);
+t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object);
 void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
 
