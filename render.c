@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 16:33:47 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:33:41 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,25 @@
 t_float_3 calculate_normal(t_obj *object, t_float_3 hit_point)
 {
     t_float_3 normal;
+	t_sp *sphere;
+	t_pl *plane;
+	//t_cy *cylinder;
 
+	sphere = NULL;
+	plane = NULL;
     normal = hit_point;
 
     if (object->type == SPHERE) 
     {
-        t_sp *sphere = (t_sp *)object->object;
-        normal = vec_normalize(vec_sub(hit_point, sphere->pos));
+        sphere = (t_sp *)object->object;
+        normal = vec_sub(hit_point, sphere->pos);
     } 
     else if (object->type == PLANE) 
     {
-        t_pl *plane = (t_pl *)object->object;
-        normal = vec_normalize(plane->vec);
+        plane = (t_pl *)object->object;
+        normal = plane->vec;
     }
-	// add cylinders later
+	// add cylinders here later
     return (normal);
 }
 
@@ -42,27 +47,10 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 	closest->hit_object.object = NULL;
 	t = 0;
 
-	// Debug: Print initial ray info
-	// printf("Ray Origin: (%f, %f, %f)\n", ray.orig.x, ray.orig.y, ray.orig.z);
-	// printf("Ray Direction: (%f, %f, %f)\n", ray.dir.x, ray.dir.y, ray.dir.z);
-
 	while (object)
 	{
-		// Debug: Print object type and position
-		// if (object->type == SPHERE) {
-		// 	t_sp *sphere = (t_sp *)object->object;
-		// 	printf("Testing intersection with SPHERE at position: (%f, %f, %f)\n", sphere->pos.x, sphere->pos.y, sphere->pos.z);
-		// }
-		// else if (object->type == PLANE) {
-		// 	t_pl *plane = (t_pl *)object->object;
-		// 	printf("Testing intersection with PLANE at position: (%f, %f, %f)\n", plane->pos.x, plane->pos.y, plane->pos.z);
-		// }
-
 		if (intersect(ray, object, &t))
 		{
-			// // Debug: Print intersection distance
-			// printf("Intersection found at distance t = %f\n", t);
-
 			if (t < closest->t)
 			{
 				closest->t = t;
@@ -71,23 +59,8 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 				closest->hit_point = vec_add(ray.orig, vec_scale(ray.dir, closest->t));
 				closest->normal = calculate_normal(&closest->hit_object, closest->hit_point);
 				hit_object = object;
-
-				// Debug: Print hit point and normal
-				// printf("New closest object hit at: (%f, %f, %f)\n", closest->hit_point.x, closest->hit_point.y, closest->hit_point.z);
-				// printf("Normal at hit point: (%f, %f, %f)\n", closest->normal.x, closest->normal.y, closest->normal.z);
 			}
-			// else
-			// {
-			// 	// Debug: Intersection found but not closer than the current closest
-			// 	printf("Intersection at t = %f, but not closer than current closest t = %f\n", t, closest->t);
-			// }
 		}
-		// else
-		// {
-		// 	// Debug: No intersection found
-		// 	printf("No intersection found with this object.\n");
-		// }
-
 		object = object->next;
 	}
 	return (hit_object != NULL) ? closest : NULL;
@@ -107,15 +80,14 @@ void render_ray(t_win *win, int x, int y)
 
 	if (closest_obj(ray, &closest, win->map->objects))
 	{
+		// lighting functions go here
 		if (closest.hit_object.type == SPHERE)
-			color = 0xFF0000;
-		// Set the color based on intersection, lighting, etc. Here, just as a placeholder
-		color = 0xFFFFFF; // Example color, you can modify this based on shading logic
+			color = 0xFF00FF;
+		else
+			color = 0xFFFFFF;
 	}
 	else
-	{
-		color = 0x000000; // Background color
-	}
+		color = 0x000000; // background color
 
 	pixel_to_img(win, x, y, color);
 }
