@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 17:33:41 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/18 22:35:37 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,11 @@ void render_ray(t_win *win, int x, int y)
 	if (closest_obj(ray, &closest, win->map->objects))
 	{
 		// lighting functions go here
-		if (closest.hit_object.type == SPHERE)
-			color = 0xFF00FF;
+        if (closest.hit_object.type == SPHERE)
+        {
+            t_sp *sphere = (t_sp *)closest.hit_object.object;
+            color = sphere->col;
+        }
 		else
 			color = 0xFFFFFF;
 	}

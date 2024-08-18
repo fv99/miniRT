@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_objects.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:50:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 16:29:26 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/18 22:27:40 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int parse_sphere(t_map *map, char *line)
     i = 0;
     new = (t_sp *)malloc(sizeof(t_sp));
     if (!new)
-        error_throw("Failed to malloc sphere"); // over 25 lines maybe remove this later
+        return error_throw("Failed to malloc sphere"); // over 25 lines maybe remove this later
     params = ft_split(line, ' ');
     if (array_length(params) != 4)
         return error_throw("Invalid number of sphere params");
