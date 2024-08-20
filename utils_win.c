@@ -6,26 +6,11 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:05:14 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 17:09:46 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:35:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int create_color(float r, float g, float b)
-{
-    return ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255);
-}
-
-t_float_3 extract_rgb(int col)
-{
-    t_float_3 rgb;
-
-    rgb.x = ((col >> 16) & 0xFF) / 255.0f;
-    rgb.y = ((col >> 8) & 0xFF) / 255.0f;
-    rgb.z = (col & 0xFF) / 255.0f;
-    return (rgb);
-}
 
 int ambient_lum(t_map *map)
 {
@@ -42,12 +27,6 @@ int ambient_lum(t_map *map)
     ret = create_color(conv.x, conv.y ,conv.z);
 
     return (ret);
-}
-
-// bitwise shift rgb value into hex
-int rgb_to_hex(int r, int g, int b)
-{   
-    return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 }
 
 void	pixel_to_img(t_win *win, int x, int y, int color)

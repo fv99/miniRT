@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 13:22:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 16:33:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:35:46 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_map *malloc_map()
     return map;
 }
 
-
 void free_objects(t_obj *objects)
 {
     t_obj *temp;
@@ -45,4 +44,10 @@ void free_objects(t_obj *objects)
         objects = objects->next;
         free(temp);
     }
+}
+
+int error_throw(char *msg)
+{
+    ft_printf("\n\tERROR: %s\n", msg);
+    exit(-1);
 }

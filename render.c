@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 17:33:41 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:38:33 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,24 +72,13 @@ void render_ray(t_win *win, int x, int y)
 	t_ray		ray;
 	t_trace		closest;
 	t_float_3	vec;
-	int			color;
 
-	color = 0x000000;
 	vec = pixels_to_viewport(x, y);
 	ray = throw_ray(win->map, vec);
-
 	if (closest_obj(ray, &closest, win->map->objects))
-	{
-		// lighting functions go here
-		if (closest.hit_object.type == SPHERE)
-			color = 0xFF00FF;
-		else
-			color = 0xFFFFFF;
-	}
-	else
-		color = 0x000000; // background color
+		illuminate(win->map, &closest);
 
-	pixel_to_img(win, x, y, color);
+	pixel_to_img(win, x, y, closest.color);
 }
 
 

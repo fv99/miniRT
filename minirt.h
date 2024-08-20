@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 17:13:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:35:48 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,11 @@ enum e_keycodes
 # define PI 3.1415926535f
 # define RADIANS(deg) ((deg * PI) / 180.0f)
 # define DEGREES(rad) ((rad * 180.0f) / PI)
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
+# define VEC_MINFLOAT (t_float_3){0.000001, 0.000001, 0.000001}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 800
@@ -132,7 +134,6 @@ enum e_keycodes
 
 // samples per pixel
 # define SAMPLES_PP 256
-# define SHADOW_INTENSITY 1.1
 
 typedef enum e_obj_type
 {
@@ -335,12 +336,22 @@ float 		vec_length(t_float_3 vec);
 t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
 int 		is_zero_vector(t_float_3 vec);
 
+// utils_vec3.c
+float		vec_cos(t_float_3 a, t_float_3 b);
+
 // utils_win.c
-int 		create_color(float r, float g, float b);
-t_float_3 	extract_rgb(int col);
 int			ambient_lum(t_map *map);
 void		pixel_to_img(t_win *win, int x, int y, int color);
-t_float_3 	clamp_color(t_float_3 color);
+
+// utils_col.c
+int 		create_color(float r, float g, float b);
+int 		rgb_to_hex(int r, int g, int b);
+int 		clamp(int value, int min, int max);
+t_float_3 	extract_rgb(int col);
+
+// utils_col2.c
+int 		add_colors(int col1, int col2);
+int 		color_multiply(int color, float ratio);
 
 // render.c
 t_float_3	calculate_normal(t_obj *object, t_float_3 hit_point);
@@ -358,9 +369,10 @@ int			intersect(t_ray ray, t_obj *obj, float *t);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 int			plane_intersect(t_ray ray, t_pl *plane, float *t);
 
-// render_objects.c
-void 		render_sphere(t_sp *sphere, t_trace *vars, int *color, float light_lum);
-void 		render_plane(t_pl *plane, t_trace *vars, int *color, float light_lum);
-int 		apply_lighting(int base_color, float diff_intensity, int ambient, float light_lum);
+// render_illuminate.c
+void    	illuminate(t_map *map, t_trace *closest);
+int 		diffuse(t_map *map, t_trace *closest, float intensity);
+int 		calculate_shadow(t_map *map, t_trace *closest);
+int 		obscured(t_map *map, t_ray *ray, float max_dist);
 
 #endif
