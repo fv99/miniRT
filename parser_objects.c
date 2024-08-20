@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:50:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 16:29:26 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:03:43 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int parse_sphere(t_map *map, char *line)
             return error_throw("Cannot parse sphere color");
     }
     new->next = NULL;
-    add_object(map, SPHERE, new);
+    add_object(map, SPHERE, new, new->col);
     free_array(params);
     return (0);
 }
@@ -63,7 +63,7 @@ int parse_plane(t_map *map, char *line)
             return error_throw("Cannot parse plane color");
     }
     new->next = NULL;
-    add_object(map, PLANE, new);
+    add_object(map, PLANE, new, new->col);
     free_array(params);
     return (0);
 }
@@ -95,7 +95,7 @@ int parse_cylinder(t_map *map, char *line)
             return error_throw("Cannot parse cylinder color");
     }
     new->next = NULL;
-    add_object(map, CYLINDER, new); 
+    add_object(map, CYLINDER, new, new->col); 
     free_array(params);
     return (0);
 }

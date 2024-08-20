@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 16:21:43 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:13:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ typedef struct s_obj
 {
 	t_obj_type		type;
 	void			*object;
+	int				color;
 	struct s_obj	*next;
 }	t_obj;
 
@@ -303,8 +304,7 @@ int		is_ulong(char *str);
 int 	open_file(char *filename);
 int		is_rt_file(char *filename);
 int 	rgb_to_hex(int r, int g, int b);
-int 	error_throw(char *msg);
-void 	add_object(t_map *map, t_obj_type type, void *object);
+void add_object(t_map *map, t_obj_type type, void *object, int col);
 
 // utils_array.c
 void	free_array(char **arr);
@@ -319,6 +319,7 @@ int 	test_parser(t_map *map);
 // utils_mem.c
 t_map	*malloc_map();
 void 	free_objects(t_obj *objects);
+int 	error_throw(char *msg);
 
 // utils_vec.c
 t_float_3	vec_sub(t_float_3 a, t_float_3 b);
