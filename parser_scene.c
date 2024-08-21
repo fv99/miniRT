@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:31:29 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 17:03:55 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:55:55 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int parse_ambient(t_map *map, char *line)
         if (i == 2 && parse_color(params[i], &map->amb.col))
             return error_throw("Cannot parse color");
     }
-    map->amb.amb = ambient_lum(map);
     free_array(params);
     return (0);
 }

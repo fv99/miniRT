@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 18:35:48 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:38:32 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ enum e_keycodes
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.000001, 0.000001, 0.000001}
+# define VEC_MINFLOAT (t_float_3){0.00001, 0.00001, 0.00001}
 
 // god's chosen aspect ratio
-# define WINDOW_WIDTH 800
-# define WINDOW_HEIGHT 600
+# define WINDOW_WIDTH 1280
+# define WINDOW_HEIGHT 1024
 
 // samples per pixel
 # define SAMPLES_PP 256
@@ -163,7 +163,6 @@ typedef struct s_amb
 {
 	float			lum;
 	int				col;
-	int				amb;
 }	t_amb;
 
 // camera, pos = position, vec = 3d normalized vector
@@ -344,10 +343,10 @@ int			ambient_lum(t_map *map);
 void		pixel_to_img(t_win *win, int x, int y, int color);
 
 // utils_col.c
-int 		create_color(float r, float g, float b);
+int 		create_color(int r, int g, int b);
 int 		rgb_to_hex(int r, int g, int b);
 int 		clamp(int value, int min, int max);
-t_float_3 	extract_rgb(int col);
+t_int_3 	extract_rgb(int col);
 
 // utils_col2.c
 int 		add_colors(int col1, int col2);

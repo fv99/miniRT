@@ -6,28 +6,11 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:05:14 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 18:35:47 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:57:39 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-int ambient_lum(t_map *map)
-{
-    t_float_3   rgb;
-    t_float_3   conv;
-    float       lum;
-    int         ret;
-
-    lum = map->amb.lum;
-    rgb = extract_rgb(map->amb.col);
-    conv.x = rgb.x * lum;
-    conv.y = rgb.y * lum;
-    conv.z = rgb.z * lum;
-    ret = create_color(conv.x, conv.y ,conv.z);
-
-    return (ret);
-}
 
 void	pixel_to_img(t_win *win, int x, int y, int color)
 {

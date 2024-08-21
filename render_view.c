@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 13:38:30 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 16:25:09 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:07:53 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ void camera_init(t_map *map)
     map->vec_right = vec_normalize(vec_cross(map->cam.vec, UP_VECTOR));
     map->vec_up = vec_normalize(vec_cross(map->vec_right, map->cam.vec));
     map->vec_right = vec_normalize(vec_cross(map->cam.vec, map->vec_up));
-    // Debug: Print camera vectors
-    // printf("Camera Direction: (%f, %f, %f)\n", map->cam.vec.x, map->cam.vec.y, map->cam.vec.z);
-    // printf("Camera Right Vector: (%f, %f, %f)\n", map->vec_right.x, map->vec_right.y, map->vec_right.z);
-    // printf("Camera Up Vector: (%f, %f, %f)\n", map->vec_up.x, map->vec_up.y, map->vec_up.z);
 }
 
 
@@ -46,9 +42,6 @@ t_float_3	pixels_to_viewport(int x, int y)
     ret.x = ((2.0f * x) / width) - 1;
     ret.y = ((2.0f * y) / height) - 1;
     ret.z = 1.0f;
-    // Debug: Print the mapped viewport coordinates
-    // printf("Viewport Coordinates: (%f, %f, %f)\n", ret.x, ret.y, ret.z);
-
     return ret;
 }
 
@@ -71,15 +64,5 @@ t_ray throw_ray(t_map *map, t_float_3 vec)
 
     ray.orig = map->cam.pos;
     ray.dir = vec_normalize(vec_sub(result, ray.orig));
-
-    // Debug: Print intermediate vectors
-    // printf("Vertical Component: (%f, %f, %f)\n", vert.x, vert.y, vert.z);
-    // printf("Horizontal Component: (%f, %f, %f)\n", horiz.x, horiz.y, horiz.z);
-    // printf("Resulting Vector before Normalization: (%f, %f, %f)\n", result.x, result.y, result.z);
-    // if (ray.dir.x == 0 && ray.dir.y == 0 && ray.dir.z == 0)
-    // {
-    //     printf("Warning: Ray direction is a zero vector.\n");
-    // }
-
     return ray;
 }
