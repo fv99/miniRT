@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:13:34 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/21 20:12:50 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:14:21 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 void    illuminate(t_map *map, t_trace *closest)
 {
     int color;
-    int diffuse_color;
 
-    diffuse_color = 0x000000;
     color = color_multiply(closest->color, map->amb.lum);
     if (!calculate_shadow(map, closest))
-        diffuse_color = diffuse(map, closest, map->amb.lum);
-    color = add_colors(color, diffuse_color);
+        color = add_colors(color, diffuse(map, closest, map->light.lum));
     closest->color = color;
 }
 
@@ -34,7 +31,6 @@ int diffuse(t_map *map, t_trace *closest, float intensity)
     float       attenuation;
 
     light_dir = vec_sub(map->light.pos, closest->hit_point);
-    light_dir = vec_normalize(light_dir); // Normalize the light direction
     attenuation = MIN(1.0, 90.0 / vec_length(light_dir));
     cos_angle = vec_cos(closest->normal, light_dir);
     ratio = intensity * cos_angle * attenuation;
@@ -59,7 +55,7 @@ int calculate_shadow(t_map *map, t_trace *closest)
 int obscured(t_map *map, t_ray *ray, float max_dist)
 {
     t_obj   *objects;
-    float     t;
+    float   t;
 
     t = INFINITY;
     objects = map->objects;

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 21:02:45 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:07:02 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ enum e_keycodes
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.00001, 0.00001, 0.00001}
+# define VEC_MINFLOAT (t_float_3){0.01, 0.01, 0.01}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
@@ -233,6 +233,9 @@ typedef struct s_obj
 // quad = coefficients of quadratic equation
 // hit_point = point on cyl surface where ray intersects
 // hit_base = vector from hit point to the base center of cylinder
+// t0, t1 = possible intersection points
+// disc = discriminant of quadratic equation
+// proj_l = projection of hit_base onto cylinder axis
 typedef struct s_cyl_intersect
 {
 	t_float_3		oc;
@@ -243,6 +246,10 @@ typedef struct s_cyl_intersect
 	t_float_3		quad;
 	t_float_3		hit_point;
 	t_float_3		hit_base;
+	float			t0;
+	float			t1;
+	float			disc;
+	float			proj_l;
 }	t_cyl_intersect;
 
 typedef struct s_ray
@@ -387,6 +394,8 @@ t_ray		throw_ray(t_map *map, t_float_3 vec);
 int			intersect(t_ray ray, t_obj *obj, float *t);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 int			plane_intersect(t_ray ray, t_pl *plane, float *t);
+int			cylinder_intersect(t_ray ray, t_cy *cylinder, float *t);
+int			is_valid_intersect(t_cyl_intersect *vars, t_cy *cylinder, t_ray ray, float *t);
 
 // render_illuminate.c
 void    	illuminate(t_map *map, t_trace *closest);

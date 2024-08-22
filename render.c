@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 20:53:48 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 21:48:22 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_float_3 calculate_normal(t_obj *object, t_float_3 hit_point)
     t_float_3 normal;
 	t_sp *sphere;
 	t_pl *plane;
-	//t_cy *cylinder;
+	t_cy *cylinder;
 
 	sphere = NULL;
 	plane = NULL;
@@ -34,8 +34,12 @@ t_float_3 calculate_normal(t_obj *object, t_float_3 hit_point)
         plane = (t_pl *)object->object;
         normal = plane->vec;
     }
-	// add cylinders here later
-    return (normal);
+    else if (object->type == CYLINDER) 
+    {
+        cylinder = (t_cy *)object->object;
+        normal = cylinder->vec;
+    }
+	return (normal);
 }
 
 t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
@@ -66,7 +70,6 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 	}
 	return (hit_object != NULL) ? closest : NULL;
 }
-
 
 void render_ray(t_win *win, int x, int y)
 {
