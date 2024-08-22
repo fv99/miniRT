@@ -6,41 +6,34 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:48:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/16 16:21:44 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 21:01:17 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+
+
+// calculates dot product of two vectors
+// dot product = two vectors return a single scalar value
+// measures how much two vectors are aligned with each other
+float       vec_dot(t_float_3 a, t_float_3 b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
 // normalizes a vector
+// division of its components by its magnitude
 t_float_3 vec_normalize(t_float_3 v)
 {
-    float length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-
-    // Check for zero-length vector to prevent division by zero
-    if (length == 0.0f)
-    {
-        printf("Warning: Attempted to normalize a zero-length vector.\n");
-        return (t_float_3){0.0f, 0.0f, 0.0f};  // Return a default or error value
-    }
-
+    float length;
+    
+    length = vec_length(v);
     v.x /= length;
     v.y /= length;
     v.z /= length;
 
-    return v;
-}
-
-// scales a vector by a scalar
-t_float_3   vec_scale(t_float_3 vec, float scale)
-{
-    return (t_float_3){vec.x * scale, vec.y * scale, vec.z * scale};
-}
-
-// calculates the magnitude of a vector
-float       vec_length(t_float_3 vec)
-{
-    return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+    return (v);
 }
 
 // calculates cross product
@@ -58,4 +51,14 @@ t_float_3 vec_cross(t_float_3 v1, t_float_3 v2)
 int is_zero_vector(t_float_3 vec)
 {
     return (vec.x == 0.0f && vec.y == 0.0f && vec.z == 0.0f);
+}
+
+float vec_cos(t_float_3 a, t_float_3 b)
+{
+    float   dot;
+    float   t;
+
+    dot = vec_dot(a, b);
+    t = vec_length(a) * vec_length(b);
+    return (dot / t);
 }

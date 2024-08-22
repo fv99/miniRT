@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 13:38:30 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/21 20:07:53 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:53:59 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_ray throw_ray(t_map *map, t_float_3 vec)
     t_float_3 horiz;
     t_float_3 result;
 
-    vert = vec_scale(map->vec_up, vec.y * map->height);
-    horiz = vec_scale(map->vec_right, vec.x * map->width);
+    vert = vec_mul(map->vec_up, vec.y * map->height);
+    horiz = vec_mul(map->vec_right, vec.x * map->width);
 
     result = vec_add(vert, horiz);
     result = vec_add(result, map->cam.vec);

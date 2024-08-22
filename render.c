@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/21 20:19:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:53:48 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 				closest->t = t;
 				closest->hit_object = *object;
 				closest->ray = ray;
-				closest->hit_point = vec_add(ray.orig, vec_scale(ray.dir, closest->t));
+				closest->hit_point = vec_add(ray.orig, vec_mul(ray.dir, closest->t));
 				closest->normal = calculate_normal(&closest->hit_object, closest->hit_point);
 				closest->color = closest->hit_object.color;
 				hit_object = object;

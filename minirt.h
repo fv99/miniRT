@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/21 20:38:32 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/22 21:02:45 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,28 @@ typedef struct s_obj
 	struct s_obj	*next;
 }	t_obj;
 
+// used in cylinder intersection function
+//
+// oc = vector from ray origin to cylinder base
+// d = direction vector of the ray
+// a = normalized axis direction vector of cylinder
+// d_cross_a = cross product of d and cylinder axis
+// oc_cross_a = cross product of oc and cylinder axis
+// quad = coefficients of quadratic equation
+// hit_point = point on cyl surface where ray intersects
+// hit_base = vector from hit point to the base center of cylinder
+typedef struct s_cyl_intersect
+{
+	t_float_3		oc;
+	t_float_3		d;
+	t_float_3		a;
+	t_float_3		d_cross_a;
+	t_float_3		oc_cross_a;
+	t_float_3		quad;
+	t_float_3		hit_point;
+	t_float_3		hit_base;
+}	t_cyl_intersect;
+
 typedef struct s_ray
 {
 	t_float_3		orig;
@@ -326,16 +348,14 @@ t_float_3	vec_sub(t_float_3 a, t_float_3 b);
 t_float_3	vec_add(t_float_3 a, t_float_3 b);
 t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
-float		vec_dot(t_float_3 a, t_float_3 b);
+float 		vec_length(t_float_3 vec);
+
 
 // utils_vec2.c
+float		vec_dot(t_float_3 a, t_float_3 b);
 t_float_3	vec_normalize(t_float_3 v);
-t_float_3   vec_scale(t_float_3 vec, float scale);
-float 		vec_length(t_float_3 vec);
 t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
 int 		is_zero_vector(t_float_3 vec);
-
-// utils_vec3.c
 float		vec_cos(t_float_3 a, t_float_3 b);
 
 // utils_win.c
