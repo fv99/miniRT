@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 21:47:47 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:14:56 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
         else if (t1 > 0)
             *t = t1;
         else
-            return 0; // Intersection is behind the ray's origin
-        return 1; // Intersection occurred
+            return (0);
+        return (1);
     }
 }
 
@@ -84,7 +84,6 @@ int cylinder_intersect(t_ray ray, t_cy *cylinder, float *t)
     t_cyl_intersect vars;
     float sqrt_dist;
 
-    // Calculate intersection with the cylindrical side
     vars.oc = vec_sub(ray.orig, cylinder->pos);
     vars.d = ray.dir;
     vars.a = cylinder->vec;

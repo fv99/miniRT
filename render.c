@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 21:48:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:14:40 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_float_3 calculate_normal(t_obj *object, t_float_3 hit_point)
 	sphere = NULL;
 	plane = NULL;
     normal = hit_point;
-
     if (object->type == SPHERE) 
     {
         sphere = (t_sp *)object->object;
@@ -49,8 +48,8 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 
 	closest->t = INFINITY;
 	closest->hit_object.object = NULL;
+	closest->color = 0x000000;
 	t = 0;
-
 	while (object)
 	{
 		if (intersect(ray, object, &t))
@@ -83,7 +82,6 @@ void render_ray(t_win *win, int x, int y)
 		illuminate(win->map, &closest);
 
 	pixel_to_img(win, x, y, closest.color);
-	closest.color = 0x000000;
 }
 
 int render(t_win *win)

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 22:07:02 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:08:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include "./minilibx-linux/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 enum e_keycodes
 {
@@ -122,7 +124,6 @@ enum e_keycodes
 # define PI 3.1415926535f
 # define RADIANS(deg) ((deg * PI) / 180.0f)
 # define DEGREES(rad) ((rad * 180.0f) / PI)
-# define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
