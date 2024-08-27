@@ -157,6 +157,15 @@ typedef struct s_int_3
 	int				z;
 }	t_int_3;
 
+// introducing quarternions for rotation
+typedef struct s_quaternion
+{
+	float w;
+	float x;
+	float y;
+	float z;
+} t_quaternion;
+
 // mandatory parts of scene below (only 1 per file)
 // ambient lighting, lum = brightness, col = color in hex format
 // amb = normalized color (lum * col)
@@ -403,5 +412,13 @@ void    	illuminate(t_map *map, t_trace *closest);
 int 		diffuse(t_map *map, t_trace *closest, float intensity);
 int 		calculate_shadow(t_map *map, t_trace *closest);
 int 		obscured(t_map *map, t_ray *ray, float max_dist);
+
+// controls.c
+
+// quaternions
+t_quaternion quaternion_from_axis_angle(t_float_3 axis, float angle);
+t_quaternion quaternion_normalize(t_quaternion q);
+t_quaternion quaternion_multiply(t_quaternion q1, t_quaternion q2);
+t_float_3 quaternion_rotate_vector(t_quaternion q, t_float_3 v);
 
 #endif
