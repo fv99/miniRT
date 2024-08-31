@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/25 15:08:19 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:26:02 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,8 +236,8 @@ typedef struct s_obj
 // used in cylinder intersection function
 //
 // oc = vector from ray origin to cylinder base
-// d = direction vector of the ray
-// a = normalized axis direction vector of cylinder
+// dir_vec = direction vector of the ray
+// cyl_vec = normalized axis direction vector of cylinder
 // d_cross_a = cross product of d and cylinder axis
 // oc_cross_a = cross product of oc and cylinder axis
 // quad = coefficients of quadratic equation
@@ -249,17 +249,23 @@ typedef struct s_obj
 typedef struct s_cyl_intersect
 {
 	t_float_3		oc;
-	t_float_3		d;
-	t_float_3		a;
+	t_float_3		dir_vec;
+	t_float_3		cyl_vec;
 	t_float_3		d_cross_a;
 	t_float_3		oc_cross_a;
 	t_float_3		quad;
 	t_float_3		hit_point;
 	t_float_3		hit_base;
+	float			a;
+	float			b;
+	float			c;
 	float			t0;
 	float			t1;
 	float			disc;
 	float			proj_l;
+	float			dia;
+	int				hit_cap;
+	int				hit_side;
 }	t_cyl_intersect;
 
 typedef struct s_ray
@@ -404,8 +410,13 @@ t_ray		throw_ray(t_map *map, t_float_3 vec);
 int			intersect(t_ray ray, t_obj *obj, float *t);
 int			sphere_intersect(t_ray ray, t_sp *sphere, float *t);
 int			plane_intersect(t_ray ray, t_pl *plane, float *t);
+
+// render_intersect_cylinders.c
 int			cylinder_intersect(t_ray ray, t_cy *cylinder, float *t);
 int			is_valid_intersect(t_cyl_intersect *vars, t_cy *cylinder, t_ray ray, float *t);
+int 		hit_cyl_side(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t);
+int 		hit_cyl_cap(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t);
+int 		intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, float *t);
 
 // render_illuminate.c
 void    	illuminate(t_map *map, t_trace *closest);
