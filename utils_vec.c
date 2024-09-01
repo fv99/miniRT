@@ -36,6 +36,12 @@ t_float_3   vec_div(t_float_3 a, float b)
     return (t_float_3){a.x / b, a.y / b, a.z / b};
 }
 
+// scales a vector by a scalar value
+t_float_3 vec_scale(t_float_3 v, float scalar)
+{
+    return (t_float_3){v.x * scalar, v.y * scalar, v.z * scalar};
+}
+
 // calculates the magnitude of a vector
 float       vec_length(t_float_3 vec)
 {

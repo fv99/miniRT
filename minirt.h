@@ -320,6 +320,13 @@ int		handle_keypress(int keysym, t_win *win);
 int		handle_destroy_notify(t_win *win);
 int		print_controls(t_win *win);
 
+// quaternions
+t_quaternion	quaternion_from_axis_angle(t_float_3 axis, float angle);
+t_quaternion	quaternion_normalize(t_quaternion q);
+t_quaternion	quaternion_multiply(t_quaternion q1, t_quaternion q2);
+t_float_3 		quaternion_rotate_vector(t_quaternion q, t_float_3 v);
+void			perform_rotation(t_cy *cylinder, t_quaternion q);
+
 // parser.c
 t_map   *parser(char *filename);
 char 	*sanitize(char *line);
@@ -348,8 +355,7 @@ int		is_ulong(char *str);
 // utils_parser.c
 int 	open_file(char *filename);
 int		is_rt_file(char *filename);
-int 	rgb_to_hex(int r, int g, int b);
-void add_object(t_map *map, t_obj_type type, void *object, int col);
+void	add_object(t_map *map, t_obj_type type, void *object, int col);
 
 // utils_array.c
 void	free_array(char **arr);
@@ -372,6 +378,7 @@ t_float_3	vec_add(t_float_3 a, t_float_3 b);
 t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
 float 		vec_length(t_float_3 vec);
+t_float_3	vec_scale(t_float_3 v, float scalar); // mozna nebudu potrebovat nakonec, jeste uvidim
 
 
 // utils_vec2.c
@@ -424,12 +431,5 @@ int 		diffuse(t_map *map, t_trace *closest, float intensity);
 int 		calculate_shadow(t_map *map, t_trace *closest);
 int 		obscured(t_map *map, t_ray *ray, float max_dist);
 
-// controls.c
-
-// quaternions
-t_quaternion quaternion_from_axis_angle(t_float_3 axis, float angle);
-t_quaternion quaternion_normalize(t_quaternion q);
-t_quaternion quaternion_multiply(t_quaternion q1, t_quaternion q2);
-t_float_3 quaternion_rotate_vector(t_quaternion q, t_float_3 v);
 
 #endif
