@@ -80,18 +80,35 @@ t_float_3 quaternion_rotate_vector(t_quaternion q, t_float_3 v)
 
 void perform_rotation(t_cy *cylinder, t_quaternion q)
 {
-    // Rotate the vector
-    t_float_3 vec = cylinder->vec;
-    printf("initial vector: (%f, %f, %f)\n", vec.x, vec.y, vec.z);
-    vec = quaternion_rotate_vector(q, vec);
-    cylinder->vec = vec;
-    printf("Updated vector: (%f, %f, %f)\n", vec.x, vec.y, vec.z);
+    // Normalizing the quaternion to avoid any distortion due to numerical errors
+	// maybe delete this
+    q = quaternion_normalize(q);
 
-    // Keep the position unchanged
-    t_float_3 pos = cylinder->pos;
-    printf("initial position: (%f, %f, %f)\n", pos.x, pos.y, pos.z);
-    cylinder->pos = pos;
-    printf("Updated position: (%f, %f, %f)\n", pos.x, pos.y, pos.z);
+    // Calculating the center of the cylinder
+    t_float_3 center;
+    center.x = cylinder->pos.x + (cylinder->vec.x * (cylinder->hth / 2.0f));
+    center.y = cylinder->pos.y + (cylinder->vec.y * (cylinder->hth / 2.0f));
+    center.z = cylinder->pos.z + (cylinder->vec.z * (cylinder->hth / 2.0f));
+
+    printf("Center of cylinder: (%f, %f, %f)\n", center.x, center.y, center.z);
+
+    // Rotating the direction vector using the quaternion
+    t_float_3 rotated_vec = quaternion_rotate_vector(q, cylinder->vec);
+
+    printf("Rotated vector: (%f, %f, %f)\n", rotated_vec.x, rotated_vec.y, rotated_vec.z);
+
+    // Recomputing the position to ensure the center remains stable
+    t_float_3 new_pos;
+    new_pos.x = center.x - (rotated_vec.x * (cylinder->hth / 2.0f));
+    new_pos.y = center.y - (rotated_vec.y * (cylinder->hth / 2.0f));
+    new_pos.z = center.z - (rotated_vec.z * (cylinder->hth / 2.0f));
+
+    // Updating the cylinder's vector and position
+    cylinder->vec = rotated_vec;
+    cylinder->pos = new_pos;
+
+    printf("Updated vector: (%f, %f, %f)\n", rotated_vec.x, rotated_vec.y, rotated_vec.z);
+    printf("Updated position: (%f, %f, %f)\n", cylinder->pos.x, cylinder->pos.y, cylinder->pos.z);
 }
 
 // arrow keys and m,n (z axis) to rotate objects
