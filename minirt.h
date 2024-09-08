@@ -74,6 +74,7 @@ enum e_keycodes
     KEY_7 = 55,
     KEY_8 = 56,
     KEY_9 = 57,
+	KEY_COMMA = 44,
 };
 
 #elif __APPLE__
@@ -128,6 +129,7 @@ enum e_keycodes
     KEY_7 = 26,
     KEY_8 = 28,
     KEY_9 = 25,
+	KEY_COMMA = 43,
 };
 
 #endif
@@ -332,6 +334,8 @@ int		handle_keypress(int keysym, t_win *win);
 int		handle_destroy_notify(t_win *win);
 int		print_controls(t_win *win);
 void	perform_camera_rotation(t_win *win, t_quaternion q);
+void	perform_plane_rotation(t_pl *plane, t_quaternion q);
+void	perform_cylinder_rotation(t_cy *cylinder, t_quaternion q);
 
 // quaternions
 t_quaternion	quaternion_from_axis_angle(t_float_3 axis, float angle);

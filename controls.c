@@ -78,7 +78,7 @@ t_float_3 quaternion_rotate_vector(t_quaternion q, t_float_3 v)
 	return (t_float_3){q_result.x, q_result.y, q_result.z};
 }
 
-void perform_rotation(t_cy *cylinder, t_quaternion q)
+void perform_cylinder_rotation(t_cy *cylinder, t_quaternion q)
 {
     // Normalizing the quaternion to avoid any distortion due to numerical errors
 	// maybe delete this
@@ -109,6 +109,15 @@ void perform_rotation(t_cy *cylinder, t_quaternion q)
 
     printf("Updated vector: (%f, %f, %f)\n", rotated_vec.x, rotated_vec.y, rotated_vec.z);
     printf("Updated position: (%f, %f, %f)\n", cylinder->pos.x, cylinder->pos.y, cylinder->pos.z);
+}
+
+void perform_plane_rotation(t_pl *plane, t_quaternion q)
+{
+    // Rotate the plane's normal vector
+    t_float_3 rotated_vec = quaternion_rotate_vector(q, plane->vec);
+
+    // Update the plane's normal vector
+    plane->vec = rotated_vec;
 }
 
 void perform_camera_rotation(t_win *win, t_quaternion q)
@@ -154,7 +163,7 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
@@ -171,7 +180,7 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
@@ -188,7 +197,7 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
@@ -205,12 +214,12 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
 	}
-	else if (keysym == KEY_M)
+	else if (keysym == KEY_DOT)
 	{
 		obj = win->map->objects;
 		while (obj)
@@ -222,12 +231,12 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
 	}
-	else if (keysym == KEY_N)
+	else if (keysym == KEY_COMMA)
 	{
 		obj = win->map->objects;
 		while (obj)
@@ -239,16 +248,45 @@ int handle_keypress(int keysym, t_win *win)
 
 				// Perform rotation
 				t_cy *cylinder = (t_cy *)obj->object;
-				perform_rotation(cylinder, q);
+				perform_cylinder_rotation(cylinder, q);
 			}
 			obj = obj->next;
 		}
 	}
+	// basically full rotation for the plane
+	// remember to change the cylinder section in a similar manner
+	else if (keysym == KEY_Z || keysym == KEY_X || keysym == KEY_C || keysym == KEY_V || keysym == KEY_B || keysym == KEY_N)
+    {
+        obj = win->map->objects;
+        while (obj)
+        {
+            if (obj->type == PLANE)
+            {
+                if (keysym == KEY_Z)
+                    axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
+                else if (keysym == KEY_X)
+                    axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
+                else if (keysym == KEY_C)
+                    axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
+                else if (keysym == KEY_V)
+                    axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
+                else if (keysym == KEY_B)
+                    axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
+                else if (keysym == KEY_N)
+                    axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
+
+                q = quaternion_from_axis_angle(axis, angle);
+
+                // Perform rotation
+                t_pl *plane = (t_pl *)obj->object;
+                perform_plane_rotation(plane, q);
+            }
+            obj = obj->next;
+        }
+    }
 	// translation section
 	else if (keysym == KEY_W)
 	{
-		// win->map->cam.vec.y -= 0.1;
-		// win->map->light.pos.y -= 5.0;
 		obj = win->map->objects;
 		while (obj)
 		{
@@ -263,8 +301,6 @@ int handle_keypress(int keysym, t_win *win)
 	}
 	else if (keysym == KEY_S)
 	{
-		// win->map->cam.vec.y += 0.1;
-		// win->map->light.pos.y += 5.0;
 		obj = win->map->objects;
 		while (obj)
 		{
@@ -279,8 +315,6 @@ int handle_keypress(int keysym, t_win *win)
 	}
 	else if (keysym == KEY_A)
 	{
-		// win->map->cam.vec.x -= 0.1;
-		// win->map->light.pos.x -= 0.1;
 		obj = win->map->objects;
 		while (obj)
 		{
@@ -295,8 +329,6 @@ int handle_keypress(int keysym, t_win *win)
 	}
 	else if (keysym == KEY_D)
 	{
-		// win->map->cam.vec.x += 0.1;
-		// win->map->light.pos.x += 0.1;
 		obj = win->map->objects;
 		while (obj)
 		{
@@ -311,8 +343,6 @@ int handle_keypress(int keysym, t_win *win)
 	}
 	else if (keysym == KEY_Q)
 	{
-		// win->map->cam.vec.z -= 0.1;
-		// win->map->light.pos.z -= 0.1;
 		obj = win->map->objects;
 		while (obj)
 		{
@@ -327,8 +357,6 @@ int handle_keypress(int keysym, t_win *win)
 	}
 	else if (keysym == KEY_E)
 	{
-		// win->map->cam.vec.z += 0.1;
-		// win->map->light.pos.z += 0.1;
 		obj = win->map->objects;
 		while (obj)
 		{
