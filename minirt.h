@@ -68,6 +68,12 @@ enum e_keycodes
 	KEY_SEMI_COLON = 59,
 	KEY_COMMAND = 65507,
 	KEY_BACKSPACE = 65288,
+	KEY_4 = 52,
+    KEY_5 = 53,
+    KEY_6 = 54,
+    KEY_7 = 55,
+    KEY_8 = 56,
+    KEY_9 = 57,
 };
 
 #elif __APPLE__
@@ -116,6 +122,12 @@ enum e_keycodes
 	KEY_SEMI_COLON = 41,
 	KEY_COMMAND = 259,
 	KEY_BACKSPACE = 51,
+	KEY_4 = 21,
+    KEY_5 = 23,
+    KEY_6 = 22,
+    KEY_7 = 26,
+    KEY_8 = 28,
+    KEY_9 = 25,
 };
 
 #endif
@@ -319,6 +331,7 @@ typedef struct s_win
 int		handle_keypress(int keysym, t_win *win);
 int		handle_destroy_notify(t_win *win);
 int		print_controls(t_win *win);
+void	perform_camera_rotation(t_win *win, t_quaternion q);
 
 // quaternions
 t_quaternion	quaternion_from_axis_angle(t_float_3 axis, float angle);

@@ -111,6 +111,24 @@ void perform_rotation(t_cy *cylinder, t_quaternion q)
     printf("Updated position: (%f, %f, %f)\n", cylinder->pos.x, cylinder->pos.y, cylinder->pos.z);
 }
 
+void perform_camera_rotation(t_win *win, t_quaternion q)
+{
+    // Normalizing the quaternion to avoid any distortion due to numerical errors
+	// might not be needed
+    q = quaternion_normalize(q);
+
+    // Rotate the camera vector
+    win->map->cam.vec = quaternion_rotate_vector(q, win->map->cam.vec);
+
+    // Recalculate the right and up vectors
+    t_float_3 vec_right = vec_normalize(vec_cross(win->map->cam.vec, UP_VECTOR));
+    t_float_3 vec_up = vec_normalize(vec_cross(vec_right, win->map->cam.vec));
+
+    // Update the camera's right and up vectors in the map
+    win->map->vec_right = vec_right;
+    win->map->vec_up = vec_up;
+}
+
 // arrow keys and m,n (z axis) to rotate objects
 // WASDQE to move objects
 // rotation section
@@ -351,5 +369,42 @@ int handle_keypress(int keysym, t_win *win)
 		win->map->cam.pos.z -= 0.1;
 	else if (keysym == KEY_Y)
 		win->map->cam.pos.z += 0.1;
+	// camera rotation
+    else if (keysym == KEY_4)
+    {
+        axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
+    else if (keysym == KEY_5)
+    {
+        axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
+    else if (keysym == KEY_6)
+    {
+        axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
+    else if (keysym == KEY_7)
+    {
+        axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
+    else if (keysym == KEY_8)
+    {
+        axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
+    else if (keysym == KEY_9)
+    {
+        axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
+        q = quaternion_from_axis_angle(axis, angle);
+        perform_camera_rotation(win, q);
+    }
 	return (0);
 }
