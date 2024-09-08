@@ -90,12 +90,8 @@ void perform_cylinder_rotation(t_cy *cylinder, t_quaternion q)
     center.y = cylinder->pos.y + (cylinder->vec.y * (cylinder->hth / 2.0f));
     center.z = cylinder->pos.z + (cylinder->vec.z * (cylinder->hth / 2.0f));
 
-    printf("Center of cylinder: (%f, %f, %f)\n", center.x, center.y, center.z);
-
     // Rotating the direction vector using the quaternion
     t_float_3 rotated_vec = quaternion_rotate_vector(q, cylinder->vec);
-
-    printf("Rotated vector: (%f, %f, %f)\n", rotated_vec.x, rotated_vec.y, rotated_vec.z);
 
     // Recomputing the position to ensure the center remains stable
     t_float_3 new_pos;
@@ -106,9 +102,6 @@ void perform_cylinder_rotation(t_cy *cylinder, t_quaternion q)
     // Updating the cylinder's vector and position
     cylinder->vec = rotated_vec;
     cylinder->pos = new_pos;
-
-    printf("Updated vector: (%f, %f, %f)\n", rotated_vec.x, rotated_vec.y, rotated_vec.z);
-    printf("Updated position: (%f, %f, %f)\n", cylinder->pos.x, cylinder->pos.y, cylinder->pos.z);
 }
 
 void perform_plane_rotation(t_pl *plane, t_quaternion q)
@@ -118,6 +111,70 @@ void perform_plane_rotation(t_pl *plane, t_quaternion q)
 
     // Update the plane's normal vector
     plane->vec = rotated_vec;
+}
+
+void rotate_object(t_obj *obj, t_quaternion q)
+{
+	if (obj->type == CYLINDER)
+	{
+		t_cy *cylinder = (t_cy *)obj->object;
+		perform_cylinder_rotation(cylinder, q);
+	}
+	else if (obj->type == PLANE)
+	{
+		t_pl *plane = (t_pl *)obj->object;
+		perform_plane_rotation(plane, q);
+	}
+}
+
+void translate_object(t_obj *obj, float translation, char axis)
+{
+    if (axis == 'x')
+        translate_object_x(obj, translation);
+    else if (axis == 'y')
+        translate_object_y(obj, translation);
+    else if (axis == 'z')
+        translate_object_z(obj, translation);
+}
+
+void translate_object_x(t_obj *obj, float translation)
+{
+	if (obj->type == SPHERE)
+		((t_sp *)obj->object)->pos.x += translation;
+	else if (obj->type == PLANE)
+		((t_pl *)obj->object)->pos.x += translation;
+	else if (obj->type == CYLINDER)
+		((t_cy *)obj->object)->pos.x += translation;
+}
+
+void translate_object_y(t_obj *obj, float translation)
+{
+	if (obj->type == SPHERE)
+		((t_sp *)obj->object)->pos.y += translation;
+	else if (obj->type == PLANE)
+		((t_pl *)obj->object)->pos.y += translation;
+	else if (obj->type == CYLINDER)
+		((t_cy *)obj->object)->pos.y += translation;
+}
+
+void translate_object_z(t_obj *obj, float translation)
+{
+	if (obj->type == SPHERE)
+		((t_sp *)obj->object)->pos.z += translation;
+	else if (obj->type == PLANE)
+		((t_pl *)obj->object)->pos.z += translation;
+	else if (obj->type == CYLINDER)
+		((t_cy *)obj->object)->pos.z += translation;
+}
+
+void translate_objects(t_win *win, float translation, char axis)
+{
+    t_obj *obj = win->map->objects;
+    while (obj)
+    {
+        translate_object(obj, translation, axis);
+        obj = obj->next;
+    }
 }
 
 void perform_camera_rotation(t_win *win, t_quaternion q)
@@ -138,301 +195,160 @@ void perform_camera_rotation(t_win *win, t_quaternion q)
     win->map->vec_up = vec_up;
 }
 
-// arrow keys and m,n (z axis) to rotate objects
+void rotate_cylinder(t_win *win, int keysym, float angle)
+{
+    t_quaternion q;
+    t_float_3 axis = {0.0, 0.0, 0.0};
+
+    if (keysym == KEY_UP)
+        axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
+    else if (keysym == KEY_DOWN)
+        axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
+    else if (keysym == KEY_LEFT)
+        axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
+    else if (keysym == KEY_RIGHT)
+        axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
+    else if (keysym == KEY_DOT)
+        axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
+    else if (keysym == KEY_COMMA)
+        axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
+
+    q = quaternion_from_axis_angle(axis, angle);
+
+    t_obj *obj = win->map->objects;
+    while (obj)
+    {
+        if (obj->type == CYLINDER)
+            rotate_object(obj, q);
+        obj = obj->next;
+    }
+}
+
+void rotate_plane(t_win *win, int keysym, float angle)
+{
+    t_quaternion q;
+    t_float_3 axis = {0.0, 0.0, 0.0};
+
+    if (keysym == KEY_Z)
+        axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
+    else if (keysym == KEY_X)
+        axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
+    else if (keysym == KEY_C)
+        axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
+    else if (keysym == KEY_V)
+        axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
+    else if (keysym == KEY_B)
+        axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
+    else if (keysym == KEY_N)
+        axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
+
+    q = quaternion_from_axis_angle(axis, angle);
+
+    t_obj *obj = win->map->objects;
+    while (obj)
+    {
+        if (obj->type == PLANE)
+            rotate_object(obj, q);
+        obj = obj->next;
+    }
+}
+
+void move_objects(t_win *win, int keysym)
+{
+    if (keysym == KEY_W)
+        translate_objects(win, 0.1, 'y');
+    else if (keysym == KEY_S)
+        translate_objects(win, -0.1, 'y');
+    else if (keysym == KEY_A)
+        translate_objects(win, -0.1, 'x');
+    else if (keysym == KEY_D)
+        translate_objects(win, 0.1, 'x');
+    else if (keysym == KEY_Q)
+        translate_objects(win, -0.1, 'z');
+    else if (keysym == KEY_E)
+        translate_objects(win, 0.1, 'z');
+}
+
+void move_light(t_win *win, int keysym)
+{
+    if (keysym == KEY_I)
+        win->map->light.pos.y += 0.1;
+    else if (keysym == KEY_K)
+        win->map->light.pos.y -= 0.1;
+    else if (keysym == KEY_J)
+        win->map->light.pos.x -= 0.1;
+    else if (keysym == KEY_L)
+        win->map->light.pos.x += 0.1;
+    else if (keysym == KEY_U)
+        win->map->light.pos.z -= 0.1;
+    else if (keysym == KEY_O)
+        win->map->light.pos.z += 0.1;
+}
+
+void move_camera(t_win *win, int keysym)
+{
+    if (keysym == KEY_T)
+        win->map->cam.pos.y -= 0.1;
+    else if (keysym == KEY_G)
+        win->map->cam.pos.y += 0.1;
+    else if (keysym == KEY_F)
+        win->map->cam.pos.x -= 0.1;
+    else if (keysym == KEY_H)
+        win->map->cam.pos.x += 0.1;
+    else if (keysym == KEY_R)
+        win->map->cam.pos.z -= 0.1;
+    else if (keysym == KEY_Y)
+        win->map->cam.pos.z += 0.1;
+}
+
+void rotate_camera(t_win *win, int keysym, float angle)
+{
+    t_float_3 axis = {0.0, 0.0, 0.0};
+    t_quaternion q;
+
+    if (keysym == KEY_4)
+        axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
+    else if (keysym == KEY_5)
+        axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
+    else if (keysym == KEY_6)
+        axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
+    else if (keysym == KEY_7)
+        axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
+    else if (keysym == KEY_8)
+        axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
+    else if (keysym == KEY_9)
+        axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
+
+    q = quaternion_from_axis_angle(axis, angle);
+    perform_camera_rotation(win, q);
+}
+
+// arrow keys and ,,. (z axis) to rotate cylinder
+// zxcvbn (z axis) to rotate plane
 // WASDQE to move objects
+// IKJLUIO to move light
+// TGHFYR to move camera
+// 456789 to rotate camera
+// ESC to exit
 // rotation section
-// TODO PLANES, fix the rotation so it actually rotates around the object's center
 int handle_keypress(int keysym, t_win *win)
 {
-	t_obj			*obj;
-	t_quaternion	q;
-	t_float_3		axis;
-	float angle = RADIANS(1); // 1 degrees rotation
+    float angle = RADIANS(1); // 1 degree rotation
 
-	if(keysym == KEY_ESC)
-		handle_destroy_notify(win);
-	else if (keysym == KEY_UP)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
-				q = quaternion_from_axis_angle(axis, angle);
+    if (keysym == KEY_ESC)
+        handle_destroy_notify(win);
+    else if (keysym == KEY_UP || keysym == KEY_DOWN || keysym == KEY_LEFT || keysym == KEY_RIGHT || keysym == KEY_DOT || keysym == KEY_COMMA)
+        rotate_cylinder(win, keysym, angle);
+    else if (keysym == KEY_Z || keysym == KEY_X || keysym == KEY_C || keysym == KEY_V || keysym == KEY_B || keysym == KEY_N)
+        rotate_plane(win, keysym, angle);
+    else if (keysym == KEY_W || keysym == KEY_S || keysym == KEY_A || keysym == KEY_D || keysym == KEY_Q || keysym == KEY_E)
+        move_objects(win, keysym);
+    else if (keysym == KEY_I || keysym == KEY_K || keysym == KEY_J || keysym == KEY_L || keysym == KEY_U || keysym == KEY_O)
+        move_light(win, keysym);
+    else if (keysym == KEY_T || keysym == KEY_G || keysym == KEY_F || keysym == KEY_H || keysym == KEY_R || keysym == KEY_Y)
+        move_camera(win, keysym);
+    else if (keysym == KEY_4 || keysym == KEY_5 || keysym == KEY_6 || keysym == KEY_7 || keysym == KEY_8 || keysym == KEY_9)
+        rotate_camera(win, keysym, angle);
 
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_DOWN)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
-				q = quaternion_from_axis_angle(axis, angle);
-
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_LEFT)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
-				q = quaternion_from_axis_angle(axis, angle);
-
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_RIGHT)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
-				q = quaternion_from_axis_angle(axis, angle);
-
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_DOT)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
-				q = quaternion_from_axis_angle(axis, angle);
-
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_COMMA)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == CYLINDER)
-			{
-				axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
-				q = quaternion_from_axis_angle(axis, angle);
-
-				// Perform rotation
-				t_cy *cylinder = (t_cy *)obj->object;
-				perform_cylinder_rotation(cylinder, q);
-			}
-			obj = obj->next;
-		}
-	}
-	// basically full rotation for the plane
-	// remember to change the cylinder section in a similar manner
-	else if (keysym == KEY_Z || keysym == KEY_X || keysym == KEY_C || keysym == KEY_V || keysym == KEY_B || keysym == KEY_N)
-    {
-        obj = win->map->objects;
-        while (obj)
-        {
-            if (obj->type == PLANE)
-            {
-                if (keysym == KEY_Z)
-                    axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
-                else if (keysym == KEY_X)
-                    axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
-                else if (keysym == KEY_C)
-                    axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
-                else if (keysym == KEY_V)
-                    axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
-                else if (keysym == KEY_B)
-                    axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
-                else if (keysym == KEY_N)
-                    axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
-
-                q = quaternion_from_axis_angle(axis, angle);
-
-                // Perform rotation
-                t_pl *plane = (t_pl *)obj->object;
-                perform_plane_rotation(plane, q);
-            }
-            obj = obj->next;
-        }
-    }
-	// translation section
-	else if (keysym == KEY_W)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.y -= 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.y -= 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.y -= 0.1;
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_S)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.y += 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.y += 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.y += 0.1;
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_A)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.x -= 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.x -= 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.x -= 0.1;
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_D)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.x += 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.x += 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.x += 0.1;
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_Q)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.z -= 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.z -= 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.z -= 0.1;
-			obj = obj->next;
-		}
-	}
-	else if (keysym == KEY_E)
-	{
-		obj = win->map->objects;
-		while (obj)
-		{
-			if (obj->type == SPHERE)
-				((t_sp *)obj->object)->pos.z += 0.1;
-			else if (obj->type == PLANE)
-				((t_pl *)obj->object)->pos.z += 0.1;
-			else if (obj->type == CYLINDER)
-				((t_cy *)obj->object)->pos.z += 0.1;
-			obj = obj->next;
-		}
-	}
-	
-	// light movement
-	else if (keysym == KEY_I)
-		win->map->light.pos.y -= 0.1;
-	else if (keysym == KEY_K)
-		win->map->light.pos.y += 0.1;
-	else if (keysym == KEY_J)
-		win->map->light.pos.x -= 0.1;
-	else if (keysym == KEY_L)
-		win->map->light.pos.x += 0.1;
-	else if (keysym == KEY_U)
-		win->map->light.pos.z -= 0.1;
-	else if (keysym == KEY_O)
-		win->map->light.pos.z += 0.1;
-
-	// camera movement
-	else if (keysym == KEY_T)
-		win->map->cam.pos.y -= 0.1;
-	else if (keysym == KEY_G)
-		win->map->cam.pos.y += 0.1;
-	else if (keysym == KEY_F)
-		win->map->cam.pos.x -= 0.1;
-	else if (keysym == KEY_H)
-		win->map->cam.pos.x += 0.1;
-	else if (keysym == KEY_R)
-		win->map->cam.pos.z -= 0.1;
-	else if (keysym == KEY_Y)
-		win->map->cam.pos.z += 0.1;
-	// camera rotation
-    else if (keysym == KEY_4)
-    {
-        axis = (t_float_3){1.0, 0.0, 0.0}; // Rotate around x-axis
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-    else if (keysym == KEY_5)
-    {
-        axis = (t_float_3){-1.0, 0.0, 0.0}; // Rotate around x-axis in the opposite direction
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-    else if (keysym == KEY_6)
-    {
-        axis = (t_float_3){0.0, 1.0, 0.0}; // Rotate around y-axis
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-    else if (keysym == KEY_7)
-    {
-        axis = (t_float_3){0.0, -1.0, 0.0}; // Rotate around y-axis in the opposite direction
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-    else if (keysym == KEY_8)
-    {
-        axis = (t_float_3){0.0, 0.0, 1.0}; // Rotate around z-axis
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-    else if (keysym == KEY_9)
-    {
-        axis = (t_float_3){0.0, 0.0, -1.0}; // Rotate around z-axis in the opposite direction
-        q = quaternion_from_axis_angle(axis, angle);
-        perform_camera_rotation(win, q);
-    }
-	return (0);
+    return (0);
 }
