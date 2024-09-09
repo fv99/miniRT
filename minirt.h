@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/31 16:26:02 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:56:10 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <X11/keysym.h>
 
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 enum e_keycodes
 {
@@ -141,7 +142,7 @@ enum e_keycodes
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.01, 0.01, 0.01}
+# define VEC_MINFLOAT (t_float_3){0.0001, 0.0001, 0.0001}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
@@ -406,7 +407,6 @@ t_float_3	vec_sub(t_float_3 a, t_float_3 b);
 t_float_3	vec_add(t_float_3 a, t_float_3 b);
 t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
-float 		vec_length(t_float_3 vec);
 t_float_3	vec_scale(t_float_3 v, float scalar); // mozna nebudu potrebovat nakonec, jeste uvidim
 
 
@@ -416,6 +416,10 @@ t_float_3	vec_normalize(t_float_3 v);
 t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
 int 		is_zero_vector(t_float_3 vec);
 float		vec_cos(t_float_3 a, t_float_3 b);
+
+// utils_vec3.c
+t_float_3 vec_negate(t_float_3 vec);
+float 		vec_length(t_float_3 vec);
 
 // utils_win.c
 int			ambient_lum(t_map *map);
@@ -432,10 +436,15 @@ int 		add_colors(int col1, int col2);
 int 		color_multiply(int color, float ratio);
 
 // render.c
-t_float_3	calculate_normal(t_obj *object, t_float_3 hit_point);
 t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object);
 void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
+
+// render_normal.c
+t_float_3 sphere_normal(t_trace *inter, t_ray ray);
+t_float_3 cylinder_normal(t_trace *inter, t_ray ray);
+t_float_3 plane_normal(t_trace *inter, t_ray ray);
+t_float_3 shape_normal(t_trace *inter, t_ray ray);
 
 // render_view.c
 void        camera_init(t_map *map);

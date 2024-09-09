@@ -6,7 +6,7 @@
 #    By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 18:06:10 by fvonsovs          #+#    #+#              #
-#    Updated: 2024/08/31 16:19:32 by fvonsovs         ###   ########.fr        #
+#    Updated: 2024/09/09 12:46:18 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g
 NAME		=	miniRT
 SRCS		=	minirt.c controls.c parser.c parser_scene.c parser_objects.c \
 				utils_tests.c utils_mem.c utils_number.c utils_parser.c utils_array.c \
-				utils_vec.c utils_vec2.c utils_win.c render_intersects.c render_intersect_cylinder.c \
-				utils_col.c utils_col2.c render.c render_view.c render_illumination.c
+				utils_vec.c utils_vec2.c utils_vec3.c utils_win.c render_intersects.c render_intersect_cylinder.c \
+				utils_col.c utils_col2.c render.c render_normal.c render_view.c render_illumination.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cq
 RM			=	rm -f

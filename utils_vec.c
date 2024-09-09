@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:30:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 20:55:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:33:03 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,4 @@ t_float_3   vec_div(t_float_3 a, float b)
 t_float_3 vec_scale(t_float_3 v, float scalar)
 {
     return (t_float_3){v.x * scalar, v.y * scalar, v.z * scalar};
-}
-
-// calculates the magnitude of a vector
-float       vec_length(t_float_3 vec)
-{
-    return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }

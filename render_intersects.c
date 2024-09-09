@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/31 16:18:51 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:38:13 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ int	plane_intersect(t_ray ray, t_pl *plane, float *t)
 		vec = vec_sub(plane->pos, ray.orig);
 		num = vec_dot(vec, plane->vec);
 		*t = num / denom;
-		if (*t >= 0)
-			return (1);
+		return (*t >= 1e-6);
 	}
 	return (0);
 }

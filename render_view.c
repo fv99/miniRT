@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 13:38:30 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/22 20:53:59 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:19:07 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ void camera_init(t_map *map)
     if (is_zero_vector(map->cam.vec))
         map->cam.vec = (t_float_3){0.0f, 0.0f, -1.0f};
     map->aspect_ratio = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
-    map->width = tan(RADIANS(map->cam.fov / 2.0));
+    map->width = tan(RADIANS(map->cam.fov / 2.0));      
     map->height = map->width / map->aspect_ratio;
-
     map->vec_right = vec_normalize(vec_cross(map->cam.vec, UP_VECTOR));
     map->vec_up = vec_normalize(vec_cross(map->vec_right, map->cam.vec));
-    map->vec_right = vec_normalize(vec_cross(map->cam.vec, map->vec_up));
 }
+
 
 
 // converts pixel position into 3d point on a normalized plane
