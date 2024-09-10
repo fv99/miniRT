@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 15:03:14 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:12:21 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ enum e_keycodes
 
 // vector macros
 # define UP_VECTOR	(t_float_3){0.0, -1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.005, 0.005, 0.005}
+# define VEC_MINFLOAT (t_float_3){0.0001, 0.0001, 0.0001}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
@@ -441,7 +441,7 @@ void		render_ray(t_win *win, int x, int y);
 int			render(t_win *win);
 
 // render_normal.c
-t_float_3 sphere_normal(t_trace *inter, t_ray ray);
+t_float_3 sphere_normal(t_trace *inter);
 t_float_3 cylinder_normal(t_trace *inter, t_ray ray);
 t_float_3 plane_normal(t_trace *inter, t_ray ray);
 t_float_3 shape_normal(t_trace *inter, t_ray ray);

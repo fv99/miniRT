@@ -6,23 +6,20 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 12:40:21 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/09 12:52:29 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:13:24 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_float_3 sphere_normal(t_trace *inter, t_ray ray)
+t_float_3 sphere_normal(t_trace *inter)
 {
-    t_float_3 point;
     t_float_3 normal;
     t_sp *sphere;
 
     sphere = (t_sp *)inter->hit_object.object;
-    point = vec_add(ray.orig, vec_mul(ray.dir, inter->t));
-    normal = vec_sub(point, sphere->pos);
-
-    return vec_normalize(normal);
+    normal = vec_sub(inter->hit_point, sphere->pos);
+    return (normal);
 }
 
 t_float_3 cylinder_normal(t_trace *inter, t_ray ray)
@@ -34,7 +31,7 @@ t_float_3 cylinder_normal(t_trace *inter, t_ray ray)
     cylinder = (t_cy *)inter->hit_object.object;
     point = vec_add(ray.orig, vec_mul(ray.dir, inter->t));
     normal = vec_sub(point, cylinder->pos);
-    return vec_normalize(normal);
+    return (normal);
 }
 
 t_float_3 plane_normal(t_trace *inter, t_ray ray)
@@ -58,7 +55,7 @@ t_float_3 shape_normal(t_trace *inter, t_ray ray)
     if (inter->hit_object.type == PLANE)
         return plane_normal(inter, ray);
     else if (inter->hit_object.type == SPHERE)
-        return sphere_normal(inter, ray);
+        return sphere_normal(inter);
     else
         return cylinder_normal(inter, ray);
 }

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 15:02:11 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:09:57 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@ int sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 		return (0);
 	vars.t0 = (-vars.b - sqrt(vars.disc)) / (2.0 * vars.a);
 	vars.t1 = (-vars.b + sqrt(vars.disc)) / (2.0 * vars.a);
-	if (vars.t0 > 1e-6)
-		*t = vars.t0;
-	else if (vars.t1 > 1e-6)
-		*t = vars.t1;
-	else
-		return (0);
-	return (1);
+	if (vars.t0 > 1e-6 || vars.t1 > 1e-6)
+	{
+		if (vars.t0 > 1e-6)
+			*t = vars.t0;
+		else
+			*t = vars.t1;
+		return (*t);
+	}
+	return (0);
 }
 
 // calculates dot product between ray direction and plane normal

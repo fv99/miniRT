@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:13:34 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/09 12:54:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:15:45 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int diffuse(t_map *map, t_trace *closest, float intensity)
 
     light_dir = vec_sub(map->light.pos, closest->hit_point);
     attenuation = MIN(1.0, 90.0 / vec_length(light_dir));
-    cos_angle = MAX(0.0, vec_cos(closest->normal, light_dir));
+    cos_angle = vec_cos(closest->normal, light_dir);
     ratio = intensity * cos_angle * attenuation;
     ret = color_multiply(closest->color, ratio);
     return (ret);
@@ -46,10 +46,10 @@ int calculate_shadow(t_map *map, t_trace *closest)
     float       dist;
 
     light_dir = vec_sub(map->light.pos, closest->hit_point);
-    dist = vec_length(light_dir) + 0.01;
+    dist = vec_length(light_dir);
     ray.orig = vec_add(closest->hit_point, VEC_MINFLOAT);
     ray.dir = vec_normalize(light_dir);
-    return (obscured(map, &ray, (float)dist));
+    return (obscured(map, &ray, dist));
 }
 
 int obscured(t_map *map, t_ray *ray, float max_dist)
