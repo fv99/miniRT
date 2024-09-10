@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/09 12:56:10 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:03:14 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ enum e_keycodes
 # define DEGREES(rad) ((rad * 180.0f) / PI)
 
 // vector macros
-# define UP_VECTOR	(t_float_3){0.0, 1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.0001, 0.0001, 0.0001}
+# define UP_VECTOR	(t_float_3){0.0, -1.0, 0.0}
+# define VEC_MINFLOAT (t_float_3){0.005, 0.005, 0.005}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280

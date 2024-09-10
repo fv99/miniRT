@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/09 12:38:13 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:02:11 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,31 @@ int	intersect(t_ray ray, t_obj *obj, float *t)
 
 // calculate vector from ray origin to sphere center
 // calculate quadratic equation coeffivarsents
-// calculates vars.discriminant to see if intersects
+// calculates vars.disc to see if intersects
 // calculates two possible solutions intersection points
 // finds the correct intersection point (smallest distance *t)
-int		sphere_intersect(t_ray ray, t_sp *sphere, float *t)
+int sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 {
-    t_float_3 oc = vec_sub(ray.orig, sphere->pos);
-    float a = vec_dot(ray.dir, ray.dir);
-    float b = 2.0f * vec_dot(oc, ray.dir);
-    float c = vec_dot(oc, oc) - (sphere->dia / 2) * (sphere->dia / 2);
-    float discriminant = b * b - 4 * a * c;
-    if (discriminant < 0)
-        return 0;
-    else
-    {
-        float sqrt_disc = sqrt(discriminant);
-        float t0 = (-b - sqrt_disc) / (2.0f * a);
-        float t1 = (-b + sqrt_disc) / (2.0f * a);
-        if (t0 > 0)
-            *t = t0;
-        else if (t1 > 0)
-            *t = t1;
-        else
-            return (0);
-        return (1);
-    }
+	t_cyl_intersect vars;
+	float radius;
+	
+	radius = sphere->dia / 2.0;
+	vars.oc = vec_sub(ray.orig, sphere->pos);
+	vars.a = vec_dot(ray.dir, ray.dir);
+	vars.b = 2.0 * vec_dot(vars.oc, ray.dir);
+	vars.c = vec_dot(vars.oc, vars.oc) - (radius * radius);
+	vars.disc = (vars.b * vars.b) - (4 * vars.a * vars.c);
+	if (vars.disc < 0)
+		return (0);
+	vars.t0 = (-vars.b - sqrt(vars.disc)) / (2.0 * vars.a);
+	vars.t1 = (-vars.b + sqrt(vars.disc)) / (2.0 * vars.a);
+	if (vars.t0 > 1e-6)
+		*t = vars.t0;
+	else if (vars.t1 > 1e-6)
+		*t = vars.t1;
+	else
+		return (0);
+	return (1);
 }
 
 // calculates dot product between ray direction and plane normal
