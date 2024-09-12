@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:39:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 20:59:33 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // returns open file descriptor - manually close after!
-int open_file(char *filename)
+int	open_file(char *filename)
 {
-    int fd;
+	int	fd;
 
-    fd = open(filename, O_RDONLY);
-    if (fd < 0)
-        error_throw("Cannot open file");
-    if (!is_rt_file(filename))
-        error_throw("Not an .rt file");
-    return(fd);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		error_throw("Cannot open file");
+	if (!is_rt_file(filename))
+		error_throw("Not an .rt file");
+	return (fd);
 }
 
 int	is_rt_file(char *filename)
@@ -35,13 +35,15 @@ int	is_rt_file(char *filename)
 	return (0);
 }
 
-void add_object(t_map *map, t_obj_type type, void *object, int col)
+void	add_object(t_map *map, t_obj_type type, void *object, int col)
 {
-    t_obj *new_obj = malloc(sizeof(t_obj));
-    new_obj->type = type;
-    new_obj->object = object;
-    new_obj->color = col;
-    new_obj->next = map->objects;
-    new_obj->id = rand();
-    map->objects = new_obj;
+	t_obj	*new_obj;
+
+	new_obj = malloc(sizeof(t_obj));
+	new_obj->type = type;
+	new_obj->object = object;
+	new_obj->color = col;
+	new_obj->next = map->objects;
+	new_obj->id = rand();
+	map->objects = new_obj;
 }

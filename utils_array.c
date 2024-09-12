@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_array.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 20:31:29 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/06/13 16:12:52 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:18:43 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_array(char **arr)
 		ft_putendl_fd(arr[i++], 1);
 }
 
-int		array_length(char **arr)
+int	array_length(char **arr)
 {
 	int	i;
 

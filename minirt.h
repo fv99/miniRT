@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 14:21:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:18:01 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,14 @@ enum e_keycodes
 	KEY_COMMAND = 65507,
 	KEY_BACKSPACE = 65288,
 	KEY_4 = 52,
-    KEY_5 = 53,
-    KEY_6 = 54,
-    KEY_7 = 55,
-    KEY_8 = 56,
-    KEY_9 = 57,
+	KEY_5 = 53,
+	KEY_6 = 54,
+	KEY_7 = 55,
+	KEY_8 = 56,
+	KEY_9 = 57,
 	KEY_COMMA = 44,
+	KEY_NUMPAD_PLUS = 65451,
+	KEY_NUMPAD_MINUS = 65453,
 };
 
 #elif __APPLE__
@@ -127,12 +129,14 @@ enum e_keycodes
 	KEY_COMMAND = 259,
 	KEY_BACKSPACE = 51,
 	KEY_4 = 21,
-    KEY_5 = 23,
-    KEY_6 = 22,
-    KEY_7 = 26,
-    KEY_8 = 28,
-    KEY_9 = 25,
+	KEY_5 = 23,
+	KEY_6 = 22,
+	KEY_7 = 26,
+	KEY_8 = 28,
+	KEY_9 = 25,
 	KEY_COMMA = 43,
+	KEY_NUMPAD_PLUS = 69,
+	KEY_NUMPAD_MINUS = 78,
 };
 
 #endif
@@ -174,13 +178,13 @@ typedef struct s_int_3
 }	t_int_3;
 
 // introducing quarternions for rotation
-typedef struct s_quaternion
+typedef struct s_quat
 {
 	float w;
 	float x;
 	float y;
 	float z;
-} t_quaternion;
+} t_quat;
 
 // mandatory parts of scene below (only 1 per file)
 // ambient lighting, lum = brightness, col = color in hex format
@@ -341,31 +345,11 @@ typedef struct s_thread
 }	t_thread;
 
 // controls.c
-int		handle_keypress(int keysym, t_win *win);
-int		handle_destroy_notify(t_win *win);
-int		print_controls(t_win *win);
-void	perform_camera_rotation(t_win *win, t_quaternion q);
-void	perform_plane_rotation(t_pl *plane, t_quaternion q);
-void	perform_cylinder_rotation(t_cy *cylinder, t_quaternion q);
-void	rotate_object(t_obj *obj, t_quaternion q);
-void	translate_object_x(t_obj *obj, float translation);
-void	translate_object_y(t_obj *obj, float translation);
-void	translate_object_z(t_obj *obj, float translation);
-void	translate_object(t_obj *obj, float translation, char axis);
-void	translate_objects(t_win *win, float translation, char axis);
-void	rotate_cylinder(t_win *win, int keysym, float angle);
-void	rotate_plane(t_win *win, int keysym, float angle);
-void	move_objects(t_win *win, int keysym);
-void	move_light(t_win *win, int keysym);
-void	move_camera(t_win *win, int keysym);
-void	rotate_camera(t_win *win, int keysym, float angle);
-
-// quaternions
-t_quaternion	quaternion_from_axis_angle(t_float_3 axis, float angle);
-t_quaternion	quaternion_normalize(t_quaternion q);
-t_quaternion	quaternion_multiply(t_quaternion q1, t_quaternion q2);
-t_float_3 		quaternion_rotate_vector(t_quaternion q, t_float_3 v);
-void			perform_rotation(t_cy *cylinder, t_quaternion q);
+int			handle_keypress(int keysym, t_win *win);
+void		handle_keypress_with_angle(int keysym, t_win *win);
+void		handle_keypress_without_angle(int keysym, t_win *win);
+int			handle_destroy_notify(t_win *win);
+int			print_controls(t_win *win);
 
 // parser.c
 t_map		*parser(char *filename);
@@ -408,7 +392,7 @@ int			test_map(int fd);
 int			test_parser(t_map *map);
 
 // utils_mem.c
-t_map		*malloc_map();
+t_map		*malloc_map(void);
 void		free_objects(t_obj *objects);
 int			error_throw(char *msg);
 
@@ -417,7 +401,7 @@ t_float_3	vec_sub(t_float_3 a, t_float_3 b);
 t_float_3	vec_add(t_float_3 a, t_float_3 b);
 t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
-t_float_3	vec_scale(t_float_3 v, float scalar); // mozna nebudu potrebovat nakonec, jeste uvidim
+t_float_3	vec_scale(t_float_3 v, float scalar); // mozna delete
 
 
 // utils_vec2.c
@@ -480,5 +464,42 @@ int 		diffuse(t_map *map, t_trace *closest, float intensity);
 int 		calculate_shadow(t_map *map, t_trace *closest);
 int 		obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
 
+// translate_object.c
+void		translate_object_x(t_obj *obj, float translation);
+void		translate_object_y(t_obj *obj, float translation);
+void		translate_object_z(t_obj *obj, float translation);
+void		translate_object(t_obj *obj, float translation, char axis);
+void		translate_objects(t_win *win, float translation, char axis);
+
+// move_features.c
+void		move_objects(t_win *win, int keysym);
+void		move_light(t_win *win, int keysym);
+void		move_camera(t_win *win, int keysym);
+
+// quaternion.c
+t_quat		quaternion_from_axis_angle(t_float_3 axis, float angle);
+t_quat		quaternion_normalize(t_quat q);
+t_quat		quaternion_multiply(t_quat q1, t_quat q2);
+t_float_3 	quaternion_rotate_vector(t_quat q, t_float_3 v);
+void		perform_rotation(t_cy *cylinder, t_quat q);
+
+// rotation_objects.c
+void		perform_plane_rotation(t_pl *plane, t_quat q);
+void		perform_cylinder_rotation(t_cy *cylinder, t_quat q);
+void		rotate_object(t_obj *obj, t_quat q);
+void		rotate_cylinder(t_win *win, int keysym, float angle);
+void		rotate_plane(t_win *win, int keysym, float angle);
+
+// rotation_get_axis.c
+t_float_3	get_rot_axis_plane(int keysym);
+t_float_3	get_rot_axis_cylinder(int keysym);
+t_float_3	get_rot_axis_camera(int keysym);
+
+// rotation_camera.c
+void		perform_camera_rotation(t_win *win, t_quat q);
+void		rotate_camera(t_win *win, int keysym, float angle);
+
+// resize_objects.c
+void		resize_objects(t_win *win, int keysym);
 
 #endif
