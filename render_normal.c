@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 12:40:21 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 16:13:24 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:57:48 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,18 @@ t_float_3 sphere_normal(t_trace *inter)
 
 t_float_3 cylinder_normal(t_trace *inter, t_ray ray)
 {
-    t_float_3 point;
-    t_float_3 normal;
     t_cy *cylinder;
-
+    t_float_3 hit_point;
+    t_float_3 v;
+    t_float_3 projection;
+    
     cylinder = (t_cy *)inter->hit_object.object;
-    point = vec_add(ray.orig, vec_mul(ray.dir, inter->t));
-    normal = vec_sub(point, cylinder->pos);
-    return (normal);
+    hit_point = vec_add(ray.orig, vec_mul(ray.dir, inter->t));
+    v = vec_sub(hit_point, cylinder->pos);
+    projection = vec_mul(cylinder->vec, vec_dot(v, vec_normalize(cylinder->vec)));
+    return (vec_normalize(vec_sub(v, projection)));
 }
+
 
 t_float_3 plane_normal(t_trace *inter, t_ray ray)
 {
@@ -41,13 +44,9 @@ t_float_3 plane_normal(t_trace *inter, t_ray ray)
 
     plane = (t_pl *)inter->hit_object.object;
     normal = plane->vec;
-
     if (vec_dot(ray.dir, normal) > 0)
-    {
         normal = vec_negate(normal);
-    }
-
-    return vec_normalize(normal);
+    return (vec_normalize(normal));
 }
 
 t_float_3 shape_normal(t_trace *inter, t_ray ray)

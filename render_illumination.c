@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:13:34 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:43:16 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:59:04 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int diffuse(t_map *map, t_trace *closest, float intensity)
     light_dir = vec_sub(map->light.pos, closest->hit_point);
     attenuation = MIN(1.0, 90.0 / vec_length(light_dir));
     cos_angle = vec_cos(closest->normal, light_dir);
+    cos_angle = MAX(0.0f, cos_angle);
     ratio = intensity * cos_angle * attenuation;
     ret = color_multiply(closest->color, ratio);
     return (ret);
