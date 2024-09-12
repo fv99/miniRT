@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:04:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/15 16:03:01 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:18:26 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int main(int argc, char **argv)
 {
-    t_win win;
-    t_map *map;
+    t_win   win;
+    t_map   *map;
 
     if (argc != 2)
         exit(ft_printf("Usage: %s <[FILE].rt>\n", argv[0]));
@@ -29,6 +29,7 @@ int main(int argc, char **argv)
     win.win = mlx_new_window(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "miniRT");
     win.img = mlx_new_image(win.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     win.addr = mlx_get_data_addr(win.img, &win.bpp, &win.line_l, &win.endian);
+    win.num_cores = sysconf(_SC_NPROCESSORS_ONLN);
 
     // printf("bpp: %d, line_l: %d, endian: %d\n", win.bpp, win.line_l, win.endian); // debug
 	// draw_gradient(&win); // debug
@@ -40,9 +41,8 @@ int main(int argc, char **argv)
     mlx_loop(win.mlx);
 
 
-    // free_objects(map);
-    // free(win.map);
-    // free(map);
-    // free(win.mlx);
+    free(win.map);
+    free(map);
+    free(win.mlx);
     return(0);
 }

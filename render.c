@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:39:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:21:48 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,50 @@ void render_ray(t_win *win, int x, int y)
 	pixel_to_img(win, x, y, closest.color);
 }
 
+void *threaded_render(void *arg)
+{
+    t_thread *data = (t_thread *)arg;
+    int x, y;
+
+    y = data->start_y;
+    while (y < data->end_y)
+    {
+        x = 0;
+        while (x < WINDOW_WIDTH)
+        {
+            render_ray(data->win, x, y);
+            x++;
+        }
+        y++;
+    }
+    return NULL;
+
+}
+
 int render(t_win *win)
 {
-    int x;
-    int y;
+    pthread_t threads[win->num_cores];
+    t_thread thread_data[win->num_cores];
+    int rows;
+    int i;
 
-	x = 0;
-	y = 0;
-	while (y < WINDOW_HEIGHT)
-	{
-		x = 0;
-		while (x < WINDOW_WIDTH)
-		{
-			render_ray(win, x, y);
-			x++;
-		}
-		y++;
-	}
-	mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
+	i = 0;
+	rows = WINDOW_HEIGHT / win->num_cores;
+    while (i < win->num_cores)
+    {
+        thread_data[i].win = win;
+        thread_data[i].start_y = i * rows;
+        thread_data[i].end_y = (i == win->num_cores - 1) ? WINDOW_HEIGHT : (i + 1) * rows;
+        pthread_create(&threads[i], NULL, threaded_render, &thread_data[i]);
+		i++;
+    }
+	i = 0;
+    while (i < win->num_cores)
+    {
+        pthread_join(threads[i], NULL);
+		i++;
+    }
+
+    mlx_put_image_to_window(win->mlx, win->win, win->img, 0, 0);
     return (0);
 }

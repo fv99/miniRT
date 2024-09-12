@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:39:41 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:21:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
+# include <pthread.h>
+# include <unistd.h>
 
 #ifdef __linux__
 # include "./minilibx-linux/mlx.h"
@@ -147,9 +149,8 @@ enum e_keycodes
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
 # define WINDOW_HEIGHT 1024
-
-// samples per pixel
-# define SAMPLES_PP 256
+// change this later
+# define NUM_THREADS 24
 
 typedef enum e_obj_type
 {
@@ -327,9 +328,17 @@ typedef struct s_win
 	int				bpp;
 	int				line_l;
 	int				endian;
+	int				num_cores;
 
 	t_map			*map;
 }	t_win;
+
+typedef struct s_thread
+{
+	t_win 	*win;
+	int		start_y;
+	int		end_y;
+}	t_thread;
 
 // controls.c
 int		handle_keypress(int keysym, t_win *win);
@@ -359,49 +368,49 @@ t_float_3 		quaternion_rotate_vector(t_quaternion q, t_float_3 v);
 void			perform_rotation(t_cy *cylinder, t_quaternion q);
 
 // parser.c
-t_map   *parser(char *filename);
-char 	*sanitize(char *line);
-int   	parse_line(t_map *map, char *line);
-int		parse_float(char *str, float *num);
-int		parse_ulong(char *str, size_t *num);
+t_map		*parser(char *filename);
+char		*sanitize(char *line);
+int			parse_line(t_map *map, char *line);
+int			parse_float(char *str, float *num);
+int			parse_ulong(char *str, size_t *num);
 
 // parser_scene.c
-int 	parse_ambient(t_map *map, char *line);
-int		parse_camera(t_map *map, char *line);
-int 	parse_light(t_map *map, char *line);
-int 	parse_color(char *str, int *col);
-int 	parse_xyz_float(char *str, t_float_3 *coord);
+int			parse_ambient(t_map *map, char *line);
+int			parse_camera(t_map *map, char *line);
+int			parse_light(t_map *map, char *line);
+int			parse_color(char *str, int *col);
+int			parse_xyz_float(char *str, t_float_3 *coord);
 
 // parser_objects.c
-int		parse_sphere(t_map *map, char *line);
-int		parse_plane(t_map *map, char *line);
-int 	parse_cylinder(t_map *map, char *line);
+int			parse_sphere(t_map *map, char *line);
+int			parse_plane(t_map *map, char *line);
+int			parse_cylinder(t_map *map, char *line);
 
 // utils_number.c
-float	str_to_float(char *str);
-int		str_to_int_color(char *str);
-int		is_float(char *str);
-int		is_ulong(char *str);
+float		str_to_float(char *str);
+int			str_to_int_color(char *str);
+int			is_float(char *str);
+int			is_ulong(char *str);
 
 // utils_parser.c
-int 	open_file(char *filename);
-int		is_rt_file(char *filename);
-void	add_object(t_map *map, t_obj_type type, void *object, int col);
+int			open_file(char *filename);
+int			is_rt_file(char *filename);
+void		add_object(t_map *map, t_obj_type type, void *object, int col);
 
 // utils_array.c
-void	free_array(char **arr);
-void	print_array(char **arr);
-int		array_length(char **arr);
+void		free_array(char **arr);
+void		print_array(char **arr);
+int			array_length(char **arr);
 
 // utils_tests.c
-void 	draw_gradient(t_win *win);
-int 	test_map(int fd);
-int 	test_parser(t_map *map);
+void		draw_gradient(t_win *win);
+int			test_map(int fd);
+int			test_parser(t_map *map);
 
 // utils_mem.c
-t_map	*malloc_map();
-void 	free_objects(t_obj *objects);
-int 	error_throw(char *msg);
+t_map		*malloc_map();
+void		free_objects(t_obj *objects);
+int			error_throw(char *msg);
 
 // utils_vec.c
 t_float_3	vec_sub(t_float_3 a, t_float_3 b);
@@ -419,7 +428,7 @@ int 		is_zero_vector(t_float_3 vec);
 float		vec_cos(t_float_3 a, t_float_3 b);
 
 // utils_vec3.c
-t_float_3 vec_negate(t_float_3 vec);
+t_float_3	vec_negate(t_float_3 vec);
 float 		vec_length(t_float_3 vec);
 
 // utils_win.c
@@ -437,15 +446,16 @@ int 		add_colors(int col1, int col2);
 int 		color_multiply(int color, float ratio);
 
 // render.c
-t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object);
+t_trace		*closest_obj(t_ray ray, t_trace *closest, t_obj *object);
 void		render_ray(t_win *win, int x, int y);
+void 		*threaded_render(void *arg);
 int			render(t_win *win);
 
 // render_normal.c
-t_float_3 sphere_normal(t_trace *inter);
-t_float_3 cylinder_normal(t_trace *inter, t_ray ray);
-t_float_3 plane_normal(t_trace *inter, t_ray ray);
-t_float_3 shape_normal(t_trace *inter, t_ray ray);
+t_float_3	sphere_normal(t_trace *inter);
+t_float_3	cylinder_normal(t_trace *inter, t_ray ray);
+t_float_3	plane_normal(t_trace *inter, t_ray ray);
+t_float_3	shape_normal(t_trace *inter, t_ray ray);
 
 // render_view.c
 void        camera_init(t_map *map);
@@ -468,7 +478,7 @@ int 		intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, fl
 void    	illuminate(t_map *map, t_trace *closest);
 int 		diffuse(t_map *map, t_trace *closest, float intensity);
 int 		calculate_shadow(t_map *map, t_trace *closest);
-int obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
+int 		obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
 
 
 #endif
