@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/21 19:57:03 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:22 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int test_parser(t_map *map)
     
     while (current_obj != NULL)
     {
+        printf("Object ID: %i\n", current_obj->id);
         if (current_obj->type == SPHERE)
         {
             t_sp *current_sphere = (t_sp *)current_obj->object;
@@ -107,7 +108,6 @@ int test_parser(t_map *map)
             printf("  Color: 0x%06X\n\n", current_cylinder->col);
             cylinder_index++;
         }
-
         // Move to the next object in the list
         current_obj = current_obj->next;
     }

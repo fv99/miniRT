@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 16:17:51 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 16:05:51 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:28 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int cylinder_intersect(t_ray ray, t_cy *cylinder, float *t)
     vars.hit_side = hit_cyl_side(ray, cylinder, &vars, t);
     vars.hit_cap = hit_cyl_cap(ray, cylinder, &vars, t);
     if (vars.hit_side || vars.hit_cap)
-        return (*t);
+        return (1);
     else
         return (0);
 }
@@ -55,7 +55,7 @@ int hit_cyl_side(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t)
             if (vars->proj_l >= 0 && vars->proj_l <= cylinder->hth)
             {
                 *t = vars->t0;
-                return (*t);
+                return (1);
             }
         }
     }
@@ -74,7 +74,7 @@ int hit_cyl_cap(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t)
         if (!vars->hit_side || t_cap < *t - 1e-6)
         {
             *t = t_cap;
-            return (*t);
+            return (1);
         }
     }
     if (intersect_disk(ray, cylinder->pos, vars, &t_cap))
@@ -82,7 +82,7 @@ int hit_cyl_cap(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t)
         if (!vars->hit_side || t_cap < *t - 1e-6)
         {
             *t = t_cap;
-            return (*t);
+            return (1);
         }
     }
     return (0);
@@ -111,7 +111,7 @@ int intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, floa
             if (vec_length(vec_sub(hit_point, disk_center)) <= (vars->dia / 2.0f))
             {
                 *t = t_temp;
-                return (*t);
+                return (1);
             }
         }
     }

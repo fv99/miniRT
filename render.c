@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:00:19 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/09 12:45:59 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_trace	*closest_obj(t_ray ray, t_trace *closest, t_obj *object)
 	closest->t = INFINITY;
 	closest->hit_object.object = NULL;
 	closest->color = 0x000000;
-	t = 0;
+	t = INFINITY;
 	while (object)
 	{
 		if (intersect(ray, object, &t))

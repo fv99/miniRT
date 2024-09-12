@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 12:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/08/20 17:14:11 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:22 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ void add_object(t_map *map, t_obj_type type, void *object, int col)
     new_obj->object = object;
     new_obj->color = col;
     new_obj->next = map->objects;
+    new_obj->id = rand();
     map->objects = new_obj;
 }

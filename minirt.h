@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 16:12:21 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:41 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ typedef struct s_obj
 	t_obj_type		type;
 	void			*object;
 	int				color;
+	int				id;
 	struct s_obj	*next;
 }	t_obj;
 
@@ -467,7 +468,7 @@ int 		intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, fl
 void    	illuminate(t_map *map, t_trace *closest);
 int 		diffuse(t_map *map, t_trace *closest, float intensity);
 int 		calculate_shadow(t_map *map, t_trace *closest);
-int 		obscured(t_map *map, t_ray *ray, float max_dist);
+int obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
 
 
 #endif

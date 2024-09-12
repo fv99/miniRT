@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 16:09:57 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:39:41 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 			*t = vars.t0;
 		else
 			*t = vars.t1;
-		return (*t);
+		return (1);
 	}
 	return (0);
 }
@@ -72,7 +72,8 @@ int	plane_intersect(t_ray ray, t_pl *plane, float *t)
 		vec = vec_sub(plane->pos, ray.orig);
 		num = vec_dot(vec, plane->vec);
 		*t = num / denom;
-		return (*t >= 1e-6);
+		if(*t >= 1e-6)
+			return (1);
 	}
 	return (0);
 }

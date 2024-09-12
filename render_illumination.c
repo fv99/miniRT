@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:13:34 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/10 16:15:45 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:43:16 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int calculate_shadow(t_map *map, t_trace *closest)
 
     light_dir = vec_sub(map->light.pos, closest->hit_point);
     dist = vec_length(light_dir);
-    ray.orig = vec_add(closest->hit_point, VEC_MINFLOAT);
+    ray.orig = vec_add(closest->hit_point, vec_mul(closest->normal, 1e-4));
     ray.dir = vec_normalize(light_dir);
-    return (obscured(map, &ray, dist));
+    return (obscured(map, &ray, closest->hit_object.object, dist));
 }
 
-int obscured(t_map *map, t_ray *ray, float max_dist)
+int obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist)
 {
     t_obj   *objects;
     float   t;
@@ -62,6 +62,8 @@ int obscured(t_map *map, t_ray *ray, float max_dist)
 
     while (objects != NULL)
     {
+        if (objects->id == closest->id)
+            objects = objects->next;
         if (intersect(*ray, objects, &t) && t < max_dist)
             return (1);
         objects = objects->next;
