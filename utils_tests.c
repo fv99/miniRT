@@ -3,62 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tests.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:39:22 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:04:46 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void    draw_gradient(t_win *win)
+void	draw_gradient(t_win *win)
 {
-    int x, y;
+	int	x;
+	int	y;
+	int	color;
 
-    for (y = 0; y < WINDOW_HEIGHT; y++)
-    {
-        for (x = 0; x < WINDOW_WIDTH; x++)
-        {
-            int color = (x * 256 / WINDOW_WIDTH) << 16 | (y * 256 / WINDOW_HEIGHT) << 8 | 128;
-            pixel_to_img(win, x, y, color);
-        }
-    }
+	y = 0;
+	while (y < WINDOW_HEIGHT)
+	{
+		x = 0;
+		while (x < WINDOW_WIDTH)
+		{
+			color = (x * 256 / WINDOW_WIDTH) << 16
+				| (y * 256 / WINDOW_HEIGHT) << 8 | 128;
+			pixel_to_img(win, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
-int test_map(int fd)
+int	test_map(int fd)
 {
-    char *line;
-    int a;
-    int l;
-    int c; 
+	char	*line;
+	int		a;
+	int		l;
+	int		c;
 
-    a = 0;
-    l = 0;
-    c = 0;
-    line = get_next_line(fd);
-    while (line != NULL)
-    {
-        if (*line == 'A')
-            a++;
-        else if (*line == 'L')
-            l++;
-        else if (*line == 'C') 
-            c++;
-        free(line);
-        line = get_next_line(fd);
-    }
-    if (a != 1 || l != 1 || c != 1)
-        error_throw("Invalid map - incorrect amount of elements");
-    return (ft_printf("\nMap OK!\n"));
+	a = 0;
+	l = 0;
+	c = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		if (*line == 'A')
+			a++;
+		else if (*line == 'L')
+			l++;
+		else if (*line == 'C')
+			c++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (a != 1 || l != 1 || c != 1)
+		error_throw("Invalid map - incorrect amount of elements");
+	return (ft_printf("\nMap OK!\n"));
 }
 
-int test_parser(t_map *map)
+int	test_parser(t_map *map)
 {
-    t_obj *current_obj;
-    int sphere_index = 0;
-    int plane_index = 0;
-    int cylinder_index = 0;
+    t_obj	*current_obj;
+    int		sphere_index = 0;
+    int		plane_index = 0;
+    int		cylinder_index = 0;
 
     printf("\nAmbient lighting:\n");
     printf("  Lum: %.2f\n", map->amb.lum);
@@ -112,5 +119,5 @@ int test_parser(t_map *map)
         current_obj = current_obj->next;
     }
 
-    return 0;
+    return (0);
 }

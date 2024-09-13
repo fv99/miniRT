@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_intersects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
+/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:14:27 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 13:39:41 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:31:01 by khlavaty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	intersect(t_ray ray, t_obj *obj, float *t)
 {
 	if (obj->type == SPHERE)
-		return(sphere_intersect(ray, obj->object, t));
+		return (sphere_intersect(ray, obj->object, t));
 	if (obj->type == PLANE)
-		return(plane_intersect(ray, obj->object, t)); 
+		return (plane_intersect(ray, obj->object, t));
 	if (obj->type == CYLINDER)
-		return(cylinder_intersect(ray, obj->object, t));
+		return (cylinder_intersect(ray, obj->object, t));
 	else
 		return (0);
 }
@@ -29,11 +29,11 @@ int	intersect(t_ray ray, t_obj *obj, float *t)
 // calculates vars.disc to see if intersects
 // calculates two possible solutions intersection points
 // finds the correct intersection point (smallest distance *t)
-int sphere_intersect(t_ray ray, t_sp *sphere, float *t)
+int	sphere_intersect(t_ray ray, t_sp *sphere, float *t)
 {
-	t_cyl_intersect vars;
-	float radius;
-	
+	t_cyl_intersect	vars;
+	float			radius;
+
 	radius = sphere->dia / 2.0;
 	vars.oc = vec_sub(ray.orig, sphere->pos);
 	vars.a = vec_dot(ray.dir, ray.dir);
@@ -72,7 +72,7 @@ int	plane_intersect(t_ray ray, t_pl *plane, float *t)
 		vec = vec_sub(plane->pos, ray.orig);
 		num = vec_dot(vec, plane->vec);
 		*t = num / denom;
-		if(*t >= 1e-6)
+		if (*t >= 1e-6)
 			return (1);
 	}
 	return (0);
