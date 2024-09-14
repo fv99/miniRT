@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_illumination.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:13:34 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:34:39 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:18:38 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,12 @@ int	diffuse(t_map *map, t_trace *closest, float intensity)
 	float		attenuation;
 
 	light_dir = vec_sub(map->light.pos, closest->hit_point);
-	attenuation = MIN(1.0, 90.0 / vec_length(light_dir));
+	attenuation = (90.0 / vec_length(light_dir));
+	if (attenuation > 1.0f)
+		attenuation = 1.0f;
 	cos_angle = vec_cos(closest->normal, light_dir);
-	cos_angle = MAX(0.0f, cos_angle);
+	if (cos_angle < 0.0f)
+		cos_angle = 0.0f;
 	ratio = intensity * cos_angle * attenuation;
 	ret = color_multiply(closest->color, ratio);
 	return (ret);

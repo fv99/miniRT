@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:07:24 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:18:01 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:18:11 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@
 # include <pthread.h>
 # include <unistd.h>
 
-#ifdef __linux__
-# include "./minilibx-linux/mlx.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
-
-# define MIN(a, b) ((a) < (b) ? (a) : (b))
-# define MAX(a, b) ((a) > (b) ? (a) : (b))
+# ifdef __linux__
+#  include "./minilibx-linux/mlx.h"
+#  include <X11/X.h>
+#  include <X11/keysym.h>
+# elif __APPLE__
+#  include "./minilibx-mac-osx/mlx.h"
+#  include <ApplicationServices/ApplicationServices.h>
+# endif
+# ifdef __linux__
 
 enum e_keycodes
 {
@@ -82,9 +84,8 @@ enum e_keycodes
 	KEY_NUMPAD_MINUS = 65453,
 };
 
-#elif __APPLE__
-# include "./minilibx-mac-osx/mlx.h"
-# include <ApplicationServices/ApplicationServices.h>
+# elif __APPLE__
+
 enum e_keycodes
 {
 	KEY_A = 0,
@@ -139,22 +140,16 @@ enum e_keycodes
 	KEY_NUMPAD_MINUS = 78,
 };
 
-#endif
+# endif
 
 // math macros
 # define PI 3.1415926535f
-# define RADIANS(deg) ((deg * PI) / 180.0f)
-# define DEGREES(rad) ((rad * 180.0f) / PI)
-
-// vector macros
-# define UP_VECTOR	(t_float_3){0.0, -1.0, 0.0}
-# define VEC_MINFLOAT (t_float_3){0.0001, 0.0001, 0.0001}
 
 // god's chosen aspect ratio
 # define WINDOW_WIDTH 1280
 # define WINDOW_HEIGHT 1024
 // change this later
-# define NUM_THREADS 24
+# define NUM_THREADS 8
 
 typedef enum e_obj_type
 {
@@ -180,11 +175,11 @@ typedef struct s_int_3
 // introducing quarternions for rotation
 typedef struct s_quat
 {
-	float w;
-	float x;
-	float y;
-	float z;
-} t_quat;
+	float			w;
+	float			x;
+	float			y;
+	float			z;
+}	t_quat;
 
 // mandatory parts of scene below (only 1 per file)
 // ambient lighting, lum = brightness, col = color in hex format
@@ -302,7 +297,6 @@ typedef struct s_map
 	t_cam			cam;
 	t_light			light;
 	t_obj			*objects;
-
 	float			aspect_ratio;	
 	t_float_3		vec_up;
 	t_float_3		vec_right;
@@ -314,11 +308,11 @@ typedef struct s_trace
 {
 	t_obj		hit_object;
 	t_ray		ray;
-    t_float_3 	intersection;
+	t_float_3	intersection;
 	t_float_3	normal;
 	t_float_3	hit_point;
 	int			color;
-    float		t;
+	float		t;
 }	t_trace;
 
 // main holding struct
@@ -326,20 +320,18 @@ typedef struct s_win
 {
 	void			*mlx;
 	void			*win;
-	void			*img;
-	
+	void			*img;	
 	char			*addr;
 	int				bpp;
 	int				line_l;
 	int				endian;
 	int				num_cores;
-
 	t_map			*map;
 }	t_win;
 
 typedef struct s_thread
 {
-	t_win 	*win;
+	t_win	*win;
 	int		start_y;
 	int		end_y;
 }	t_thread;
@@ -403,36 +395,35 @@ t_float_3	vec_mul(t_float_3 a, float b);
 t_float_3	vec_div(t_float_3 a, float b);
 t_float_3	vec_scale(t_float_3 v, float scalar); // mozna delete
 
-
 // utils_vec2.c
 float		vec_dot(t_float_3 a, t_float_3 b);
 t_float_3	vec_normalize(t_float_3 v);
-t_float_3 	vec_cross(t_float_3 v1, t_float_3 v2);
-int 		is_zero_vector(t_float_3 vec);
+t_float_3	vec_cross(t_float_3 v1, t_float_3 v2);
+int			is_zero_vector(t_float_3 vec);
 float		vec_cos(t_float_3 a, t_float_3 b);
 
 // utils_vec3.c
 t_float_3	vec_negate(t_float_3 vec);
-float 		vec_length(t_float_3 vec);
+float		vec_length(t_float_3 vec);
 
 // utils_win.c
 int			ambient_lum(t_map *map);
 void		pixel_to_img(t_win *win, int x, int y, int color);
 
 // utils_col.c
-int 		create_color(int r, int g, int b);
-int 		rgb_to_hex(int r, int g, int b);
-int 		clamp(int value, int min, int max);
-t_int_3 	extract_rgb(int col);
+int			create_color(int r, int g, int b);
+int			rgb_to_hex(int r, int g, int b);
+int			clamp(int value, int min, int max);
+t_int_3		extract_rgb(int col);
 
 // utils_col2.c
-int 		add_colors(int col1, int col2);
-int 		color_multiply(int color, float ratio);
+int			add_colors(int col1, int col2);
+int			color_multiply(int color, float ratio);
 
 // render.c
 t_trace		*closest_obj(t_ray ray, t_trace *closest, t_obj *object);
 void		render_ray(t_win *win, int x, int y);
-void 		*threaded_render(void *arg);
+void		*threaded_render(void *arg);
 int			render(t_win *win);
 
 // render_normal.c
@@ -442,7 +433,7 @@ t_float_3	plane_normal(t_trace *inter, t_ray ray);
 t_float_3	shape_normal(t_trace *inter, t_ray ray);
 
 // render_view.c
-void        camera_init(t_map *map);
+void		camera_init(t_map *map);
 t_float_3	pixels_to_viewport(int x, int y);
 t_ray		throw_ray(t_map *map, t_float_3 vec);
 
@@ -453,16 +444,20 @@ int			plane_intersect(t_ray ray, t_pl *plane, float *t);
 
 // render_intersect_cylinders.c
 int			cylinder_intersect(t_ray ray, t_cy *cylinder, float *t);
-int			is_valid_intersect(t_cyl_intersect *vars, t_cy *cylinder, t_ray ray, float *t);
-int 		hit_cyl_side(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t);
-int 		hit_cyl_cap(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t);
-int 		intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, float *t);
+int			is_valid_intersect(t_cyl_intersect *vars, \
+t_cy *cylinder, t_ray ray, float *t);
+int			hit_cyl_side(t_ray ray, t_cy *cylinder, \
+t_cyl_intersect *vars, float *t);
+int			hit_cyl_cap(t_ray ray, t_cy *cylinder, \
+t_cyl_intersect *vars, float *t);
+int			intersect_disk(t_ray ray, t_float_3 disk_center, \
+t_cyl_intersect *vars, float *t);
 
 // render_illuminate.c
-void    	illuminate(t_map *map, t_trace *closest);
-int 		diffuse(t_map *map, t_trace *closest, float intensity);
-int 		calculate_shadow(t_map *map, t_trace *closest);
-int 		obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
+void		illuminate(t_map *map, t_trace *closest);
+int			diffuse(t_map *map, t_trace *closest, float intensity);
+int			calculate_shadow(t_map *map, t_trace *closest);
+int			obscured(t_map *map, t_ray *ray, t_obj *closest, float max_dist);
 
 // translate_object.c
 void		translate_object_x(t_obj *obj, float translation);
@@ -480,7 +475,7 @@ void		move_camera(t_win *win, int keysym);
 t_quat		quaternion_from_axis_angle(t_float_3 axis, float angle);
 t_quat		quaternion_normalize(t_quat q);
 t_quat		quaternion_multiply(t_quat q1, t_quat q2);
-t_float_3 	quaternion_rotate_vector(t_quat q, t_float_3 v);
+t_float_3	quaternion_rotate_vector(t_quat q, t_float_3 v);
 void		perform_rotation(t_cy *cylinder, t_quat q);
 
 // rotation_objects.c

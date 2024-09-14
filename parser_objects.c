@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_objects.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:50:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:45:26 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:45:33 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	parse_sphere(t_map *map, char *line)
 	i = 0;
 	new = (t_sp *)malloc(sizeof(t_sp));
 	if (!new)
-		error_throw("Failed to malloc sphere"); // over 25 lines maybe remove this later
+		error_throw("Failed to malloc sphere");
 	params = ft_split(line, ' ');
 	if (array_length(params) != 4)
 		return (error_throw("Invalid number of sphere params"));
@@ -49,7 +49,7 @@ int	parse_plane(t_map *map, char *line)
 	i = 0;
 	new = (t_pl *)malloc(sizeof(t_pl));
 	if (!new)
-		error_throw("Failed to malloc plane"); // over 25 lines maybe remove this later
+		error_throw("Failed to malloc plane");
 	params = ft_split(line, ' ');
 	if (array_length(params) != 4)
 		return (error_throw("Invalid number of plane params"));
@@ -76,11 +76,9 @@ int	parse_cylinder(t_map *map, char *line)
 
 	i = 0;
 	new = (t_cy *)malloc(sizeof(t_cy));
-	if (!new)
-		error_throw("Failed to malloc cylinder"); // over 25 lines maybe remove this later
 	params = ft_split(line, ' ');
-	if (array_length(params) != 6)
-		return (error_throw("Invalid number of cylinder params"));
+	if (!new || array_length(params) != 6)
+		return (error_throw("Invalid no. of cylinder params / malloc fail"));
 	while (params && params[++i])
 	{
 		if (i == 1 && parse_xyz_float(params[i], &new->pos))
@@ -94,7 +92,6 @@ int	parse_cylinder(t_map *map, char *line)
 		if (i == 5 && parse_color(params[i], &new->col))
 			return (error_throw("Cannot parse cylinder color"));
 	}
-	new->next = NULL;
 	add_object(map, CYLINDER, new, new->col);
 	free_array(params);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 09:48:04 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:36:51 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:20:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ char	*sanitize(char *line)
 	while (str && str[++i])
 	{
 		if (str[i] == '\t' || str[i] == '\n')
-			str[i] = ' ';
+			str[i] = '\t';
 	}
-	line = ft_strtrim(str, " ");
+	line = ft_strtrim(str, "\t");
 	free(str);
 	return (line);
 }

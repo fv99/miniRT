@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tests.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:38:20 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:04:46 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 14:19:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,29 +60,28 @@ int	test_map(int fd)
 	return (ft_printf("\nMap OK!\n"));
 }
 
+/*
 int	test_parser(t_map *map)
 {
     t_obj	*current_obj;
     int		sphere_index = 0;
     int		plane_index = 0;
     int		cylinder_index = 0;
-
     printf("\nAmbient lighting:\n");
     printf("  Lum: %.2f\n", map->amb.lum);
     printf("  Col: 0x%06X\n", map->amb.col);
-    
     printf("\nCamera:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->cam.pos.x, map->cam.pos.y, map->cam.pos.z);
-    printf("  Vector: (%.2f, %.2f, %.2f)\n", map->cam.vec.x, map->cam.vec.y, map->cam.vec.z);
+    printf("  Position: (%.2f, %.2f, %.2f)\n",\
+        map->cam.pos.x, map->cam.pos.y, map->cam.pos.z);
+    printf("  Vector: (%.2f, %.2f, %.2f)\n",\
+        map->cam.vec.x, map->cam.vec.y, map->cam.vec.z);
     printf("  FOV: %zu\n", map->cam.fov);
-
     printf("\nLight point:\n");
-    printf("  Position: (%.2f, %.2f, %.2f)\n", map->light.pos.x, map->light.pos.y, map->light.pos.z);
+    printf("  Position: (%.2f, %.2f, %.2f)\n",\
+        map->light.pos.x, map->light.pos.y, map->light.pos.z);
     printf("  Lum: %.2f\n", map->light.lum);
     printf("  Col: 0x%06X\n\n", map->light.col);
-
     current_obj = map->objects;
-    
     while (current_obj != NULL)
     {
         printf("Object ID: %i\n", current_obj->id);
@@ -90,7 +89,8 @@ int	test_parser(t_map *map)
         {
             t_sp *current_sphere = (t_sp *)current_obj->object;
             printf("\tSphere %d:\n", sphere_index);
-            printf("  Position: (%.2f, %.2f, %.2f)\n", current_sphere->pos.x, current_sphere->pos.y, current_sphere->pos.z);
+            printf("  Position: (%.2f, %.2f, %.2f)\n", \
+->pos.x, current_sphere->pos.y, current_sphere->pos.z);
             printf("  Diameter: %.2f\n", current_sphere->dia);
             printf("  Color: 0x%06X\n\n", current_sphere->col);
             sphere_index++;
@@ -99,8 +99,11 @@ int	test_parser(t_map *map)
         {
             t_pl *current_plane = (t_pl *)current_obj->object;
             printf("\tPlane %d:\n", plane_index);
-            printf("  Position: (%.2f, %.2f, %.2f)\n", current_plane->pos.x, current_plane->pos.y, current_plane->pos.z);
-            printf("  Vector: (%.2f, %.2f, %.2f)\n", current_plane->vec.x, current_plane->vec.y, current_plane->vec.z);
+            printf("  Position: (%.2f, %.2f, %.2f)\n",\
+                current_plane->pos.x, current_plane->pos.y,\
+                 current_plane->pos.z);
+            printf("  Vector: (%.2f, %.2f, %.2f)\n", \
+->vec.x, current_plane->vec.y, current_plane->vec.z);
             printf("  Color: 0x%06X\n\n", current_plane->col);
             plane_index++;
         }
@@ -108,8 +111,12 @@ int	test_parser(t_map *map)
         {
             t_cy *current_cylinder = (t_cy *)current_obj->object;
             printf("\tCylinder %d:\n", cylinder_index);
-            printf("  Position: (%.2f, %.2f, %.2f)\n", current_cylinder->pos.x, current_cylinder->pos.y, current_cylinder->pos.z);
-            printf("  Vector: (%.2f, %.2f, %.2f)\n", current_cylinder->vec.x, current_cylinder->vec.y, current_cylinder->vec.z);
+            printf("  Position: (%.2f, %.2f, %.2f)\n",\
+                current_cylinder->pos.x, current_cylinder->pos.y, \
+                ->pos.z);
+            printf("  Vector: (%.2f, %.2f, %.2f)\n",\
+                current_cylinder->vec.x, current_cylinder->vec.y,\
+                 current_cylinder->vec.z);
             printf("  Diameter: %.2f\n", current_cylinder->dia);
             printf("  Height: %.2f\n", current_cylinder->hth);
             printf("  Color: 0x%06X\n\n", current_cylinder->col);
@@ -121,3 +128,4 @@ int	test_parser(t_map *map)
 
     return (0);
 }
+*/

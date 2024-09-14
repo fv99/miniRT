@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   controls.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 19:24:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 20:00:56 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:05:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	handle_keypress_with_angle(int keysym, t_win *win)
 {
 	float	angle;
 
-	angle = RADIANS(1);
+	angle = 1.0 * (PI / 180.0);
 	if (keysym == KEY_UP || keysym == KEY_DOWN || keysym == KEY_LEFT)
 		rotate_cylinder(win, keysym, angle);
 	else if (keysym == KEY_RIGHT || keysym == KEY_DOT || keysym == KEY_COMMA)

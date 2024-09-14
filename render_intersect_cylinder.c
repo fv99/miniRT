@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_intersect_cylinder.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 16:17:51 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:32:48 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:10:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	cylinder_intersect(t_ray ray, t_cy *cylinder, float *t)
 	vars.oc_cross_a = vec_cross(vars.oc, vars.cyl_vec);
 	vars.a = vec_dot(vars.d_cross_a, vars.d_cross_a);
 	vars.b = 2.0f * vec_dot(vars.d_cross_a, vars.oc_cross_a);
-	vars.c = vec_dot(vars.oc_cross_a, vars.oc_cross_a) - (cylinder->dia / 2) * (cylinder->dia / 2);
+	vars.c = vec_dot(vars.oc_cross_a, vars.oc_cross_a) \
+	- (cylinder->dia / 2) * (cylinder->dia / 2);
 	vars.disc = vars.b * vars.b - 4 * vars.a * vars.c;
 	vars.hit_side = hit_cyl_side(ray, cylinder, &vars, t);
 	vars.hit_cap = hit_cyl_cap(ray, cylinder, &vars, t);
@@ -90,7 +91,8 @@ int	hit_cyl_cap(t_ray ray, t_cy *cylinder, t_cyl_intersect *vars, float *t)
 // calculate the intersection point with the plane
 // if the intersection is in the point of the ray, calculate the point
 // check if we are within the diameter of the disk
-int	intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, float *t)
+int	intersect_disk(t_ray ray, t_float_3 disk_center, \
+t_cyl_intersect *vars, float *t)
 {
 	t_float_3	vec;
 	t_float_3	hit_point;
@@ -105,7 +107,8 @@ int	intersect_disk(t_ray ray, t_float_3 disk_center, t_cyl_intersect *vars, floa
 		if (t_temp >= 1e-6)
 		{
 			hit_point = vec_add(ray.orig, vec_mul(ray.dir, t_temp));
-			if (vec_length(vec_sub(hit_point, disk_center)) <= (vars->dia / 2.0f))
+			if (vec_length(vec_sub(hit_point, disk_center)) \
+			<= (vars->dia / 2.0f))
 			{
 				*t = t_temp;
 				return (1);

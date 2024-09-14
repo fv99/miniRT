@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_view.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: khlavaty <khlavaty@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fvonsovs <fvonsovs@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 13:38:30 by fvonsovs          #+#    #+#             */
-/*   Updated: 2024/09/12 21:25:28 by khlavaty         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:09:51 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	camera_init(t_map *map)
 	if (is_zero_vector(map->cam.vec))
 		map->cam.vec = (t_float_3){0.0f, 0.0f, -1.0f};
 	map->aspect_ratio = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
-	map->width = tan(RADIANS(map->cam.fov / 2.0));
+	map->width = tan((map->cam.fov / 2.0) * (PI / 180.0));
 	map->height = map->width / map->aspect_ratio;
-	map->vec_right = vec_normalize(vec_cross(map->cam.vec, UP_VECTOR));
+	map->vec_right = vec_normalize(vec_cross(map->cam.vec, \
+	(t_float_3){0.0, -1.0, 0.0}));
 	map->vec_up = vec_normalize(vec_cross(map->vec_right, map->cam.vec));
 }
 
