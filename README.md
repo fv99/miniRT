@@ -24,7 +24,7 @@ My first RayTracer using the [minilibx](https://github.com/42Paris/minilibx-linu
 
 ```shell
 # Clone the repository:
-$> git clone --recursive https://github.com/fv99/fdf.git
+$> git clone --recursive https://github.com/fv99/miniRT.git
 
 # Compile:
 $> make
